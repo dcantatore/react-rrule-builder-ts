@@ -12,5 +12,6 @@ const Template: StoryFn<typeof RRuleGenerator> = (args) => <RRuleGenerator {...a
 
 export const Primary = Template.bind({});
 Primary.args = {
-  label: "Generate Rule",
+  datePickerLabel: "Date In Storybook",
+  datePickerInitialDate: null,
 };
