@@ -1,0 +1,33 @@
+{
+  "extends": [
+    "airbnb",
+    "airbnb-typescript",
+    "eslint:recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:react/recommended",
+    "plugin:jsx-a11y/recommended"
+  ],
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "max-len": [
+      "error",
+      {
+        "code": 140,
+        "ignoreUrls": true,
+        "ignoreTemplateLiterals": true
+      }
+    ],
+    "react/require-default-props": "off",
+    // strings use double quotes
+//    "prettier/prettier": ["error", { "doubleQuote": true }],
+    "quotes": ["error", "double", { "avoidEscape": true }],
+    "@typescript-eslint/quotes": ["error", "double", { "avoidEscape": true }],
+    "react/function-component-definition": [2,  {
+    "namedComponents": ["arrow-function", "function-declaration"],
+    "unnamedComponents": "arrow-function"
+    }],
+    "import/prefer-default-export": "off"
+  }
+}
