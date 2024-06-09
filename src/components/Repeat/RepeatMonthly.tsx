@@ -4,20 +4,19 @@ import TextField from "@mui/material/TextField";
 import { Frequency } from "rrule";
 
 import Stack from "@mui/material/Stack";
-import { Radio, RadioGroup, Typography } from "@mui/material";
+import Radio from "@mui/material/Radio";
+import Typography from "@mui/material/Typography";
+import RadioGroup from "@mui/material/RadioGroup";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import { AllWeekDayOptions, MonthlyRepeatDetails, OnThe } from "./Repeat.types";
+import {
+  AllWeekDayOptions, MonthBy, MonthlyRepeatDetails, OnThe,
+} from "./Repeat.types";
 import { onTheTextMapping, weekdayFullTextMapping } from "./utils";
 
 interface RepeatMonthlyProps {
   defaultValue?: MonthlyRepeatDetails;
   onChange: (value: MonthlyRepeatDetails) => void;
-}
-
-enum MonthBy {
-  BYMONTHDAY = "BYMONTHDAY",
-  BYSETPOS = "BYSETPOS",
 }
 
 const enumEntries = Object.keys(OnThe).filter((key) => Number.isNaN(Number(key)));
@@ -37,7 +36,8 @@ const RepeatMonthly = (
   // ODO  get the days in the month max with luxon? or just use 31 - I think RRULE will handle this
   const maxDaysInMonth = 31;
   const [onRadio, setOnRadio] = useState<MonthBy>(MonthBy.BYMONTHDAY);
-  console.log(Object.entries(OnThe));
+  const disabledOnBYSETPOS = onRadio === MonthBy.BYMONTHDAY;
+  const disabledOnBYMONTHDAY = onRadio === MonthBy.BYSETPOS;
   return (
     <Stack direction="column" spacing={2} alignItems="flex-start">
       <Stack direction="row" spacing={2} alignItems="center">
@@ -60,8 +60,8 @@ const RepeatMonthly = (
               value={MonthBy.BYMONTHDAY}
               name="day"
             />
-            <Typography>On Day</Typography>
-            <Select sx={{ minWidth: 120 }}>
+            <Typography sx={{ color: disabledOnBYMONTHDAY ? "text.disabled" : "text.primary" }}>On Day</Typography>
+            <Select sx={{ minWidth: 120 }} disabled={disabledOnBYMONTHDAY}>
               {Array.from({ length: maxDaysInMonth }, (_, i) => i + 1).map((day) => (
                 <MenuItem key={day} value={day}>{day}</MenuItem>
               ))}
@@ -72,15 +72,15 @@ const RepeatMonthly = (
               value={MonthBy.BYSETPOS}
               name="day"
             />
-            <Typography>On The</Typography>
-            <Select sx={{ minWidth: 120 }}>
+            <Typography sx={{ color: disabledOnBYSETPOS ? "text.disabled" : "text.primary" }}>On The</Typography>
+            <Select sx={{ minWidth: 120 }} disabled={disabledOnBYSETPOS}>
               {enumEntries.map((key) => (
                 <MenuItem key={key} value={OnThe[key as keyof typeof OnThe]}>
                   {onTheTextMapping[OnThe[key as keyof typeof OnThe]]}
                 </MenuItem>
               ))}
             </Select>
-            <Select sx={{ minWidth: 120 }}>
+            <Select sx={{ minWidth: 120 }} disabled={disabledOnBYSETPOS}>
               {Object.keys(AllWeekDayOptions).map((key) => (
                 <MenuItem key={key} value={key}>{weekdayFullTextMapping[key as keyof typeof AllWeekDayOptions]}</MenuItem>
               ))}

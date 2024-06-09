@@ -8,6 +8,7 @@ import { frequencyTextMapping } from "./utils";
 import RepeatWeekly from "./RepeatWeekly";
 import RepeatMonthly from "./RepeatMonthly";
 import RepeatDaily from "./RepeatDaily";
+import RepeatYearly from "./RepeatYearly";
 
 interface RepeatSelectProps {
   rruleFrequencyOptions? : Frequency[]
@@ -80,7 +81,18 @@ const RepeatSelect = ({
               onChange={(value) => console.log(value)}
             />
           );
-
+        case Frequency.YEARLY:
+          return (
+            <RepeatYearly
+              defaultValue={{
+                frequency: Frequency.YEARLY,
+                byDay: [],
+                byMonthDay: [],
+                bySetPos: [],
+              }}
+              onChange={(value) => console.log(value)}
+            />
+          );
         default:
           return null;
       }
