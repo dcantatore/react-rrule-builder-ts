@@ -1,6 +1,6 @@
 // TODO does RRULE have a built-in mapping for this?
 import { Frequency } from "rrule";
-import { Weekday } from "./Repeat.types";
+import { Weekday, WeekdayExtras } from "./Repeat.types";
 
 export const frequencyTextMapping = {
   [Frequency.YEARLY]: "Yearly",
@@ -20,6 +20,9 @@ export const weekdayFullTextMapping = {
   [Weekday.FR]: "Friday",
   [Weekday.SA]: "Saturday",
   [Weekday.SU]: "Sunday",
+  [WeekdayExtras.DAY]: "Day",
+  [WeekdayExtras.WEEKDAY]: "Weekday",
+  [WeekdayExtras.WEEKEND]: "Weekend",
 };
 
 export const weekdayShortTextMapping = {
@@ -30,4 +33,12 @@ export const weekdayShortTextMapping = {
   [Weekday.FR]: "Fri",
   [Weekday.SA]: "Sat",
   [Weekday.SU]: "Sun",
+};
+
+export const onTheTextMapping = {
+  1: "First",
+  2: "Second",
+  3: "Third",
+  4: "Fourth",
+  "-1": "Last",
 };

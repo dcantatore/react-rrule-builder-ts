@@ -10,12 +10,32 @@ export enum Weekday {
   SU = "SU",
 }
 
+export enum WeekdayExtras {
+  DAY = "DAY",
+  WEEKDAY = "WEEKDAY",
+  WEEKEND = "WEEKEND",
+}
+
+export enum OnThe {
+  FIRST = 1,
+  SECOND = 2,
+  THIRD = 3,
+  FOURTH = 4,
+  LAST = -1,
+}
+
+export const AllWeekDayOptions = {
+  ...Weekday,
+  ...WeekdayExtras,
+
+};
+
 export interface RepeatDetailsBase {
   frequency: Frequency;
   interval: number;
 }
 
-export  interface YearlyRepeatDetails extends RepeatDetailsBase {
+export interface YearlyRepeatDetails extends RepeatDetailsBase {
   frequency: Frequency.YEARLY;
   bySetPos?: number[];
   byDay?: Weekday[];
@@ -25,7 +45,7 @@ export  interface YearlyRepeatDetails extends RepeatDetailsBase {
   interval: never;
 }
 
- export interface MonthlyRepeatDetails extends RepeatDetailsBase {
+export interface MonthlyRepeatDetails extends RepeatDetailsBase {
   frequency: Frequency.MONTHLY;
   bySetPos?: number[];
   byDay?: Weekday[];
