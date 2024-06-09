@@ -1,0 +1,20 @@
+on:
+  push:
+    branches:
+      - "main" # change to the branch you wish to deploy from
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - id: build-publish
+      uses: bitovi/github-actions-storybook-to-github-pages@v1.0.3
+      with:
+        install_command: yarn install
+        build_command: yarn run build-storybook
+        path: storybook-static
