@@ -9,6 +9,8 @@ import Typography from "@mui/material/Typography";
 import RadioGroup from "@mui/material/RadioGroup";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import Box from "@mui/material/Box";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import {
   AllWeekDayOptions, MonthBy, MonthlyRepeatDetails, OnThe,
 } from "./Repeat.types";
@@ -39,7 +41,7 @@ const RepeatMonthly = (
   const disabledOnBYSETPOS = onRadio === MonthBy.BYMONTHDAY;
   const disabledOnBYMONTHDAY = onRadio === MonthBy.BYSETPOS;
   return (
-    <Stack direction="column" spacing={2} alignItems="flex-start">
+    <Stack direction="column" spacing={2} alignItems="flex-start" width="100%">
       <Stack direction="row" spacing={2} alignItems="center">
         <Typography>Every</Typography>
         <TextField
@@ -53,39 +55,75 @@ const RepeatMonthly = (
         <Typography>month(s)</Typography>
 
       </Stack>
-      <RadioGroup name="monthly" value={onRadio} onChange={(e) => setOnRadio(e.target.value as MonthBy)}>
-        <Stack direction="column" spacing={2} alignItems="flex-start">
-          <Stack direction="row" spacing={4} alignItems="center">
-            <Radio
+      <RadioGroup
+        name="monthly"
+        value={onRadio}
+        onChange={(e) => setOnRadio(e.target.value as MonthBy)}
+        sx={{ width: "100%" }}
+      >
+        <Stack direction="column" spacing={2} alignItems="flex-start" width="100%">
+          {/* ON DAY SECTION */}
+          <Box display="inline-flex" alignItems="center">
+            <FormControlLabel
               value={MonthBy.BYMONTHDAY}
-              name="day"
+              control={<Radio />}
+              label={(
+                <Typography
+                  sx={{ color: disabledOnBYMONTHDAY ? "text.disabled" : "text.primary", paddingLeft: 2 }}
+                >
+                  On Day
+                </Typography>
+              )}
+              sx={{ minWidth: 120, marginRight: 2 }}
             />
-            <Typography sx={{ color: disabledOnBYMONTHDAY ? "text.disabled" : "text.primary" }}>On Day</Typography>
             <Select sx={{ minWidth: 120 }} disabled={disabledOnBYMONTHDAY}>
               {Array.from({ length: maxDaysInMonth }, (_, i) => i + 1).map((day) => (
                 <MenuItem key={day} value={day}>{day}</MenuItem>
               ))}
             </Select>
-          </Stack>
+          </Box>
+          {/* ON THE SECTION */}
           <Stack direction="row" spacing={4} alignItems="center">
-            <Radio
-              value={MonthBy.BYSETPOS}
-              name="day"
-            />
-            <Typography sx={{ color: disabledOnBYSETPOS ? "text.disabled" : "text.primary" }}>On The</Typography>
-            <Select sx={{ minWidth: 120 }} disabled={disabledOnBYSETPOS}>
-              {enumEntries.map((key) => (
-                <MenuItem key={key} value={OnThe[key as keyof typeof OnThe]}>
-                  {onTheTextMapping[OnThe[key as keyof typeof OnThe]]}
-                </MenuItem>
-              ))}
-            </Select>
-            <Select sx={{ minWidth: 120 }} disabled={disabledOnBYSETPOS}>
-              {Object.keys(AllWeekDayOptions).map((key) => (
-                <MenuItem key={key} value={key}>{weekdayFullTextMapping[key as keyof typeof AllWeekDayOptions]}</MenuItem>
-              ))}
-            </Select>
-
+            <Box sx={{ minWidth: 120, marginRight: 2 }}>
+              <FormControlLabel
+                value={MonthBy.BYSETPOS}
+                control={<Radio />}
+                label={(
+                  <Typography
+                    sx={{ color: disabledOnBYSETPOS ? "text.disabled" : "text.primary", paddingLeft: 2 }}
+                  >
+                    On The
+                  </Typography>
+                )}
+              />
+            </Box>
+            <Box
+              sx={{
+                minWidth: 120,
+                marginX: { xs: 0, sm: 2 },
+                marginY: { xs: 2, sm: 0 },
+                width:
+              { xs: "100%", sm: "auto" },
+              }}
+            >
+              <Select
+                disabled={disabledOnBYSETPOS}
+                fullWidth
+              >
+                {enumEntries.map((key) => (
+                  <MenuItem key={key} value={OnThe[key as keyof typeof OnThe]}>
+                    {onTheTextMapping[OnThe[key as keyof typeof OnThe]]}
+                  </MenuItem>
+                ))}
+              </Select>
+            </Box>
+            <Box sx={{ minWidth: 120, marginX: { xs: 0, sm: 2, width: { xs: "100%", sm: "auto" } } }}>
+              <Select disabled={disabledOnBYSETPOS} fullWidth>
+                {Object.keys(AllWeekDayOptions).map((key) => (
+                  <MenuItem key={key} value={key}>{weekdayFullTextMapping[key as keyof typeof AllWeekDayOptions]}</MenuItem>
+                ))}
+              </Select>
+            </Box>
           </Stack>
         </Stack>
       </RadioGroup>

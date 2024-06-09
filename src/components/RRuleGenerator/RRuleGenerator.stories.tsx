@@ -1,5 +1,6 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
+import { Box } from "@mui/material";
 import RRuleGenerator from "./RRuleGenerator";
 
 export default {
@@ -15,3 +16,10 @@ Primary.args = {
   datePickerEndLabel: "End Date",
   datePickerInitialDate: null,
 };
+
+const SmallTemplate: StoryFn<typeof RRuleGenerator> = (args) => (
+  <Box sx={{ width: 300, backgroundColor: "lightblue" }}>
+    <RRuleGenerator {...args} />
+  </Box>
+);
+export const SmallEmbedded = SmallTemplate.bind({});
