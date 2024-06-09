@@ -39,9 +39,10 @@ const RepeatWeekly = (
           const dayKey = day as Weekday;
           return (
             <Button
+              size="small"
               key={dayKey}
-            // TODO MAKE A BETTER COLOR SCHEME
-              color={selectedDays.includes(dayKey) ? "primary" : "warning"}
+            // TODO MAKE A BETTER COLOR SCHEME?
+              color={selectedDays.includes(dayKey) ? "primary" : "inherit"}
               onClick={() => {
                 if (selectedDays.includes(dayKey)) {
                   setSelectedDays(selectedDays.filter((d) => d !== dayKey));
