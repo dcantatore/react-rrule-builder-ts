@@ -4,10 +4,12 @@ import TextField from "@mui/material/TextField";
 import { Frequency } from "rrule";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
+import { Typography } from "@mui/material";
 import { Weekday, WeeklyRepeatDetails } from "./Repeat.types";
 import { weekdayShortTextMapping } from "./utils";
 
-interface RepeatHourlyProps {
+interface RepeatWeeklyProps {
   defaultValue?: WeeklyRepeatDetails;
   onChange: (value: WeeklyRepeatDetails) => void;
 }
@@ -20,20 +22,24 @@ const RepeatWeekly = (
       byDay: [],
     },
     onChange,
-  }: RepeatHourlyProps,
+  }: RepeatWeeklyProps,
 ) => {
   const [selectedDays, setSelectedDays] = useState<Weekday[]>(defaultValue.byDay ?? []);
   return (
-    <>
-      <TextField
-        id="outlined-basic"
-        label="Repeat every"
-        variant="outlined"
-        type="number"
-        defaultValue={defaultValue}
-        onChange={(e) => console.log(e.target.value)}
-      />
-      <ButtonGroup variant="contained" sx={{ boxShadow: 0 }}>
+    <Stack direction="column" spacing={2} alignItems="flex-start">
+      <Stack direction="row" spacing={2} alignItems="center">
+        <Typography>Every</Typography>
+        <TextField
+          id="outlined-basic"
+          label=""
+          variant="outlined"
+          type="number"
+          defaultValue={defaultValue}
+          onChange={(e) => console.log(e.target.value)}
+        />
+        <Typography>week(s)</Typography>
+      </Stack>
+      <ButtonGroup variant="contained">
         {/* TODO - do this type/iteration better */}
         {Object.keys(Weekday).map((day) => {
           const dayKey = day as Weekday;
@@ -61,7 +67,7 @@ const RepeatWeekly = (
         })}
 
       </ButtonGroup>
-    </>
+    </Stack>
   );
 };
 export default RepeatWeekly;
