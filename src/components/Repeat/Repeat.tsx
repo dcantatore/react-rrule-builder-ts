@@ -6,6 +6,8 @@ import Stack from "@mui/material/Stack";
 import RepeatHourly from "./RepeatHourly";
 import { frequencyTextMapping } from "./utils";
 import RepeatWeekly from "./RepeatWeekly";
+import RepeatMonthly from "./RepeatMonthly";
+import RepeatDaily from "./RepeatDaily";
 
 interface RepeatSelectProps {
   rruleFrequencyOptions? : Frequency[]
@@ -37,7 +39,20 @@ const RepeatSelect = ({
         case Frequency.HOURLY:
           return (
             <RepeatHourly
-              defaultValue={1}
+              defaultValue={{
+                frequency: Frequency.HOURLY,
+                interval: 1,
+              }}
+              onChange={(value) => console.log(value)}
+            />
+          );
+        case Frequency.DAILY:
+          return (
+            <RepeatDaily
+              defaultValue={{
+                frequency: Frequency.DAILY,
+                interval: 1,
+              }}
               onChange={(value) => console.log(value)}
             />
           );
@@ -52,6 +67,20 @@ const RepeatSelect = ({
               onChange={(value) => console.log(value)}
             />
           );
+        case Frequency.MONTHLY:
+          return (
+            <RepeatMonthly
+              defaultValue={{
+                frequency: Frequency.MONTHLY,
+                interval: 1,
+                byDay: [],
+                bySetPos: [],
+                byMonthDay: [],
+              }}
+              onChange={(value) => console.log(value)}
+            />
+          );
+
         default:
           return null;
       }
