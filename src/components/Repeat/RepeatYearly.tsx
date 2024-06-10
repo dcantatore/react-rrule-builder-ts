@@ -19,12 +19,12 @@ interface RepeatYearlyProps {
 const RepeatYearly = (
   { value, onChange }: RepeatYearlyProps,
 ) => {
+  // TODO  clean up and finish this component with store values and onChange
   const [selectedMonth, setSelectedMonth] = useState<Months>(Months.JAN);
   const maxDaysInMonth = 31;
   const [onRadio, setOnRadio] = useState<YearlyBy>(YearlyBy.BYMONTH);
   const disabledOnBYSETPOS = onRadio === YearlyBy.BYMONTH;
   const disabledOnBYMONTH = onRadio === YearlyBy.BYSETPOS;
-  console.log(value);
   return (
     <Stack direction="column" spacing={2} alignItems="flex-start">
       <RadioGroup name="Yearly" value={onRadio} onChange={(e) => setOnRadio(e.target.value as YearlyBy)}>

@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 import { Box, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
+import { DateTime } from "luxon";
 import RRuleGenerator from "./RRuleGenerator";
 import { useGeneratorStore } from "../../index";
 
@@ -34,7 +35,7 @@ export const Primary = Template.bind({});
 Primary.args = {
   datePickerStartLabel: "Start Date",
   datePickerEndLabel: "End Date",
-  datePickerInitialDate: null,
+  datePickerInitialDate: DateTime.now(),
 };
 
 const SmallTemplate: StoryFn<typeof RRuleGenerator> = (args) => (

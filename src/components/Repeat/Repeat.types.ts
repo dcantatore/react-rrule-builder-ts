@@ -1,5 +1,3 @@
-import { Frequency } from "rrule";
-
 export enum Weekday {
   MO = "MO",
   TU = "TU",

@@ -20,41 +20,19 @@ interface RepeatMonthlyProps {
   onChange: (value: RepeatDetails) => void;
 }
 
-const enumEntries = Object.keys(OnThe).filter((key) => Number.isNaN(Number(key)));
-
 const RepeatMonthly = (
   {
     value,
     onChange,
   }: RepeatMonthlyProps,
 ) => {
-  // ODO  get the days in the month max with luxon? or just use 31 - I think RRULE will handle this
+  // TODO  get the days in the month max with luxon? or just use 31 - I think RRULE will handle this
   const maxDaysInMonth = 31;
   const [onRadio, setOnRadio] = useState<MonthBy>(MonthBy.BYMONTHDAY);
   const disabledOnBYSETPOS = onRadio === MonthBy.BYMONTHDAY;
   const disabledOnBYMONTHDAY = onRadio === MonthBy.BYSETPOS;
-  // const containerRef = useRef<HTMLDivElement>(null);
-  // const [size, setSize] = useState(0);
-  //
-  // const handleResize = () => {
-  //   if (containerRef.current) {
-  //     setSize(containerRef.current.getBoundingClientRect().width);
-  //   }
-  // };
-  //
-  // useEffect(() => {
-  //   if (containerRef.current) {
-  //     // Watch width of container for responsive design
-  //     window.addEventListener("resize", handleResize);
-  //   }
-  //
-  //   // Call handleResize initially to set the initial size
-  //   handleResize();
-  //
-  //   return () => {
-  //     window.removeEventListener("resize", handleResize);
-  //   };
-  // }, []);
+
+  // TODO GET THIS FROM MAIN COMPONENT - this is just a placeholder
   const size = 0;
 
   return (
@@ -126,7 +104,7 @@ const RepeatMonthly = (
                 disabled={disabledOnBYSETPOS}
                 fullWidth
               >
-                {enumEntries.map((key) => (
+                {Object.keys(OnThe).map((key) => (
                   <MenuItem key={key} value={OnThe[key as keyof typeof OnThe]}>
                     {onTheTextMapping[OnThe[key as keyof typeof OnThe]]}
                   </MenuItem>
