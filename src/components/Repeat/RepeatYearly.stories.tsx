@@ -14,7 +14,6 @@ export const Primary = Template.bind({});
 Primary.args = {
 // @ts-ignore
   defaultValue: {
-    frequency: Frequency.YEARLY,
     byDay: [],
     byMonthDay: [],
     bySetPos: [],

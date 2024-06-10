@@ -9,6 +9,7 @@ import RepeatWeekly from "./RepeatWeekly";
 import RepeatMonthly from "./RepeatMonthly";
 import RepeatDaily from "./RepeatDaily";
 import RepeatYearly from "./RepeatYearly";
+import useGeneratorStore from "../../store/generatoreStore";
 
 interface RepeatSelectProps {
   rruleFrequencyOptions? : Frequency[]
@@ -28,6 +29,7 @@ const RepeatSelect = ({
   rruleFrequencyOptions = defaultFrequencyOptions,
   frequencySelected, onFrequencyChange,
 }: RepeatSelectProps) => {
+  const { setRepeatDetails, repeatDetails } = useGeneratorStore();
   const menuItems = rruleFrequencyOptions.map((option) => (
     <MenuItem key={option} value={option}>
       {frequencyTextMapping[option]}
@@ -40,64 +42,44 @@ const RepeatSelect = ({
         case Frequency.HOURLY:
           return (
             <RepeatHourly
-              defaultValue={{
-                frequency: Frequency.HOURLY,
-                interval: 1,
-              }}
-              onChange={(value) => console.log(value)}
+              value={repeatDetails}
+              onChange={setRepeatDetails}
             />
           );
         case Frequency.DAILY:
           return (
             <RepeatDaily
-              defaultValue={{
-                frequency: Frequency.DAILY,
-                interval: 1,
-              }}
-              onChange={(value) => console.log(value)}
+              value={repeatDetails}
+              onChange={setRepeatDetails}
             />
           );
         case Frequency.WEEKLY:
           return (
             <RepeatWeekly
-              defaultValue={{
-                frequency: Frequency.WEEKLY,
-                interval: 1,
-                byDay: [],
-              }}
-              onChange={(value) => console.log(value)}
+              value={repeatDetails}
+              onChange={setRepeatDetails}
             />
           );
         case Frequency.MONTHLY:
           return (
             <RepeatMonthly
-              defaultValue={{
-                frequency: Frequency.MONTHLY,
-                interval: 1,
-                byDay: [],
-                bySetPos: [],
-                byMonthDay: [],
-              }}
-              onChange={(value) => console.log(value)}
+              value={repeatDetails}
+              onChange={setRepeatDetails}
             />
           );
         case Frequency.YEARLY:
           return (
             <RepeatYearly
-              defaultValue={{
-                frequency: Frequency.YEARLY,
-                byDay: [],
-                byMonthDay: [],
-                bySetPos: [],
-              }}
-              onChange={(value) => console.log(value)}
+              // @ts-ignore - this is due to never in the type
+              value={repeatDetails}
+              onChange={setRepeatDetails}
             />
           );
         default:
           return null;
       }
     },
-    [frequencySelected],
+    [frequencySelected, repeatDetails, setRepeatDetails],
   );
 
   return (

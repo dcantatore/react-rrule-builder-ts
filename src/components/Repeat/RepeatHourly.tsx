@@ -1,18 +1,17 @@
 import React from "react";
 
 import TextField from "@mui/material/TextField";
-import { Frequency } from "rrule";
 import { Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
-import { HourlyRepeatDetails } from "./Repeat.types";
+import { RepeatDetails } from "./Repeat.types";
 
 interface RepeatHourlyProps {
-  defaultValue?: HourlyRepeatDetails;
-  onChange: (value: number) => void;
+  value?: RepeatDetails;
+  onChange: (value: RepeatDetails) => void;
 }
 
 const RepeatHourly = (
-  { defaultValue = { interval: 1, frequency: Frequency.HOURLY }, onChange }: RepeatHourlyProps,
+  { value, onChange }: RepeatHourlyProps,
 ) => (
   <Stack direction="row" spacing={2} alignItems="center">
     <Typography>Every</Typography>
@@ -21,8 +20,8 @@ const RepeatHourly = (
       label=""
       variant="outlined"
       type="number"
-      defaultValue={defaultValue?.interval}
-      onChange={(e) => console.log(e.target.value)}
+      defaultValue={value?.interval}
+      onChange={(e) => onChange({ interval: parseInt(e.target.value, 10) })}
     />
     <Typography>hours(s)</Typography>
   </Stack>

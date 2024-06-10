@@ -24,7 +24,9 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "rrule": "^2.8.1",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "yup": "^1.4.0",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^1.5.0",

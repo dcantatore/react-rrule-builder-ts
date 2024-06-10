@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 
-import { Frequency } from "rrule";
-
 import Stack from "@mui/material/Stack";
 import Radio from "@mui/material/Radio";
 import Typography from "@mui/material/Typography";
@@ -9,32 +7,24 @@ import RadioGroup from "@mui/material/RadioGroup";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import {
-  AllWeekDayOptions, YearlyRepeatDetails, OnThe, YearlyBy, Months,
+  AllWeekDayOptions, YearlyRepeatDetails, OnThe, YearlyBy, Months, RepeatDetails,
 } from "./Repeat.types";
 import { monthShortTextMapping, onTheTextMapping, weekdayFullTextMapping } from "./utils";
 
 interface RepeatYearlyProps {
-  defaultValue?: YearlyRepeatDetails;
-  onChange: (value: YearlyRepeatDetails) => void;
+  value: YearlyRepeatDetails;
+  onChange: (value: RepeatDetails) => void;
 }
 
 const RepeatYearly = (
-  {
-    defaultValue = {
-      frequency: Frequency.YEARLY,
-      byDay: [],
-      bySetPos: [],
-      byMonthDay: [],
-    },
-    onChange,
-  }: RepeatYearlyProps,
+  { value, onChange }: RepeatYearlyProps,
 ) => {
   const [selectedMonth, setSelectedMonth] = useState<Months>(Months.JAN);
   const maxDaysInMonth = 31;
   const [onRadio, setOnRadio] = useState<YearlyBy>(YearlyBy.BYMONTH);
   const disabledOnBYSETPOS = onRadio === YearlyBy.BYMONTH;
   const disabledOnBYMONTH = onRadio === YearlyBy.BYSETPOS;
-
+  console.log(value);
   return (
     <Stack direction="column" spacing={2} alignItems="flex-start">
       <RadioGroup name="Yearly" value={onRadio} onChange={(e) => setOnRadio(e.target.value as YearlyBy)}>

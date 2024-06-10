@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 import TextField from "@mui/material/TextField";
-import { Frequency } from "rrule";
 
 import Stack from "@mui/material/Stack";
 import Radio from "@mui/material/Radio";
@@ -12,26 +11,20 @@ import MenuItem from "@mui/material/MenuItem";
 import Box from "@mui/material/Box";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import {
-  AllWeekDayOptions, MonthBy, MonthlyRepeatDetails, OnThe,
+  AllWeekDayOptions, MonthBy, MonthlyRepeatDetails, OnThe, RepeatDetails,
 } from "./Repeat.types";
 import { onTheTextMapping, weekdayFullTextMapping } from "./utils";
 
 interface RepeatMonthlyProps {
-  defaultValue?: MonthlyRepeatDetails;
-  onChange: (value: MonthlyRepeatDetails) => void;
+  value?: MonthlyRepeatDetails;
+  onChange: (value: RepeatDetails) => void;
 }
 
 const enumEntries = Object.keys(OnThe).filter((key) => Number.isNaN(Number(key)));
 
 const RepeatMonthly = (
   {
-    defaultValue = {
-      frequency: Frequency.MONTHLY,
-      interval: 1,
-      byDay: [],
-      bySetPos: [],
-      byMonthDay: [],
-    },
+    value,
     onChange,
   }: RepeatMonthlyProps,
 ) => {
@@ -40,6 +33,30 @@ const RepeatMonthly = (
   const [onRadio, setOnRadio] = useState<MonthBy>(MonthBy.BYMONTHDAY);
   const disabledOnBYSETPOS = onRadio === MonthBy.BYMONTHDAY;
   const disabledOnBYMONTHDAY = onRadio === MonthBy.BYSETPOS;
+  // const containerRef = useRef<HTMLDivElement>(null);
+  // const [size, setSize] = useState(0);
+  //
+  // const handleResize = () => {
+  //   if (containerRef.current) {
+  //     setSize(containerRef.current.getBoundingClientRect().width);
+  //   }
+  // };
+  //
+  // useEffect(() => {
+  //   if (containerRef.current) {
+  //     // Watch width of container for responsive design
+  //     window.addEventListener("resize", handleResize);
+  //   }
+  //
+  //   // Call handleResize initially to set the initial size
+  //   handleResize();
+  //
+  //   return () => {
+  //     window.removeEventListener("resize", handleResize);
+  //   };
+  // }, []);
+  const size = 0;
+
   return (
     <Stack direction="column" spacing={2} alignItems="flex-start" width="100%">
       <Stack direction="row" spacing={2} alignItems="center">
@@ -49,8 +66,8 @@ const RepeatMonthly = (
           label=""
           variant="outlined"
           type="number"
-          defaultValue={defaultValue}
-          onChange={(e) => console.log(e.target.value)}
+          value={value?.interval}
+          onChange={(e) => onChange({ interval: parseInt(e.target.value, 10) })}
         />
         <Typography>month(s)</Typography>
 
@@ -83,7 +100,7 @@ const RepeatMonthly = (
             </Select>
           </Box>
           {/* ON THE SECTION */}
-          <Stack direction="row" spacing={4} alignItems="center">
+          <Stack direction={size < 301 ? "column" : "row"} spacing={4} alignItems={size < 301 ? "" : "center"} sx={{ width: "100%" }}>
             <Box sx={{ minWidth: 120, marginRight: 2 }}>
               <FormControlLabel
                 value={MonthBy.BYSETPOS}
@@ -102,8 +119,7 @@ const RepeatMonthly = (
                 minWidth: 120,
                 marginX: { xs: 0, sm: 2 },
                 marginY: { xs: 2, sm: 0 },
-                width:
-              { xs: "100%", sm: "auto" },
+                width: size < 301 ? "100%" : "auto",
               }}
             >
               <Select
@@ -117,7 +133,7 @@ const RepeatMonthly = (
                 ))}
               </Select>
             </Box>
-            <Box sx={{ minWidth: 120, marginX: { xs: 0, sm: 2, width: { xs: "100%", sm: "auto" } } }}>
+            <Box sx={{ minWidth: 120, marginX: { xs: 0, sm: 2 }, width: size < 301 ? "100%" : "auto" }}>
               <Select disabled={disabledOnBYSETPOS} fullWidth>
                 {Object.keys(AllWeekDayOptions).map((key) => (
                   <MenuItem key={key} value={key}>{weekdayFullTextMapping[key as keyof typeof AllWeekDayOptions]}</MenuItem>

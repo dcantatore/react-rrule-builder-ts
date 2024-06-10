@@ -13,7 +13,6 @@ const Template: StoryFn<typeof RepeatWeekly> = (args) => <RepeatWeekly {...args}
 export const Primary = Template.bind({});
 Primary.args = {
   defaultValue: {
-    frequency: Frequency.WEEKLY,
     interval: 1,
     byDay: [],
   },
