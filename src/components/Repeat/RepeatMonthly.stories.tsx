@@ -12,7 +12,7 @@ const Template: StoryFn<typeof RepeatMonthly> = (args) => <RepeatMonthly {...arg
 
 export const Primary = Template.bind({});
 Primary.args = {
-  defaultValue: {
+  value: {
     interval: 1,
     byDay: [],
     byMonthDay: [],

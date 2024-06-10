@@ -13,7 +13,7 @@ const Template: StoryFn<typeof RepeatYearly> = (args) => <RepeatYearly {...args}
 export const Primary = Template.bind({});
 Primary.args = {
 // @ts-ignore
-  defaultValue: {
+  value: {
     byDay: [],
     byMonthDay: [],
     bySetPos: [],

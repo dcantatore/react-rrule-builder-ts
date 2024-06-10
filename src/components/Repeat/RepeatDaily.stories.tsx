@@ -11,6 +11,6 @@ const Template: StoryFn<typeof RepeatDaily> = (args) => <RepeatDaily {...args} /
 
 export const Primary = Template.bind({});
 Primary.args = {
-  defaultValue: { interval: 1 },
+  value: { interval: 1 },
   onChange: (value) => console.log(value),
 };
