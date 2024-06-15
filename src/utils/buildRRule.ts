@@ -1,4 +1,4 @@
-import { RRule, Frequency } from "rrule";
+import { RRule, Frequency, Options } from "rrule";
 import { DateTime } from "luxon";
 import { RepeatDetails } from "../components/Repeat/Repeat.types";
 import { EndDetails, EndType } from "../components/End/End.types";
@@ -15,7 +15,24 @@ export const buildRRuleString = (options: RRuleOptions) => {
     frequency, startDate, repeatDetails, endDetails,
   } = options;
 
-  const ruleOptions: any = {
+  const ruleOptions: Options = {
+    byeaster: null,
+    byhour: null,
+    byminute: null,
+    bymonth: null,
+    bymonthday: null,
+    bynmonthday: null,
+    bynweekday: null,
+    bysecond: null,
+    bysetpos: null,
+    byweekday: null,
+    byweekno: null,
+    byyearday: null,
+    count: null,
+    interval: 0,
+    tzid: null,
+    until: null,
+    wkst: null,
     freq: frequency,
     dtstart: startDate.toJSDate(),
   };
@@ -44,10 +61,10 @@ export const buildRRuleString = (options: RRuleOptions) => {
     case EndType.NEVER:
       break;
     case EndType.AFTER:
-      ruleOptions.count = endDetails.occurrences;
+      ruleOptions.count = endDetails.occurrences ?? null;
       break;
     case EndType.ON:
-      ruleOptions.until = endDetails.endDate?.toJSDate();
+      ruleOptions.until = endDetails.endDate?.toJSDate() ?? null;
       break;
     default:
       break;
