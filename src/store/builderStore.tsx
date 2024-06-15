@@ -13,6 +13,7 @@ interface BuilderState {
   startDate: DateTime;
   validationErrors: Record<string, string>;
   endDetails: EndDetails;
+  RRuleString?: string;
 }
 
 interface BuilderActions {
@@ -22,7 +23,7 @@ interface BuilderActions {
   validateForm: () => Promise<boolean>;
   setEndDetails: (details: EndDetails) => void;
   setStartDate: (startDate: DateTime) => void;
-  buildRRuleString: () => string;
+  buildRRuleString: () => void;
 }
 
 const initialState: BuilderState = {
@@ -30,7 +31,7 @@ const initialState: BuilderState = {
   frequency: Frequency.DAILY,
   startDate: DateTime.now(),
   validationErrors: {},
-  endDetails: { endingType: EndType.NEVER } as EndDetails,
+  endDetails: { endingType: EndType.NEVER, endDate: null } as EndDetails,
 };
 
 const useBuilderStore = create<BuilderState & BuilderActions>((set, get) => ({
@@ -82,8 +83,7 @@ const useBuilderStore = create<BuilderState & BuilderActions>((set, get) => ({
       endDetails,
     });
 
-    console.log(output);
-    return output;
+    set({ RRuleString: output });
   },
 }));
 
