@@ -60,8 +60,8 @@ export interface RepeatDetailsBase {
 export interface YearlyRepeatDetails extends RepeatDetailsBase {
   bySetPos?: number[];
   byDay?: Weekday[];
-  byMonthDay?: number[];
-  byMonth?: number[];
+  byMonthDay?: number;
+  byMonth?: number;
   // yearly has no interval
   interval: never;
 }
@@ -69,7 +69,7 @@ export interface YearlyRepeatDetails extends RepeatDetailsBase {
 export interface MonthlyRepeatDetails extends RepeatDetailsBase {
   bySetPos?: number[];
   byDay?: Weekday[];
-  byMonthDay?: number[];
+  byMonthDay?: number;
 }
 
 export interface WeeklyRepeatDetails extends RepeatDetailsBase {
