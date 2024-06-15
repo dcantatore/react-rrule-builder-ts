@@ -8,9 +8,12 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { DateTime } from "luxon";
 import {
-  AllWeekDayOptions, YearlyRepeatDetails, OnThe, YearlyBy, Months, RepeatDetails, Weekday,
+  YearlyRepeatDetails, YearlyBy, Months, RepeatDetails,
 } from "./Repeat.types";
-import { monthShortTextMapping, onTheTextMapping, weekdayFullTextMapping } from "./utils";
+import { monthShortTextMapping } from "./utils";
+import SelectDayWeek from "./Selects/SelectDayWeek";
+import SelectPosition from "./Selects/SelectPosition";
+import SelectDayCalendar from "./Selects/SelectDayCalendar";
 
 interface RepeatYearlyProps {
   value: YearlyRepeatDetails;
@@ -22,7 +25,6 @@ const sxMinWidth = { minWidth: 120 };
 const RepeatYearly = (
   { value, onChange }: RepeatYearlyProps,
 ) => {
-  const [selectedByDay, setSelectedByDay] = useState<typeof AllWeekDayOptions | undefined>(undefined);
   const maxDaysInMonth = useMemo(() => {
     if (value.byMonth) {
       return DateTime.fromObject({ month: value.byMonth }).daysInMonth || 31;
@@ -56,17 +58,7 @@ const RepeatYearly = (
                 <MenuItem key={key} value={key}>{monthShortTextMapping[key]}</MenuItem>
               ))}
             </Select>
-            <Select
-              sx={sxMinWidth}
-              disabled={disabledOnBYMONTH}
-              onChange={(e) => onChange({ ...value, byMonthDay: parseInt(e.target.value as string, 10) })}
-              value={value.byMonthDay ?? -999}
-            >
-              <MenuItem key={null} value={-999} disabled>Select Day</MenuItem>
-              {Array.from({ length: maxDaysInMonth }, (_, i) => i + 1).map((day) => (
-                <MenuItem key={day} value={day}>{day}</MenuItem>
-              ))}
-            </Select>
+            <SelectDayCalendar maxDaysInMonth={maxDaysInMonth} value={value} onChange={onChange} disabled={disabledOnBYMONTH} />
           </Stack>
           <Stack direction="row" spacing={4} alignItems="center">
             <Radio
@@ -78,44 +70,8 @@ const RepeatYearly = (
             >
               On The
             </Typography>
-            <Select
-              sx={sxMinWidth}
-              disabled={disabledOnBYSETPOS}
-              onChange={(e) => onChange({ ...value, bySetPos: [parseInt(e.target.value as string, 10)] })}
-              value={value.bySetPos ?? -999}
-            >
-              <MenuItem key={null} value={-999} disabled>Select  Position</MenuItem>
-              {Object.keys(OnThe).map((key) => (
-                <MenuItem key={key} value={OnThe[key as keyof typeof OnThe]}>
-                  {onTheTextMapping[OnThe[key as keyof typeof OnThe]]}
-                </MenuItem>
-              ))}
-            </Select>
-            <Select
-              sx={sxMinWidth}
-              disabled={disabledOnBYSETPOS}
-              onChange={(e) => {
-                let setVal = [e.target.value as Weekday];
-                if (e.target.value === AllWeekDayOptions.DAY) {
-                  // this means all days in the array
-                  setVal = [Weekday.SU, Weekday.MO, Weekday.TU, Weekday.WE, Weekday.TH, Weekday.FR, Weekday.SA];
-                } else if (e.target.value === AllWeekDayOptions.WEEKDAY) {
-                  // this means all weekdays in the array
-                  setVal = [Weekday.MO, Weekday.TU, Weekday.WE, Weekday.TH, Weekday.FR];
-                } else if (e.target.value === AllWeekDayOptions.WEEKEND) {
-                  // this means all weekends in the array
-                  setVal = [Weekday.SA, Weekday.SU];
-                }
-                onChange({ ...value, byDay: setVal as Weekday[] });
-                setSelectedByDay(e.target.value as typeof AllWeekDayOptions);
-              }}
-              value={selectedByDay ?? -999}
-            >
-              <MenuItem key={null} value={-999} disabled>Select Day</MenuItem>
-              {Object.keys(AllWeekDayOptions).map((key) => (
-                <MenuItem key={key} value={key}>{weekdayFullTextMapping[key as keyof typeof AllWeekDayOptions]}</MenuItem>
-              ))}
-            </Select>
+            <SelectPosition value={value} onChange={onChange} disabled={disabledOnBYSETPOS} />
+            <SelectDayWeek value={value} onChange={onChange} disabled={disabledOnBYSETPOS} />
             <Typography sx={{ color: disabledOnBYSETPOS ? "text.disabled" : "text.primary" }}>of</Typography>
             <Select
               sx={sxMinWidth}
