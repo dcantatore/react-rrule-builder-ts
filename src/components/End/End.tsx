@@ -7,7 +7,7 @@ import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import { Typography } from "@mui/material";
 import TextField from "@mui/material/TextField";
-import useGeneratorStore from "../../store/generatoreStore";
+import useBuilderStore from "../../store/builderStore";
 import { EndType } from "./End.types";
 
 interface EndProps {
@@ -17,7 +17,7 @@ interface EndProps {
 const End = ({ datePickerEndLabel }: EndProps) => {
   const {
     frequency, startDate, endDetails, setEndDetails,
-  } = useGeneratorStore();
+  } = useBuilderStore();
   return (
     <>
       <FormControl>

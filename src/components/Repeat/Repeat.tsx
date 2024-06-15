@@ -9,7 +9,7 @@ import RepeatWeekly from "./RepeatWeekly";
 import RepeatMonthly from "./RepeatMonthly";
 import RepeatDaily from "./RepeatDaily";
 import RepeatYearly from "./RepeatYearly";
-import useGeneratorStore from "../../store/generatoreStore";
+import useBuilderStore from "../../store/builderStore";
 
 interface RepeatSelectProps {
   rruleFrequencyOptions? : Frequency[]
@@ -29,7 +29,7 @@ const RepeatSelect = ({
   rruleFrequencyOptions = defaultFrequencyOptions,
   frequencySelected, onFrequencyChange,
 }: RepeatSelectProps) => {
-  const { setRepeatDetails, repeatDetails } = useGeneratorStore();
+  const { setRepeatDetails, repeatDetails } = useBuilderStore();
   const menuItems = rruleFrequencyOptions.map((option) => (
     <MenuItem key={option} value={option}>
       {frequencyTextMapping[option]}

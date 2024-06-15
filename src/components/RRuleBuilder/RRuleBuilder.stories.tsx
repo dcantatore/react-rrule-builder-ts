@@ -3,20 +3,20 @@ import { Meta, StoryFn } from "@storybook/react";
 import { Box, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import { DateTime } from "luxon";
-import RRuleGenerator from "./RRuleGenerator";
-import { useGeneratorStore } from "../../index";
+import RRuleBuilder from "./RRuleBuilder";
+import { useBuilderStore } from "../../index";
 
 export default {
-  title: "RRuleGenerator",
-  component: RRuleGenerator,
-} as Meta<typeof RRuleGenerator>;
+  title: "RRuleBuilder",
+  component: RRuleBuilder,
+} as Meta<typeof RRuleBuilder>;
 
-const Template: StoryFn<typeof RRuleGenerator> = (args) => {
-  const { validateForm, validationErrors } = useGeneratorStore();
+const Template: StoryFn<typeof RRuleBuilder> = (args) => {
+  const { validateForm, validationErrors } = useBuilderStore();
   const errors = Object.keys(validationErrors);
   return (
     <>
-      <RRuleGenerator {...args} />
+      <RRuleBuilder {...args} />
 
       <Button onClick={() => {
         validateForm();
@@ -38,9 +38,9 @@ Primary.args = {
   datePickerInitialDate: DateTime.now(),
 };
 
-const SmallTemplate: StoryFn<typeof RRuleGenerator> = (args) => (
+const SmallTemplate: StoryFn<typeof RRuleBuilder> = (args) => (
   <Box sx={{ width: 300, backgroundColor: "lightblue" }}>
-    <RRuleGenerator {...args} />
+    <RRuleBuilder {...args} />
   </Box>
 );
 export const SmallEmbedded = SmallTemplate.bind({});

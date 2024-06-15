@@ -6,10 +6,10 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import { DateTime } from "luxon";
 import RepeatSelect from "../Repeat/Repeat";
-import useGeneratorStore from "../../store/generatoreStore";
+import useBuilderStore from "../../store/builderStore";
 import End from "../End/End";
 
-interface RRuleGeneratorProps {
+interface RRuleBuilderProps {
   datePickerStartLabel?: string;
   datePickerEndLabel?: string;
   datePickerInitialDate?: DateTime;
@@ -18,7 +18,7 @@ interface RRuleGeneratorProps {
   // dense?: boolean;
 }
 
-const RRuleGenerator = ({
+const RRuleBuilder = ({
   datePickerStartLabel = "Start Date",
   datePickerEndLabel = "End Date",
   // TODO implement small screen detection
@@ -27,7 +27,7 @@ const RRuleGenerator = ({
   // TODO implement dense mode - make all things smaller with less padding
   // dense = false,
   datePickerInitialDate,
-}: RRuleGeneratorProps) => {
+}: RRuleBuilderProps) => {
   const {
     // TODO Implement validation errors on date picker
     // validationErrors,
@@ -35,7 +35,7 @@ const RRuleGenerator = ({
     setStartDate,
     frequency,
     setFrequency,
-  } = useGeneratorStore();
+  } = useBuilderStore();
 
   // TODO Implement small screen detection
   // const containerRef = useRef<HTMLDivElement>(null);
@@ -85,4 +85,4 @@ const RRuleGenerator = ({
   );
 };
 
-export default RRuleGenerator;
+export default RRuleBuilder;

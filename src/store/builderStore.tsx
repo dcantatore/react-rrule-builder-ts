@@ -6,7 +6,7 @@ import { RepeatDetails } from "../components/Repeat/Repeat.types";
 import getValidationSchema from "../validation/validationSchema";
 import { EndDetails, EndType } from "../components/End/End.types";
 
-interface GeneratorState {
+interface BuilderState {
   repeatDetails: RepeatDetails;
   frequency: Frequency;
   startDate: DateTime;
@@ -14,7 +14,7 @@ interface GeneratorState {
   endDetails: EndDetails;
 }
 
-interface GeneratorActions {
+interface BuilderActions {
   validationErrors: Record<string, string>;
   setFrequency: (frequency: Frequency) => void;
   setRepeatDetails: (details: RepeatDetails) => void;
@@ -23,7 +23,7 @@ interface GeneratorActions {
   setStartDate: (startDate: DateTime) => void;
 }
 
-const initialState: GeneratorState = {
+const initialState: BuilderState = {
   repeatDetails: { interval: 1 } as RepeatDetails,
   frequency: Frequency.DAILY,
   startDate: DateTime.now(),
@@ -31,7 +31,7 @@ const initialState: GeneratorState = {
   endDetails: { endingType: EndType.NEVER } as EndDetails,
 };
 
-const useGeneratorStore = create<GeneratorState & GeneratorActions>((set, get) => ({
+const useBuilderStore = create<BuilderState & BuilderActions>((set, get) => ({
   ...initialState,
   validationErrors: {},
   setFrequency: (frequency) => {
@@ -70,4 +70,4 @@ const useGeneratorStore = create<GeneratorState & GeneratorActions>((set, get) =
   },
 }));
 
-export default useGeneratorStore;
+export default useBuilderStore;

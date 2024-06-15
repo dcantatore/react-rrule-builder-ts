@@ -1,3 +1,3 @@
-export { default as RRuleGenerator } from "./components/RRuleGenerator/RRuleGenerator";
+export { default as RRuleBuilder } from "./components/RRuleBuilder/RRuleBuilder";
 //
-export { default as useGeneratorStore } from "./store/generatoreStore";
+export { default as useBuilderStore } from "./store/builderStore";
