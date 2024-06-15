@@ -9,8 +9,21 @@
     "build-storybook": "storybook build",
     "lint": "eslint . --ext .ts,.tsx"
   },
-  "keywords": [],
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dcantatore/react-rrule-builder-ts.git"
+  },
+  "keywords": [
+    "react",
+    "rrule",
+    "rrule-generator",
+    "react-rrule",
+    "react-rrule-generator",
+    "react-rrule-generator-ts",
+    "component",
+    "validation"
+  ],
+  "author": "Dario Cantatore",
   "license": "ISC",
   "peerDependencies": {
     "@emotion/react": "^11.11.4",
