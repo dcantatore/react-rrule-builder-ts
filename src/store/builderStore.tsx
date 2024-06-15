@@ -5,6 +5,7 @@ import { DateTime } from "luxon";
 import { RepeatDetails } from "../components/Repeat/Repeat.types";
 import getValidationSchema from "../validation/validationSchema";
 import { EndDetails, EndType } from "../components/End/End.types";
+import { buildRRuleString } from "../utils/buildRRule";
 
 interface BuilderState {
   repeatDetails: RepeatDetails;
@@ -21,6 +22,7 @@ interface BuilderActions {
   validateForm: () => Promise<boolean>;
   setEndDetails: (details: EndDetails) => void;
   setStartDate: (startDate: DateTime) => void;
+  buildRRuleString: () => string;
 }
 
 const initialState: BuilderState = {
@@ -67,6 +69,21 @@ const useBuilderStore = create<BuilderState & BuilderActions>((set, get) => ({
       set({ validationErrors: errors });
       return false;
     }
+  },
+  buildRRuleString: () => {
+    const {
+      repeatDetails, frequency, startDate, endDetails,
+    } = get();
+
+    const output = buildRRuleString({
+      frequency,
+      startDate,
+      repeatDetails,
+      endDetails,
+    });
+
+    console.log(output);
+    return output;
   },
 }));
 
