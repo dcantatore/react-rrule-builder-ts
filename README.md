@@ -13,7 +13,7 @@
 
 This is a React component that generates a RRULE string for use in iCalendar events.
 
-It is a TypeScript interpretation that was inspired by the original and now deprecated [react-rrule-builder](https://www.npmjs.com/package/react-rrule-builder) package.
+It is a TypeScript interpretation that was inspired by the original and now deprecated [react-rrule-generator](https://www.npmjs.com/package/react-rrule-generator) package.
 
 If you would like to see the demo and it's components functionality in action, you can view the [storybook](https://dcantatore.github.io/react-rrule-builder-ts/).
 
