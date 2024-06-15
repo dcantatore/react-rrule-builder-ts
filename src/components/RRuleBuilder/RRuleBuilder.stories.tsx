@@ -12,7 +12,12 @@ export default {
 } as Meta<typeof RRuleBuilder>;
 
 const Template: StoryFn<typeof RRuleBuilder> = (args) => {
-  const { validateForm, validationErrors, buildRRuleString } = useBuilderStore();
+  const {
+    validateForm,
+    validationErrors,
+    buildRRuleString,
+    RRuleString,
+  } = useBuilderStore();
   const errors = Object.keys(validationErrors);
   return (
     <>
@@ -32,6 +37,9 @@ const Template: StoryFn<typeof RRuleBuilder> = (args) => {
       <Button onClick={buildRRuleString}>
         Build String
       </Button>
+      <Typography>
+        {RRuleString}
+      </Typography>
     </>
   );
 };
