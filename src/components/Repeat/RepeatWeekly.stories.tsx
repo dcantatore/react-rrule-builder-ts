@@ -1,20 +1,18 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
-import { Frequency } from "rrule";
 import RepeatWeekly from "./RepeatWeekly";
+import useBuilderStore from "../../store/builderStore";
 
 export default {
   title: "Repeat/RepeatWeekly",
   component: RepeatWeekly,
 } as Meta<typeof RepeatWeekly>;
 
-const Template: StoryFn<typeof RepeatWeekly> = (args) => <RepeatWeekly {...args} />;
-
-export const Primary = Template.bind({});
-Primary.args = {
-  value: {
-    interval: 1,
-    byDay: [],
-  },
-  onChange: (value) => console.log(value),
+const Template: StoryFn<typeof RepeatWeekly> = () => {
+  const builderStore = useBuilderStore();
+  return (
+    <RepeatWeekly value={builderStore.repeatDetails} onChange={builderStore.setRepeatDetails} />
+  );
 };
+
+export const Primary = Template;
