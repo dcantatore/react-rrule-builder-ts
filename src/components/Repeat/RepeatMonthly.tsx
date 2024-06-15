@@ -5,17 +5,17 @@ import Stack from "@mui/material/Stack";
 import Radio from "@mui/material/Radio";
 import Typography from "@mui/material/Typography";
 import RadioGroup from "@mui/material/RadioGroup";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 import Box from "@mui/material/Box";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import {
-  AllWeekDayOptions, MonthBy, MonthlyRepeatDetails, OnThe, RepeatDetails,
+  MonthBy, MonthlyRepeatDetails, RepeatDetails,
 } from "./Repeat.types";
-import { onTheTextMapping, weekdayFullTextMapping } from "./utils";
+import SelectDayWeek from "./Selects/SelectDayWeek";
+import SelectPosition from "./Selects/SelectPosition";
+import SelectDayCalendar from "./Selects/SelectDayCalendar";
 
 interface RepeatMonthlyProps {
-  value?: MonthlyRepeatDetails;
+  value: MonthlyRepeatDetails;
   onChange: (value: RepeatDetails) => void;
 }
 
@@ -25,14 +25,13 @@ const RepeatMonthly = (
     onChange,
   }: RepeatMonthlyProps,
 ) => {
-  // TODO  get the days in the month max with luxon? or just use 31 - I think RRULE will handle this
   const maxDaysInMonth = 31;
   const [onRadio, setOnRadio] = useState<MonthBy>(MonthBy.BYMONTHDAY);
   const disabledOnBYSETPOS = onRadio === MonthBy.BYMONTHDAY;
   const disabledOnBYMONTHDAY = onRadio === MonthBy.BYSETPOS;
 
   // TODO GET THIS FROM MAIN COMPONENT - this is just a placeholder
-  const size = 0;
+  const size = 400;
 
   return (
     <Stack direction="column" spacing={2} alignItems="flex-start" width="100%">
@@ -70,11 +69,7 @@ const RepeatMonthly = (
               )}
               sx={{ minWidth: 120, marginRight: 2 }}
             />
-            <Select sx={{ minWidth: 120 }} disabled={disabledOnBYMONTHDAY}>
-              {Array.from({ length: maxDaysInMonth }, (_, i) => i + 1).map((day) => (
-                <MenuItem key={day} value={day}>{day}</MenuItem>
-              ))}
-            </Select>
+            <SelectDayCalendar value={value} onChange={onChange} maxDaysInMonth={maxDaysInMonth} disabled={disabledOnBYMONTHDAY} />
           </Box>
           {/* ON THE SECTION */}
           <Stack direction={size < 301 ? "column" : "row"} spacing={4} alignItems={size < 301 ? "" : "center"} sx={{ width: "100%" }}>
@@ -99,23 +94,10 @@ const RepeatMonthly = (
                 width: size < 301 ? "100%" : "auto",
               }}
             >
-              <Select
-                disabled={disabledOnBYSETPOS}
-                fullWidth
-              >
-                {Object.keys(OnThe).map((key) => (
-                  <MenuItem key={key} value={OnThe[key as keyof typeof OnThe]}>
-                    {onTheTextMapping[OnThe[key as keyof typeof OnThe]]}
-                  </MenuItem>
-                ))}
-              </Select>
+              <SelectPosition value={value} onChange={onChange} disabled={disabledOnBYSETPOS} />
             </Box>
             <Box sx={{ minWidth: 120, marginX: { xs: 0, sm: 2 }, width: size < 301 ? "100%" : "auto" }}>
-              <Select disabled={disabledOnBYSETPOS} fullWidth>
-                {Object.keys(AllWeekDayOptions).map((key) => (
-                  <MenuItem key={key} value={key}>{weekdayFullTextMapping[key as keyof typeof AllWeekDayOptions]}</MenuItem>
-                ))}
-              </Select>
+              <SelectDayWeek value={value} onChange={onChange} disabled={disabledOnBYSETPOS} />
             </Box>
           </Stack>
         </Stack>
