@@ -37,7 +37,8 @@ const Template: StoryFn<typeof RRuleBuilder> = (args) => {
       <Button onClick={buildRRuleString}>
         Build String
       </Button>
-      <Typography>
+      {/*  pre-wrap shows the line break in the output */}
+      <Typography sx={{ whiteSpace: "pre-wrap" }}>
         {RRuleString}
       </Typography>
     </>
@@ -55,4 +56,26 @@ const SmallTemplate: StoryFn<typeof RRuleBuilder> = (args) => (
     <RRuleBuilder {...args} />
   </Box>
 );
+
 export const SmallEmbedded = SmallTemplate.bind({});
+
+const WithRRuleStringTemplate: StoryFn<typeof RRuleBuilder> = (args) => (
+  <>
+    <Typography marginY={4} sx={{ whiteSpace: "pre-wrap" }}>
+      {/* eslint-disable-next-line react/destructuring-assignment */}
+      {`Start string:\n${args.rruleString}`}
+    </Typography>
+    <Typography marginY={4}>
+      Important note: To have the date start in the same string you must have a \n after the start date for a new line before the RRULE.
+    </Typography>
+    <RRuleBuilder {...args} />
+  </>
+);
+
+export const WithRRuleString = WithRRuleStringTemplate.bind({});
+WithRRuleString.args = {
+  datePickerStartLabel: "Start Date",
+  datePickerEndLabel: "End Date",
+  datePickerInitialDate: DateTime.now(),
+  rruleString: "DTSTART:20240917T114341Z\nRRULE:INTERVAL=2;FREQ=WEEKLY;BYDAY=FR;COUNT=6",
+};
