@@ -14,16 +14,21 @@ interface SelectPositionProps {
 }
 const sxMinWidth = { minWidth: 120 };
 
+// TODO should there be a max number of positions? Change to AutoComplete from Select?
 const SelectPosition = ({ value, onChange, disabled }: SelectPositionProps) => (
   <Select
     sx={sxMinWidth}
     disabled={disabled}
-    onChange={(e) => onChange({ ...value, bySetPos: [parseInt(e.target.value as string, 10)] })}
-    value={value.bySetPos ?? -999}
+    onChange={(e) => {
+      const currentVal = e.target.value as number[];
+      onChange({ ...value, bySetPos: currentVal });
+    }}
+    value={value.bySetPos ?? []}
+    multiple
   >
     <MenuItem key={null} value={-999} disabled>Select  Position</MenuItem>
     {Object.keys(OnThe).map((key) => (
-      <MenuItem key={key} value={OnThe[key as keyof typeof OnThe]}>
+      <MenuItem key={key} value={parseInt(OnThe[key as keyof typeof OnThe], 10)}>
         {onTheTextMapping[OnThe[key as keyof typeof OnThe]]}
       </MenuItem>
     ))}
