@@ -3,14 +3,14 @@ import { DateTime } from "luxon";
 import { RepeatDetails } from "../components/Repeat/Repeat.types";
 import { EndDetails, EndType } from "../components/End/End.types";
 
-export interface RRuleOptions {
+export interface BuildRRuleStringParams {
   frequency: Frequency;
-  startDate: DateTime;
+  startDate: DateTime | null;
   repeatDetails: RepeatDetails;
   endDetails: EndDetails;
 }
 
-export const buildRRuleString = (options: RRuleOptions) => {
+export const buildRRuleString = (options: BuildRRuleStringParams) => {
   const {
     frequency, startDate, repeatDetails, endDetails,
   } = options;
@@ -34,7 +34,7 @@ export const buildRRuleString = (options: RRuleOptions) => {
     until: null,
     wkst: null,
     freq: frequency,
-    dtstart: startDate.toJSDate(),
+    dtstart: startDate?.toJSDate() ?? null,
   };
 
   if (repeatDetails.interval) {
