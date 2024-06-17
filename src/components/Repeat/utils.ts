@@ -1,6 +1,6 @@
 // TODO does RRULE have a built-in mapping for this?
 import { Frequency } from "rrule";
-import {Months, Weekday, WeekdayExtras} from "./Repeat.types";
+import { Months, Weekday, WeekdayExtras } from "./Repeat.types";
 
 export const frequencyTextMapping = {
   [Frequency.YEARLY]: "Yearly",
@@ -71,4 +71,12 @@ export const monthShortTextMapping = {
   [Months.OCT]: "Oct",
   [Months.NOV]: "Nov",
   [Months.DEC]: "Dec",
+};
+
+export const addOrRemoveFromArray = (array: number[], value: number) => {
+  if (array.includes(value)) {
+    return array.filter((item) => item !== value);
+  }
+
+  return [...array, value];
 };
