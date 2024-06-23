@@ -1,19 +1,13 @@
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 
 import Stack from "@mui/material/Stack";
 import Radio from "@mui/material/Radio";
 import Typography from "@mui/material/Typography";
 import RadioGroup from "@mui/material/RadioGroup";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
+
 import { DateTime } from "luxon";
 
-import {
-  YearlyBy,
-  Months,
-  AllRepeatDetails,
-} from "./Repeat.types";
-import { monthShortTextMapping } from "./utils";
+import { YearlyBy, AllRepeatDetails } from "./Repeat.types";
 import SelectDayWeek from "./Selects/SelectDayWeek";
 import SelectPosition from "./Selects/SelectPosition";
 import SelectDayCalendar from "./Selects/SelectDayCalendar";
@@ -25,8 +19,6 @@ interface RepeatYearlyProps {
   onChange: (value: AllRepeatDetails) => void;
   enableYearlyInterval?: boolean;
 }
-
-const sxMinWidth = { minWidth: 120 };
 
 const RepeatYearly = (
   {
@@ -45,14 +37,25 @@ const RepeatYearly = (
   const disabledOnBYSETPOS = onRadio === YearlyBy.BYMONTH;
   const disabledOnBYMONTH = onRadio === YearlyBy.BYSETPOS;
 
-  // TODO on radio change, set the values of the other fields to undefined in the store?
+  const handleRadioChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const radioVal = e.target.value as YearlyBy;
+    if (radioVal === YearlyBy.BYMONTH) {
+      onChange({
+        ...value, bySetPos: [], byDay: [], byMonth: [],
+      });
+    } else {
+      onChange({ ...value, byMonthDay: [], byMonth: [] });
+    }
+
+    setOnRadio(radioVal);
+  }, [onChange, value]);
 
   return (
     <Stack direction="column" spacing={2} alignItems="flex-start">
       {enableYearlyInterval && (
         <IntervalTextInput value={value} onChange={onChange} unit="year" pluralizeUnit />
       )}
-      <RadioGroup name="Yearly" value={onRadio} onChange={(e) => setOnRadio(e.target.value as YearlyBy)}>
+      <RadioGroup name="Yearly" value={onRadio} onChange={handleRadioChange}>
         <Stack direction="column" spacing={2} alignItems="flex-start">
           <Stack direction="row" spacing={4} alignItems="center">
             <Radio
