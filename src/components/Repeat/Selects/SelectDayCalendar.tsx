@@ -20,7 +20,7 @@ const SelectDayCalendar = ({
   <Select
     sx={sxMinWidth}
     disabled={disabled}
-    onChange={(e) => onChange({ ...value, byMonthDay: parseInt(e.target.value as string, 10) })}
+    onChange={(e) => onChange({ ...value, byMonthDay: [parseInt(e.target.value as string, 10)] })}
     value={value.byMonthDay ?? -999}
   >
     <MenuItem key={null} value={-999} disabled>Select Day</MenuItem>

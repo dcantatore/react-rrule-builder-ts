@@ -40,7 +40,6 @@ const RepeatWeekly = (
           <Button
             size="small"
             key={dayKey}
-            // TODO MAKE A BETTER COLOR SCHEME?
             color={value?.byDay?.includes(dayKey) ? "primary" : "inherit"}
             onClick={() => {
               let selectedDays = value?.byDay || [];

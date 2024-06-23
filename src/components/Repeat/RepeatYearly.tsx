@@ -27,7 +27,7 @@ const RepeatYearly = (
 ) => {
   const maxDaysInMonth = useMemo(() => {
     if (value.byMonth) {
-      return DateTime.fromObject({ month: value.byMonth }).daysInMonth || 31;
+      return DateTime.fromObject({ month: value.byMonth[0] }).daysInMonth || 31;
     }
     return 31;
   }, [value]);
@@ -50,7 +50,7 @@ const RepeatYearly = (
             <Select
               sx={sxMinWidth}
               disabled={disabledOnBYMONTH}
-              onChange={(e) => onChange({ ...value, byMonth: parseInt(e.target.value as string, 10) })}
+              onChange={(e) => onChange({ ...value, byMonth: [parseInt(e.target.value as string, 10)] })}
               value={value.byMonth ?? -999}
             >
               <MenuItem key={null} value={-999} disabled>Select Month</MenuItem>
@@ -76,7 +76,7 @@ const RepeatYearly = (
             <Select
               sx={sxMinWidth}
               disabled={disabledOnBYSETPOS}
-              onChange={(e) => onChange({ ...value, byMonth: parseInt(e.target.value as string, 10) })}
+              onChange={(e) => onChange({ ...value, byMonth: [parseInt(e.target.value as string, 10)] })}
               value={value.byMonth ?? -999}
             >
               <MenuItem key={null} value={-999} disabled>Select Month</MenuItem>

@@ -54,26 +54,29 @@ export const AllWeekDayOptions = {
 };
 
 export interface RepeatDetailsBase {
-  interval: number;
+  interval: number | null;
 }
 
 export interface YearlyRepeatDetails extends RepeatDetailsBase {
-  bySetPos?: number[];
-  byDay?: Weekday[];
-  byMonthDay?: number;
-  byMonth?: number;
-  // yearly has no interval
+  bySetPos: number[];
+  // this ends up being byweekday
+  byDay: Weekday[];
+  byMonthDay: number[] | null;
+  byMonth: number[] | null;
+  // it is possible to have interval, it would mean every x years
   interval: never;
 }
 
 export interface MonthlyRepeatDetails extends RepeatDetailsBase {
-  bySetPos?: number[];
-  byDay?: Weekday[];
-  byMonthDay?: number;
+  bySetPos: number[];
+  // this ends up being byweekday
+  byDay: Weekday[];
+  byMonthDay: number[] | null;
 }
 
 export interface WeeklyRepeatDetails extends RepeatDetailsBase {
-  byDay?: Weekday[];
+  // this ends up being byweekday
+  byDay: Weekday[];
 }
 
 export type RepeatDetails =

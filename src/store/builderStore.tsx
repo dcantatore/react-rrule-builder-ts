@@ -2,7 +2,8 @@ import { create } from "zustand";
 import * as Yup from "yup";
 import { Frequency, RRule } from "rrule";
 import { DateTime } from "luxon";
-import { RepeatDetails } from "../components/Repeat/Repeat.types";
+import { WeekdayStr } from "rrule/dist/esm/weekday";
+import { RepeatDetails, Weekday } from "../components/Repeat/Repeat.types";
 import getValidationSchema from "../validation/validationSchema";
 import { EndDetails, EndType } from "../components/End/End.types";
 import { buildRRuleString } from "../utils/buildRRuleString";
@@ -30,7 +31,9 @@ interface BuilderActions {
 }
 
 const initialState: BuilderState = {
-  repeatDetails: { interval: 1 } as RepeatDetails,
+  repeatDetails: {
+    interval: 1, bySetPos: [], byMonth: [], byMonthDay: [], byDay: [],
+  },
   frequency: Frequency.DAILY,
   startDate: DateTime.now(),
   validationErrors: {},
@@ -43,7 +46,7 @@ const useBuilderStore = create<BuilderState & BuilderActions>((set, get) => ({
   setFrequency: (frequency) => {
     // clear repeat details when changing frequency
     set({ frequency });
-    set({ repeatDetails: { } as RepeatDetails });
+    set({ repeatDetails: initialState.repeatDetails });
     // clear validation errors
     set({ validationErrors: {} });
 
@@ -136,13 +139,56 @@ const useBuilderStore = create<BuilderState & BuilderActions>((set, get) => ({
     }
 
     // set the repeat details
-    const repeatDetails = {
-      interval: parsedObj.interval,
-      byDay: parsedObj.byweekday,
-      byMonthDay: parsedObj.bymonthday,
-      byMonth: parsedObj.bymonth,
-      bySetPos: parsedObj.bysetpos,
+    const repeatDetails: RepeatDetails = {
+      interval: parsedObj.interval ?? null,
+      byDay: [],
+      byMonthDay: [],
+      byMonth: [],
+      bySetPos: [],
     };
+
+    // set the byMonth
+    if ("byMonth" in repeatDetails && parsedObj.bymonth) {
+      if (!Array.isArray(parsedObj.bymonth)) {
+        repeatDetails.byMonth = [parsedObj.bymonth];
+      } else {
+        repeatDetails.byMonth = parsedObj.bymonth;
+      }
+    }
+
+    // set the byMonthDay
+    if ("byMonthDay" in repeatDetails && parsedObj.bymonthday) {
+      if (!Array.isArray(parsedObj.bymonthday)) {
+        repeatDetails.byMonthDay = [parsedObj.bymonthday];
+      } else {
+        repeatDetails.byMonthDay = parsedObj.bymonthday;
+      }
+    }
+
+    // set the byDay (by weekday)
+    if ("byDay" in repeatDetails && parsedObj.byweekday) {
+      if (!Array.isArray(parsedObj.byweekday)) {
+        repeatDetails.byDay = [parsedObj.byweekday as Weekday];
+      } else {
+        repeatDetails.byDay = parsedObj.byweekday.map((day) => {
+          if (typeof day !== "number") {
+            // @ts-ignore
+            return Weekday[day];
+          }
+          // TODO what is the number parse to weekday?
+          return day as unknown as WeekdayStr;
+        });
+      }
+    }
+
+    // set the bySetPos
+    if ("bySetPos" in repeatDetails && parsedObj.bysetpos) {
+      if (!Array.isArray(parsedObj.bysetpos)) {
+        repeatDetails.bySetPos = [parsedObj.bysetpos];
+      } else {
+        repeatDetails.bySetPos = parsedObj.bysetpos;
+      }
+    }
 
     // TODO finish fixing the types
     setRepeatDetails(repeatDetails);
