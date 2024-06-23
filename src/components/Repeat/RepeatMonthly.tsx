@@ -8,15 +8,16 @@ import RadioGroup from "@mui/material/RadioGroup";
 import Box from "@mui/material/Box";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import {
-  MonthBy, MonthlyRepeatDetails, RepeatDetails,
+  MonthBy, AllRepeatDetails,
 } from "./Repeat.types";
 import SelectDayWeek from "./Selects/SelectDayWeek";
 import SelectPosition from "./Selects/SelectPosition";
 import SelectDayCalendar from "./Selects/SelectDayCalendar";
+import IntervalTextInput from "./IntervalTextInput";
 
 interface RepeatMonthlyProps {
-  value: MonthlyRepeatDetails;
-  onChange: (value: RepeatDetails) => void;
+  value: AllRepeatDetails;
+  onChange: (value: AllRepeatDetails) => void;
 }
 
 const RepeatMonthly = (
@@ -35,19 +36,7 @@ const RepeatMonthly = (
 
   return (
     <Stack direction="column" spacing={2} alignItems="flex-start" width="100%">
-      <Stack direction="row" spacing={2} alignItems="center">
-        <Typography>Every</Typography>
-        <TextField
-          id="outlined-basic"
-          label=""
-          variant="outlined"
-          type="number"
-          value={value?.interval}
-          onChange={(e) => onChange({ interval: parseInt(e.target.value, 10) })}
-        />
-        <Typography>month(s)</Typography>
-
-      </Stack>
+      <IntervalTextInput value={value} onChange={onChange} unit="month" pluralizeUnit />
       <RadioGroup
         name="monthly"
         value={onRadio}

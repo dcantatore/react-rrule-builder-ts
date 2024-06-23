@@ -7,23 +7,30 @@ import RadioGroup from "@mui/material/RadioGroup";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import { DateTime } from "luxon";
+import TextField from "@mui/material/TextField";
 import {
-  YearlyRepeatDetails, YearlyBy, Months, RepeatDetails,
+  YearlyBy, Months, AllRepeatDetails,
 } from "./Repeat.types";
 import { monthShortTextMapping } from "./utils";
 import SelectDayWeek from "./Selects/SelectDayWeek";
 import SelectPosition from "./Selects/SelectPosition";
 import SelectDayCalendar from "./Selects/SelectDayCalendar";
+import IntervalTextInput from "./IntervalTextInput";
 
 interface RepeatYearlyProps {
-  value: YearlyRepeatDetails;
-  onChange: (value: RepeatDetails) => void;
+  value: AllRepeatDetails;
+  onChange: (value: AllRepeatDetails) => void;
+  enableYearlyInterval?: boolean;
 }
 
 const sxMinWidth = { minWidth: 120 };
 
 const RepeatYearly = (
-  { value, onChange }: RepeatYearlyProps,
+  {
+    value,
+    onChange,
+    enableYearlyInterval,
+  }: RepeatYearlyProps,
 ) => {
   const maxDaysInMonth = useMemo(() => {
     if (value.byMonth) {
@@ -39,6 +46,9 @@ const RepeatYearly = (
 
   return (
     <Stack direction="column" spacing={2} alignItems="flex-start">
+      {enableYearlyInterval && (
+        <IntervalTextInput value={value} onChange={onChange} unit="year" pluralizeUnit />
+      )}
       <RadioGroup name="Yearly" value={onRadio} onChange={(e) => setOnRadio(e.target.value as YearlyBy)}>
         <Stack direction="column" spacing={2} alignItems="flex-start">
           <Stack direction="row" spacing={4} alignItems="center">

@@ -5,7 +5,7 @@ import { Weekday } from "../components/Repeat/Repeat.types";
 // TODO clean up the schemas to match types
 
 const repeatDetailsBaseSchema = Yup.object({
-  frequency: Yup.mixed<Frequency>().required("Frequency is required test"),
+  frequency: Yup.mixed<Frequency>().required("Frequency is required"),
   interval: Yup.number().required(),
 });
 
@@ -14,8 +14,7 @@ const yearlyRepeatDetailsSchema = repeatDetailsBaseSchema.shape({
   bySetPos: Yup.array().of(Yup.number()).optional(),
   byDay: Yup.array().of(Yup.mixed<Weekday>()).optional(),
   byMonthDay: Yup.array().of(Yup.number()).optional(),
-  byMonth: Yup.number().optional(),
-  // TODO make not allowed and clear when frequency is not yearly
+  byMonth: Yup.array().of(Yup.number()).optional(),
   interval: Yup.mixed<never>().optional().notRequired(),
 });
 

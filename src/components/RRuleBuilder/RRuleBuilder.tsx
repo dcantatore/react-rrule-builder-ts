@@ -21,6 +21,7 @@ interface RRuleBuilderProps {
   // enableSmallScreenDetection?: boolean;
   // smallScreenBreakpoint?: number;
   // dense?: boolean;
+  enableYearlyInterval?: boolean;
 }
 
 const RRuleBuilder = ({
@@ -35,6 +36,7 @@ const RRuleBuilder = ({
   // smallScreenBreakpoint = 350,
   // TODO implement dense mode - make all things smaller with less padding
   // dense = false,
+  enableYearlyInterval = false,
 }: RRuleBuilderProps) => {
   const {
     // TODO Implement validation errors on date picker
@@ -113,6 +115,7 @@ const RRuleBuilder = ({
         <RepeatSelect
           frequencySelected={frequency}
           onFrequencyChange={setFrequency}
+          enableYearlyInterval={enableYearlyInterval}
         />
         <End datePickerEndLabel={datePickerEndLabel} />
       </LocalizationProvider>

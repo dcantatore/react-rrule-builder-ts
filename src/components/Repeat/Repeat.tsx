@@ -15,6 +15,7 @@ interface RepeatSelectProps {
   rruleFrequencyOptions? : Frequency[]
   onFrequencyChange: (frequency: Frequency) => void
   frequencySelected: Frequency
+  enableYearlyInterval: boolean;
 }
 
 const defaultFrequencyOptions: Frequency[] = [
@@ -27,7 +28,9 @@ const defaultFrequencyOptions: Frequency[] = [
 
 const RepeatSelect = ({
   rruleFrequencyOptions = defaultFrequencyOptions,
-  frequencySelected, onFrequencyChange,
+  frequencySelected,
+  onFrequencyChange,
+  enableYearlyInterval,
 }: RepeatSelectProps) => {
   const { setRepeatDetails, repeatDetails } = useBuilderStore();
   const menuItems = rruleFrequencyOptions.map((option) => (
@@ -38,6 +41,8 @@ const RepeatSelect = ({
 
   const repeatComponentToRender = useMemo(
     () => {
+      // type narrow the repeatDetails
+
       switch (frequencySelected) {
         case Frequency.HOURLY:
           return (
@@ -70,16 +75,16 @@ const RepeatSelect = ({
         case Frequency.YEARLY:
           return (
             <RepeatYearly
-              // @ts-ignore - this is due to never in the type
               value={repeatDetails}
               onChange={setRepeatDetails}
+              enableYearlyInterval={enableYearlyInterval}
             />
           );
         default:
           return null;
       }
     },
-    [frequencySelected, repeatDetails, setRepeatDetails],
+    [enableYearlyInterval, frequencySelected, repeatDetails, setRepeatDetails],
   );
 
   return (

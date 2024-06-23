@@ -3,13 +3,13 @@ import * as Yup from "yup";
 import { Frequency, RRule } from "rrule";
 import { DateTime } from "luxon";
 import { WeekdayStr } from "rrule/dist/esm/weekday";
-import { RepeatDetails, Weekday } from "../components/Repeat/Repeat.types";
+import { AllRepeatDetails, Weekday } from "../components/Repeat/Repeat.types";
 import getValidationSchema from "../validation/validationSchema";
 import { EndDetails, EndType } from "../components/End/End.types";
 import { buildRRuleString } from "../utils/buildRRuleString";
 
 interface BuilderState {
-  repeatDetails: RepeatDetails;
+  repeatDetails: AllRepeatDetails;
   frequency: Frequency;
   startDate: DateTime | null;
   validationErrors: Record<string, string>;
@@ -20,7 +20,7 @@ interface BuilderState {
 interface BuilderActions {
   validationErrors: Record<string, string>;
   setFrequency: (frequency: Frequency) => void;
-  setRepeatDetails: (details: RepeatDetails) => void;
+  setRepeatDetails: (details: AllRepeatDetails) => void;
   validateForm: () => Promise<boolean>;
   setEndDetails: (details: EndDetails) => void;
   setStartDate: (startDate: DateTime | null) => void;
@@ -30,10 +30,16 @@ interface BuilderActions {
   setStoreFromRRuleString: (rruleString: string) => void;
 }
 
+export const baseRepeatDetails: AllRepeatDetails = {
+  interval: 1,
+  bySetPos: [],
+  byMonth: [],
+  byMonthDay: [],
+  byDay: [],
+};
+
 const initialState: BuilderState = {
-  repeatDetails: {
-    interval: 1, bySetPos: [], byMonth: [], byMonthDay: [], byDay: [],
-  },
+  repeatDetails: baseRepeatDetails,
   frequency: Frequency.DAILY,
   startDate: DateTime.now(),
   validationErrors: {},
@@ -139,7 +145,7 @@ const useBuilderStore = create<BuilderState & BuilderActions>((set, get) => ({
     }
 
     // set the repeat details
-    const repeatDetails: RepeatDetails = {
+    const repeatDetails: AllRepeatDetails = {
       interval: parsedObj.interval ?? null,
       byDay: [],
       byMonthDay: [],
@@ -148,7 +154,7 @@ const useBuilderStore = create<BuilderState & BuilderActions>((set, get) => ({
     };
 
     // set the byMonth
-    if ("byMonth" in repeatDetails && parsedObj.bymonth) {
+    if (parsedObj.bymonth) {
       if (!Array.isArray(parsedObj.bymonth)) {
         repeatDetails.byMonth = [parsedObj.bymonth];
       } else {
@@ -157,7 +163,7 @@ const useBuilderStore = create<BuilderState & BuilderActions>((set, get) => ({
     }
 
     // set the byMonthDay
-    if ("byMonthDay" in repeatDetails && parsedObj.bymonthday) {
+    if (parsedObj.bymonthday) {
       if (!Array.isArray(parsedObj.bymonthday)) {
         repeatDetails.byMonthDay = [parsedObj.bymonthday];
       } else {
@@ -166,7 +172,7 @@ const useBuilderStore = create<BuilderState & BuilderActions>((set, get) => ({
     }
 
     // set the byDay (by weekday)
-    if ("byDay" in repeatDetails && parsedObj.byweekday) {
+    if (parsedObj.byweekday) {
       if (!Array.isArray(parsedObj.byweekday)) {
         repeatDetails.byDay = [parsedObj.byweekday as Weekday];
       } else {
@@ -182,7 +188,7 @@ const useBuilderStore = create<BuilderState & BuilderActions>((set, get) => ({
     }
 
     // set the bySetPos
-    if ("bySetPos" in repeatDetails && parsedObj.bysetpos) {
+    if (parsedObj.bysetpos) {
       if (!Array.isArray(parsedObj.bysetpos)) {
         repeatDetails.bySetPos = [parsedObj.bysetpos];
       } else {

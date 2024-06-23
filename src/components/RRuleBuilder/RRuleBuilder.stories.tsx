@@ -49,6 +49,7 @@ Primary.args = {
   datePickerStartLabel: "Start Date",
   datePickerEndLabel: "End Date",
   datePickerInitialDate: DateTime.now(),
+  enableYearlyInterval: true,
 };
 
 const SmallTemplate: StoryFn<typeof RRuleBuilder> = (args) => (
@@ -77,5 +78,5 @@ WithRRuleString.args = {
   datePickerStartLabel: "Start Date",
   datePickerEndLabel: "End Date",
   datePickerInitialDate: DateTime.now(),
-  rruleString: "DTSTART:20240917T114341Z\nRRULE:INTERVAL=2;FREQ=WEEKLY;BYDAY=FR;COUNT=6",
+  rruleString: "DTSTART:20240917T114341Z\nRRULE:INTERVAL=2;FREQ=WEEKLY;BYDAY=FR;COUNT=2",
 };
