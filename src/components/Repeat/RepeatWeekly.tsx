@@ -1,10 +1,8 @@
 import React from "react";
 
-import TextField from "@mui/material/TextField";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
-import { Typography } from "@mui/material";
 import { AllRepeatDetails, Weekday } from "./Repeat.types";
 import { weekdayShortTextMapping } from "./utils";
 import IntervalTextInput from "./IntervalTextInput";
