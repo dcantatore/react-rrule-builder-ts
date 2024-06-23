@@ -35,5 +35,6 @@
     "import/prefer-default-export": "off",
     // prop spreading is allowed
     "react/jsx-props-no-spreading": "off"
-  }
+  },
+  "ignorePatterns": ["node_modules/", "storybook-static/", "*.stories.tsx"]
 }
