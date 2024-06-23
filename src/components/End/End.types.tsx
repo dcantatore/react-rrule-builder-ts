@@ -8,7 +8,7 @@ export enum EndType {
 }
 
 export interface EndDetails {
-  endDate?: DateTime | null;
+  endDate: DateTime | null;
   endingType: EndType;
-  occurrences?: number;
+  occurrences: number | null;
 }

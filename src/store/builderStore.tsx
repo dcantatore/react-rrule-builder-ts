@@ -43,7 +43,7 @@ const initialState: BuilderState = {
   frequency: Frequency.DAILY,
   startDate: DateTime.now(),
   validationErrors: {},
-  endDetails: { endingType: EndType.NEVER, endDate: null } as EndDetails,
+  endDetails: { endingType: EndType.NEVER, endDate: null, occurrences: null },
 };
 
 const useBuilderStore = create<BuilderState & BuilderActions>((set, get) => ({
@@ -139,9 +139,9 @@ const useBuilderStore = create<BuilderState & BuilderActions>((set, get) => ({
 
     // set the end date
     if (parsedObj.until) {
-      setEndDetails({ endingType: EndType.ON, endDate: DateTime.fromJSDate(parsedObj.until) });
+      setEndDetails({ endingType: EndType.ON, endDate: DateTime.fromJSDate(parsedObj.until), occurrences: null });
     } else if (parsedObj.count) {
-      setEndDetails({ endingType: EndType.AFTER, occurrences: parsedObj.count });
+      setEndDetails({ endingType: EndType.AFTER, occurrences: parsedObj.count, endDate: null });
     }
 
     // set the repeat details

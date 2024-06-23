@@ -1,12 +1,12 @@
 import { RRule, Frequency, Options } from "rrule";
 import { DateTime } from "luxon";
-import { RepeatDetails } from "../components/Repeat/Repeat.types";
+import { AllRepeatDetails } from "../components/Repeat/Repeat.types";
 import { EndDetails, EndType } from "../components/End/End.types";
 
 export interface BuildRRuleStringParams {
   frequency: Frequency;
   startDate: DateTime | null;
-  repeatDetails: RepeatDetails;
+  repeatDetails: AllRepeatDetails;
   endDetails: EndDetails;
 }
 

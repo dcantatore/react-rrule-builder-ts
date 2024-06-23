@@ -43,7 +43,7 @@ const End = ({ datePickerEndLabel }: EndProps) => {
            label={datePickerEndLabel}
            value={endDetails?.endDate}
               // earliest possible end date is the start date
-           minDate={startDate}
+           minDate={startDate ?? undefined}
            disabled={frequency === Frequency.SECONDLY || frequency === Frequency.MINUTELY || !startDate}
            onChange={(newDate) => setEndDetails({ ...endDetails, endDate: newDate })}
          />
@@ -53,7 +53,7 @@ const End = ({ datePickerEndLabel }: EndProps) => {
           <TextField
             label="Occurrences"
             type="number"
-            defaultValue={endDetails?.occurrences}
+            value={endDetails.occurrences ?? ""}
             onChange={(e) => setEndDetails({ ...endDetails, occurrences: parseInt(e.target.value, 10) })}
           />
         </FormControl>

@@ -25,7 +25,7 @@ const IntervalTextInput = ({
       label=""
       variant="outlined"
       type="number"
-      defaultValue={value.interval}
+      value={value.interval}
       onChange={(e) => onChange({ ...baseRepeatDetails, interval: parseInt(e.target.value, 10) })}
     />
     <Typography>
