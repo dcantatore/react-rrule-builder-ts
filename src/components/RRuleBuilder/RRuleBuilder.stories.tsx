@@ -78,5 +78,6 @@ WithRRuleString.args = {
   datePickerStartLabel: "Start Date",
   datePickerEndLabel: "End Date",
   datePickerInitialDate: DateTime.now(),
-  rruleString: "DTSTART:20240917T114341Z\nRRULE:INTERVAL=2;FREQ=WEEKLY;BYDAY=FR;COUNT=2",
+  rruleString: "RRULE:FREQ=YEARLY;UNTIL=20290605T020600Z;COUNT=12;INTERVAL=3;WKST=MO",
+  // rruleString: "DTSTART:20240917T114341Z\nRRULE:INTERVAL=2;FREQ=WEEKLY;BYDAY=FR;COUNT=2",
 };

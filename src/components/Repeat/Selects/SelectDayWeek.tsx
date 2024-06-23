@@ -1,22 +1,31 @@
-import React, { useState } from "react";
+import React from "react";
 
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
 import {
-  AllWeekDayOptions, RepeatDetails, Weekday,
+  AllRepeatDetails,
+  AllWeekDayOptions,
+  Weekday,
 } from "../Repeat.types";
 import { weekdayFullTextMapping } from "../utils";
 
 interface SelectDayWeekProps {
-  value: RepeatDetails;
-  onChange: (value: RepeatDetails) => void;
+  value: AllRepeatDetails;
+  onChange: (value: AllRepeatDetails) => void;
   disabled: boolean;
 }
 const sxMinWidth = { minWidth: 120 };
 
-const SelectDayWeek = ({ value, onChange, disabled }: SelectDayWeekProps) => {
-  const [selectedByDay, setSelectedByDay] = useState<typeof AllWeekDayOptions | undefined>(undefined);
-  return (
+const SelectDayWeek = ({ value, onChange, disabled }: SelectDayWeekProps) => (
+  <FormControl fullWidth>
+    <InputLabel
+      id="select-day-label"
+      disabled={disabled}
+    >
+      Select Day
+    </InputLabel>
     <Select
       sx={sxMinWidth}
       disabled={disabled}
@@ -33,16 +42,16 @@ const SelectDayWeek = ({ value, onChange, disabled }: SelectDayWeekProps) => {
           setVal = [Weekday.SA, Weekday.SU];
         }
         onChange({ ...value, byDay: setVal as Weekday[] });
-        setSelectedByDay(e.target.value as typeof AllWeekDayOptions);
       }}
-      value={selectedByDay ?? -999}
+      value={value.byDay}
+      labelId="select-day-label"
+      label="Select Day"
     >
-      <MenuItem key={null} value={-999} disabled>Select Day</MenuItem>
       {Object.keys(AllWeekDayOptions).map((key) => (
         <MenuItem key={key} value={key}>{weekdayFullTextMapping[key as keyof typeof AllWeekDayOptions]}</MenuItem>
       ))}
     </Select>
-  );
-};
+  </FormControl>
+);
 
 export default SelectDayWeek;

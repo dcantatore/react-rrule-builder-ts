@@ -5,13 +5,14 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import {
-  MonthlyRepeatDetails, OnThe, RepeatDetails, YearlyRepeatDetails,
+  AllRepeatDetails,
+  OnThe,
 } from "../Repeat.types";
 import { onTheTextMapping } from "../utils";
 
 interface SelectPositionProps {
-  value: YearlyRepeatDetails | MonthlyRepeatDetails;
-  onChange: (value: RepeatDetails) => void;
+  value: AllRepeatDetails
+  onChange: (value: AllRepeatDetails) => void;
   disabled: boolean;
 }
 const sxMinWidth = { minWidth: 150 };

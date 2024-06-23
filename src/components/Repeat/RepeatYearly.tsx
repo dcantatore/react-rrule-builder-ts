@@ -18,6 +18,7 @@ import SelectDayWeek from "./Selects/SelectDayWeek";
 import SelectPosition from "./Selects/SelectPosition";
 import SelectDayCalendar from "./Selects/SelectDayCalendar";
 import IntervalTextInput from "./IntervalTextInput";
+import SelectMonth from "./Selects/SelectMonth";
 
 interface RepeatYearlyProps {
   value: AllRepeatDetails;
@@ -59,17 +60,7 @@ const RepeatYearly = (
               name="day"
             />
             <Typography sx={{ color: disabledOnBYMONTH ? "text.disabled" : "text.primary" }}>On</Typography>
-            <Select
-              sx={sxMinWidth}
-              disabled={disabledOnBYMONTH}
-              onChange={(e) => onChange({ ...value, byMonth: [parseInt(e.target.value as string, 10)] })}
-              value={value.byMonth ?? -999}
-            >
-              <MenuItem key={null} value={-999} disabled>Select Month</MenuItem>
-              {Object.values(Months).map((key) => (
-                <MenuItem key={key} value={key}>{monthShortTextMapping[key]}</MenuItem>
-              ))}
-            </Select>
+            <SelectMonth value={value} onChange={onChange} disabled={disabledOnBYMONTH} />
             <SelectDayCalendar maxDaysInMonth={maxDaysInMonth} value={value} onChange={onChange} disabled={disabledOnBYMONTH} />
           </Stack>
           <Stack direction="row" spacing={4} alignItems="center">
@@ -85,17 +76,7 @@ const RepeatYearly = (
             <SelectPosition value={value} onChange={onChange} disabled={disabledOnBYSETPOS} />
             <SelectDayWeek value={value} onChange={onChange} disabled={disabledOnBYSETPOS} />
             <Typography sx={{ color: disabledOnBYSETPOS ? "text.disabled" : "text.primary" }}>of</Typography>
-            <Select
-              sx={sxMinWidth}
-              disabled={disabledOnBYSETPOS}
-              onChange={(e) => onChange({ ...value, byMonth: [parseInt(e.target.value as string, 10)] })}
-              value={value.byMonth ?? -999}
-            >
-              <MenuItem key={null} value={-999} disabled>Select Month</MenuItem>
-              {Object.values(Months).map((key) => (
-                <MenuItem key={key} value={key}>{monthShortTextMapping[key]}</MenuItem>
-              ))}
-            </Select>
+            <SelectMonth value={value} onChange={onChange} disabled={disabledOnBYSETPOS} />
           </Stack>
         </Stack>
       </RadioGroup>
