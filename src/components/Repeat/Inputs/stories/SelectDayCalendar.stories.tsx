@@ -1,10 +1,10 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
-import SelectDayCalendar from "./SelectDayCalendar";
-import useBuilderStore from "../../../store/builderStore";
+import SelectDayCalendar from "../SelectDayCalendar";
+import useBuilderStore from "../../../../store/builderStore";
 
 export default {
-  title: "Selects/SelectDayCalendar",
+  title: "Inputs/SelectDayCalendar",
   component: SelectDayCalendar,
 } as Meta<typeof SelectDayCalendar>;
 

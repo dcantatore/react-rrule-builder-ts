@@ -1,10 +1,10 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
-import SelectPosition from "./SelectPosition";
-import useBuilderStore from "../../../store/builderStore";
+import SelectPosition from "../SelectPosition";
+import useBuilderStore from "../../../../store/builderStore";
 
 export default {
-  title: "Selects/SelectPosition",
+  title: "Inputs/SelectPosition",
   component: SelectPosition,
 } as Meta<typeof SelectPosition>;
 

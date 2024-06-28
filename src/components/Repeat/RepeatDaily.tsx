@@ -1,7 +1,7 @@
 import React from "react";
 
 import { AllRepeatDetails } from "./Repeat.types";
-import IntervalTextInput from "./IntervalTextInput";
+import IntervalTextInput from "./Inputs/IntervalTextInput";
 
 interface RepeatDailyProps {
   value: AllRepeatDetails;

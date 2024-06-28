@@ -1,10 +1,10 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
-import SelectMonth from "./SelectMonth";
-import useBuilderStore from "../../../store/builderStore";
+import SelectMonth from "../SelectMonth";
+import useBuilderStore from "../../../../store/builderStore";
 
 export default {
-  title: "Selects/SelectMonth",
+  title: "Inputs/SelectMonth",
   component: SelectMonth,
 } as Meta<typeof SelectMonth>;
 

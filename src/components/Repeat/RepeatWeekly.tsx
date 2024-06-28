@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { AllRepeatDetails, Weekday } from "./Repeat.types";
 import { weekdayShortTextMapping } from "./utils";
-import IntervalTextInput from "./IntervalTextInput";
+import IntervalTextInput from "./Inputs/IntervalTextInput";
 
 interface RepeatWeeklyProps {
   value: AllRepeatDetails;

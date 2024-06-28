@@ -8,11 +8,11 @@ import RadioGroup from "@mui/material/RadioGroup";
 import { DateTime } from "luxon";
 
 import { YearlyBy, AllRepeatDetails } from "./Repeat.types";
-import SelectDayWeek from "./Selects/SelectDayWeek";
-import SelectPosition from "./Selects/SelectPosition";
-import SelectDayCalendar from "./Selects/SelectDayCalendar";
-import IntervalTextInput from "./IntervalTextInput";
-import SelectMonth from "./Selects/SelectMonth";
+import SelectDayWeek from "./Inputs/SelectDayWeek";
+import SelectPosition from "./Inputs/SelectPosition";
+import SelectDayCalendar from "./Inputs/SelectDayCalendar";
+import IntervalTextInput from "./Inputs/IntervalTextInput";
+import SelectMonth from "./Inputs/SelectMonth";
 
 interface RepeatYearlyProps {
   value: AllRepeatDetails;

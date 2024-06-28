@@ -2,7 +2,7 @@ import React from "react";
 import Stack from "@mui/material/Stack";
 import { Typography } from "@mui/material";
 import TextField from "@mui/material/TextField";
-import { AllRepeatDetails } from "./Repeat.types";
+import { AllRepeatDetails } from "../Repeat.types";
 
 type IntervalTextInputProps = {
   value: AllRepeatDetails;

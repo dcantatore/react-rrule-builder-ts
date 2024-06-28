@@ -11,10 +11,10 @@ import {
   MonthBy,
   AllRepeatDetails,
 } from "./Repeat.types";
-import SelectDayWeek from "./Selects/SelectDayWeek";
-import SelectPosition from "./Selects/SelectPosition";
-import SelectDayCalendar from "./Selects/SelectDayCalendar";
-import IntervalTextInput from "./IntervalTextInput";
+import SelectDayWeek from "./Inputs/SelectDayWeek";
+import SelectPosition from "./Inputs/SelectPosition";
+import SelectDayCalendar from "./Inputs/SelectDayCalendar";
+import IntervalTextInput from "./Inputs/IntervalTextInput";
 
 interface RepeatMonthlyProps {
   value: AllRepeatDetails;
