@@ -44,8 +44,10 @@ const End = ({ datePickerEndLabel }: EndProps) => {
            value={endDetails?.endDate}
               // earliest possible end date is the start date
            minDate={startDate ?? undefined}
-           disabled={frequency === Frequency.SECONDLY || frequency === Frequency.MINUTELY || !startDate}
            onChange={(newDate) => setEndDetails({ ...endDetails, endDate: newDate })}
+           slotProps={{
+             field: { clearable: true, onClear: () => setEndDetails({ ...endDetails, endDate: null }) },
+           }}
          />
        )}
       {endDetails?.endingType === EndType.AFTER && (
