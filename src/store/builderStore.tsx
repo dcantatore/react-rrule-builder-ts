@@ -196,7 +196,6 @@ const useBuilderStore = create<BuilderState & BuilderActions>((set, get) => ({
       }
     }
 
-    // TODO finish fixing the types
     setRepeatDetails(repeatDetails);
   },
 }));

@@ -1,4 +1,3 @@
-// TODO does RRULE have a built-in mapping for this?
 import { Frequency } from "rrule";
 import { Months, Weekday, WeekdayExtras } from "./Repeat.types";
 
