@@ -9,6 +9,23 @@ import { useBuilderStore } from "../../index";
 export default {
   title: "RRuleBuilder",
   component: RRuleBuilder,
+  argTypes: {
+    datePickerStartLabel: {
+      control: "text",
+    },
+    datePickerEndLabel: {
+      control: "text",
+    },
+    datePickerInitialDate: {
+      control: "date",
+    },
+    enableYearlyInterval: {
+      control: "boolean",
+    },
+    showStartDate: {
+      control: "boolean",
+    },
+  },
 } as Meta<typeof RRuleBuilder>;
 
 const Template: StoryFn<typeof RRuleBuilder> = (args) => {
@@ -50,6 +67,7 @@ Primary.args = {
   datePickerEndLabel: "End Date",
   datePickerInitialDate: DateTime.now(),
   enableYearlyInterval: true,
+  showStartDate: true,
 };
 
 const SmallTemplate: StoryFn<typeof RRuleBuilder> = (args) => (

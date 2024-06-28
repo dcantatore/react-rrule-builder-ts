@@ -22,6 +22,7 @@ interface RRuleBuilderProps {
   // smallScreenBreakpoint?: number;
   // dense?: boolean;
   enableYearlyInterval?: boolean;
+  showStartDate?: boolean;
 }
 
 const RRuleBuilder = ({
@@ -37,6 +38,7 @@ const RRuleBuilder = ({
   // TODO implement dense mode - make all things smaller with less padding
   // dense = false,
   enableYearlyInterval = false,
+  showStartDate = true,
 }: RRuleBuilderProps) => {
   const {
     // TODO Implement validation errors on date picker
@@ -76,7 +78,9 @@ const RRuleBuilder = ({
 
   // init the store with user provided initial data
   useEffect(() => {
-    if (datePickerInitialDate) {
+    if (!showStartDate) { // clear the start date if we don't have the option to show it
+      setStartDate(null);
+    } else if (datePickerInitialDate) { // otherwise set the start date if provided
       setStartDate(datePickerInitialDate);
     }
 
@@ -107,11 +111,16 @@ const RRuleBuilder = ({
   return (
     <Stack direction="column" spacing={2}>
       <LocalizationProvider dateAdapter={AdapterLuxon}>
-        <DatePicker
-          label={datePickerStartLabel}
-          value={startDate}
-          onChange={(newDate) => setStartDate(newDate)}
-        />
+        {showStartDate && (
+          <DatePicker
+            label={datePickerStartLabel}
+            value={startDate}
+            onChange={(newDate) => setStartDate(newDate)}
+            slotProps={{
+              field: { clearable: true, onClear: () => setStartDate(null) },
+            }}
+          />
+        )}
         <RepeatSelect
           frequencySelected={frequency}
           onFrequencyChange={setFrequency}
