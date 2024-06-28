@@ -1,7 +1,7 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
-import RepeatYearly from "./RepeatYearly";
-import useBuilderStore from "../../store/builderStore";
+import RepeatYearly from "../RepeatYearly";
+import useBuilderStore from "../../../store/builderStore";
 
 export default {
   title: "Repeat/RepeatYearly",

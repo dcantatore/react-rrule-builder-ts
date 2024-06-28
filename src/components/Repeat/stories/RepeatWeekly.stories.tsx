@@ -1,7 +1,7 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
-import RepeatWeekly from "./RepeatWeekly";
-import useBuilderStore from "../../store/builderStore";
+import RepeatWeekly from "../RepeatWeekly";
+import useBuilderStore from "../../../store/builderStore";
 
 export default {
   title: "Repeat/RepeatWeekly",

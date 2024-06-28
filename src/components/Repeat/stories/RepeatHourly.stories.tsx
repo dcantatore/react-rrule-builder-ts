@@ -1,7 +1,7 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
-import RepeatHourly from "./RepeatHourly";
-import useBuilderStore from "../../store/builderStore";
+import RepeatHourly from "../RepeatHourly";
+import useBuilderStore from "../../../store/builderStore";
 
 export default {
   title: "Repeat/RepeatHourly",
