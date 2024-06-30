@@ -3,7 +3,11 @@ import * as Yup from "yup";
 import { Frequency, RRule } from "rrule";
 import { DateTime } from "luxon";
 import { WeekdayStr } from "rrule/dist/esm/weekday";
-import { AllRepeatDetails, Weekday } from "../components/Repeat/Repeat.types";
+import isNil from "lodash/isNil";
+
+import {
+  AllRepeatDetails, MonthBy, Weekday, YearlyBy,
+} from "../components/Repeat/Repeat.types";
 import getValidationSchema from "../validation/validationSchema";
 import { EndDetails, EndType } from "../components/End/End.types";
 import { buildRRuleString } from "../utils/buildRRuleString";
@@ -15,6 +19,7 @@ interface BuilderState {
   validationErrors: Record<string, string>;
   endDetails: EndDetails;
   RRuleString?: string;
+  radioValue: MonthBy | YearlyBy | null,
 }
 
 interface BuilderActions {
@@ -28,6 +33,7 @@ interface BuilderActions {
   onChange?: (rruleString: string) => void;
   setOnChange: (onChange: (rruleString: string) => void) => void;
   setStoreFromRRuleString: (rruleString: string) => void;
+  setRadioValue: (radioValue: MonthBy | YearlyBy | null) => void;
 }
 
 export const baseRepeatDetails: AllRepeatDetails = {
@@ -40,22 +46,23 @@ export const baseRepeatDetails: AllRepeatDetails = {
 
 const initialState: BuilderState = {
   repeatDetails: baseRepeatDetails,
-  frequency: Frequency.DAILY,
-  startDate: DateTime.now(),
+  frequency: Frequency.WEEKLY,
+  startDate: null,
   validationErrors: {},
   endDetails: { endingType: EndType.NEVER, endDate: null, occurrences: null },
+  radioValue: null,
 };
 
 const useBuilderStore = create<BuilderState & BuilderActions>((set, get) => ({
   ...initialState,
   validationErrors: {},
+  setRadioValue: (radioValue) => set({ radioValue }),
   setFrequency: (frequency) => {
-    // clear repeat details when changing frequency
     set({ frequency });
+    // clear repeat details when changing frequency
     set({ repeatDetails: initialState.repeatDetails });
     // clear validation errors
     set({ validationErrors: {} });
-
     // rebuild the rrule string
     get().buildRRuleString();
   },
@@ -86,6 +93,10 @@ const useBuilderStore = create<BuilderState & BuilderActions>((set, get) => ({
   },
   validateForm: async () => {
     const { repeatDetails, frequency } = get();
+    if (!frequency) {
+      set({ validationErrors: { frequency: "Frequency is required" } });
+      return false;
+    }
     const validationSchema = getValidationSchema(frequency);
     try {
       await validationSchema.validate({ ...repeatDetails, frequency }, { abortEarly: false });
@@ -129,8 +140,21 @@ const useBuilderStore = create<BuilderState & BuilderActions>((set, get) => ({
     } = get();
 
     // set the frequency
-    if (parsedObj.freq) {
+    if (!isNil(parsedObj.freq)) {
       setFrequency(parsedObj.freq);
+      if (parsedObj.freq === Frequency.YEARLY) {
+        if (parsedObj.byweekday || parsedObj.bysetpos) {
+          set({ radioValue: YearlyBy.BYSETPOS });
+        } else if (parsedObj.bymonth || parsedObj.bymonthday) {
+          set({ radioValue: YearlyBy.BYMONTH });
+        }
+      } else if (parsedObj.freq === Frequency.MONTHLY) {
+        if (parsedObj.bymonthday) {
+          set({ radioValue: MonthBy.BYMONTHDAY });
+        } else if (parsedObj.bysetpos || parsedObj.byweekday) {
+          set({ radioValue: MonthBy.BYSETPOS });
+        }
+      }
     }
     // set the start date
     if (parsedObj.dtstart) {
