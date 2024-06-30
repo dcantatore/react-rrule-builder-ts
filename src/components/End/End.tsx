@@ -1,5 +1,4 @@
 import React from "react";
-import { Frequency } from "rrule";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -16,7 +15,7 @@ interface EndProps {
 
 const End = ({ datePickerEndLabel }: EndProps) => {
   const {
-    frequency, startDate, endDetails, setEndDetails,
+    startDate, endDetails, setEndDetails,
   } = useBuilderStore();
   return (
     <>
