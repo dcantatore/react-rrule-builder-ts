@@ -5,7 +5,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import { DateTime } from "luxon";
-import { Options } from "rrule";
+import { Frequency } from "rrule";
 import RepeatSelect from "../Repeat/Repeat";
 import useBuilderStore from "../../store/builderStore";
 import End from "../End/End";
@@ -15,14 +15,15 @@ interface RRuleBuilderProps {
   datePickerEndLabel?: string;
   datePickerInitialDate?: DateTime;
   onChange?: (rruleString: string) => void;
-  // used to set initial data in the builder
-  rruleOptions?: Options;
   rruleString?: string;
+  enableYearlyInterval?: boolean;
+  showStartDate?: boolean;
+  defaultFrequency?: Frequency;
+  // used to set initial data in the builder
+  // rruleOptions?: Options;
   // enableSmallScreenDetection?: boolean;
   // smallScreenBreakpoint?: number;
   // dense?: boolean;
-  enableYearlyInterval?: boolean;
-  showStartDate?: boolean;
 }
 
 const RRuleBuilder = ({
@@ -30,8 +31,9 @@ const RRuleBuilder = ({
   datePickerEndLabel = "End Date",
   datePickerInitialDate,
   onChange,
-  rruleOptions,
   rruleString,
+  // TODO implement rruleOptions object
+  // rruleOptions,
   // TODO implement small screen detection
   // enableSmallScreenDetection = true,
   // smallScreenBreakpoint = 350,
@@ -39,6 +41,7 @@ const RRuleBuilder = ({
   // dense = false,
   enableYearlyInterval = false,
   showStartDate = true,
+  defaultFrequency = Frequency.WEEKLY,
 }: RRuleBuilderProps) => {
   const {
     // TODO Implement validation errors on date picker
@@ -80,8 +83,6 @@ const RRuleBuilder = ({
   useEffect(() => {
     if (!showStartDate) { // clear the start date if we don't have the option to show it
       setStartDate(null);
-    } else if (datePickerInitialDate) { // otherwise set the start date if provided
-      setStartDate(datePickerInitialDate);
     }
 
     // store the users onChange function if it exists and is not already stored
@@ -90,18 +91,16 @@ const RRuleBuilder = ({
     }
 
     // you can only init the store with rrule options or a string, not both
-    // TODO finish rruleOptions parse and move to store
-    if (rruleOptions) { // if we are init the store with rrule options
-      // set the frequency
-      if (rruleOptions.freq) {
-        setFrequency(rruleOptions.freq);
-      }
-      // set the start date
-      if (rruleOptions.dtstart) {
-        setStartDate(DateTime.fromJSDate(rruleOptions.dtstart));
-      }
-    } else if (rruleString) { // if we are rehydrating the store with rrule options from a string
+    // TODO finish rruleOptions  object parse in store and add option here
+    if (rruleString) { // if we are rehydrating the store with rrule options from a string
       setStoreFromRRuleString(rruleString);
+    } else { // if we aren't rehydrating the store with rrule options from a string
+      // set the default frequency
+      setFrequency(defaultFrequency);
+      // set the start date if provided and we are showing it
+      if (datePickerInitialDate && showStartDate) { // otherwise set the start date if provided
+        setStartDate(datePickerInitialDate);
+      }
     }
 
     // this is intentional to only run on mount
