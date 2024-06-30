@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo } from "react";
 
 import Stack from "@mui/material/Stack";
 import Radio from "@mui/material/Radio";
@@ -18,6 +18,8 @@ interface RepeatYearlyProps {
   value: AllRepeatDetails;
   onChange: (value: AllRepeatDetails) => void;
   enableYearlyInterval?: boolean;
+  radioValue: YearlyBy;
+  setRadioValue: (value: YearlyBy) => void;
 }
 
 const RepeatYearly = (
@@ -25,6 +27,8 @@ const RepeatYearly = (
     value,
     onChange,
     enableYearlyInterval,
+    radioValue,
+    setRadioValue,
   }: RepeatYearlyProps,
 ) => {
   const maxDaysInMonth = useMemo(() => {
@@ -33,12 +37,12 @@ const RepeatYearly = (
     }
     return 31;
   }, [value]);
-  const [onRadio, setOnRadio] = useState<YearlyBy>(YearlyBy.BYMONTH);
-  const disabledOnBYSETPOS = onRadio === YearlyBy.BYMONTH;
-  const disabledOnBYMONTH = onRadio === YearlyBy.BYSETPOS;
+  const disabledOnBYSETPOS = radioValue === YearlyBy.BYMONTH;
+  const disabledOnBYMONTH = radioValue === YearlyBy.BYSETPOS;
 
   const handleRadioChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const radioVal = e.target.value as YearlyBy;
+    setRadioValue(radioVal);
     if (radioVal === YearlyBy.BYMONTH) {
       onChange({
         ...value, bySetPos: [], byDay: [], byMonth: [],
@@ -46,16 +50,28 @@ const RepeatYearly = (
     } else {
       onChange({ ...value, byMonthDay: [], byMonth: [] });
     }
+  }, [onChange, value, setRadioValue]);
 
-    setOnRadio(radioVal);
-  }, [onChange, value]);
+  const handleOnChange = useCallback((allRepeatDetails: AllRepeatDetails) => {
+    onChange({ ...allRepeatDetails });
+    if (radioValue !== YearlyBy.BYMONTH) {
+      setRadioValue(YearlyBy.BYMONTH);
+    }
+  }, [onChange, radioValue, setRadioValue]);
+
+  const handleOnTheChange = useCallback((allRepeatDetails: AllRepeatDetails) => {
+    onChange({ ...allRepeatDetails });
+    if (radioValue !== YearlyBy.BYSETPOS) {
+      setRadioValue(YearlyBy.BYSETPOS);
+    }
+  }, [onChange, radioValue, setRadioValue]);
 
   return (
     <Stack direction="column" spacing={2} alignItems="flex-start">
       {enableYearlyInterval && (
         <IntervalTextInput value={value} onChange={onChange} unit="year" pluralizeUnit />
       )}
-      <RadioGroup name="Yearly" value={onRadio} onChange={handleRadioChange}>
+      <RadioGroup name="Yearly" value={radioValue} onChange={handleRadioChange}>
         <Stack direction="column" spacing={2} alignItems="flex-start">
           <Stack direction="row" spacing={4} alignItems="center">
             <Radio
@@ -63,8 +79,8 @@ const RepeatYearly = (
               name="day"
             />
             <Typography sx={{ color: disabledOnBYMONTH ? "text.disabled" : "text.primary" }}>On</Typography>
-            <SelectMonth value={value} onChange={onChange} disabled={disabledOnBYMONTH} />
-            <SelectDayCalendar maxDaysInMonth={maxDaysInMonth} value={value} onChange={onChange} disabled={disabledOnBYMONTH} />
+            <SelectMonth value={value} onChange={handleOnChange} disabled={disabledOnBYMONTH} />
+            <SelectDayCalendar maxDaysInMonth={maxDaysInMonth} value={value} onChange={handleOnChange} disabled={disabledOnBYMONTH} />
           </Stack>
           <Stack direction="row" spacing={4} alignItems="center">
             <Radio
@@ -76,10 +92,10 @@ const RepeatYearly = (
             >
               On The
             </Typography>
-            <SelectPosition value={value} onChange={onChange} disabled={disabledOnBYSETPOS} />
-            <SelectDayWeek value={value} onChange={onChange} disabled={disabledOnBYSETPOS} />
+            <SelectPosition value={value} onChange={handleOnTheChange} disabled={disabledOnBYSETPOS} />
+            <SelectDayWeek value={value} onChange={handleOnTheChange} disabled={disabledOnBYSETPOS} />
             <Typography sx={{ color: disabledOnBYSETPOS ? "text.disabled" : "text.primary" }}>of</Typography>
-            <SelectMonth value={value} onChange={onChange} disabled={disabledOnBYSETPOS} />
+            <SelectMonth value={value} onChange={handleOnTheChange} disabled={disabledOnBYSETPOS} />
           </Stack>
         </Stack>
       </RadioGroup>

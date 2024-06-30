@@ -10,6 +10,7 @@ import RepeatMonthly from "./RepeatMonthly";
 import RepeatDaily from "./RepeatDaily";
 import RepeatYearly from "./RepeatYearly";
 import useBuilderStore from "../../store/builderStore";
+import { MonthBy, YearlyBy } from "./Repeat.types";
 
 interface RepeatSelectProps {
   rruleFrequencyOptions? : Frequency[]
@@ -32,7 +33,9 @@ const RepeatSelect = ({
   onFrequencyChange,
   enableYearlyInterval,
 }: RepeatSelectProps) => {
-  const { setRepeatDetails, repeatDetails } = useBuilderStore();
+  const {
+    setRepeatDetails, repeatDetails, radioValue, setRadioValue,
+  } = useBuilderStore();
   const menuItems = rruleFrequencyOptions.map((option) => (
     <MenuItem key={option} value={option}>
       {frequencyTextMapping[option]}
@@ -70,6 +73,8 @@ const RepeatSelect = ({
             <RepeatMonthly
               value={repeatDetails}
               onChange={setRepeatDetails}
+              radioValue={radioValue as MonthBy}
+              setRadioValue={setRadioValue}
             />
           );
         case Frequency.YEARLY:
@@ -78,13 +83,15 @@ const RepeatSelect = ({
               value={repeatDetails}
               onChange={setRepeatDetails}
               enableYearlyInterval={enableYearlyInterval}
+              radioValue={radioValue as YearlyBy}
+              setRadioValue={setRadioValue}
             />
           );
         default:
           return null;
       }
     },
-    [enableYearlyInterval, frequencySelected, repeatDetails, setRepeatDetails],
+    [enableYearlyInterval, frequencySelected, radioValue, repeatDetails, setRadioValue, setRepeatDetails],
   );
 
   return (

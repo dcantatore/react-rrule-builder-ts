@@ -2,17 +2,24 @@ import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 import RepeatYearly from "../RepeatYearly";
 import useBuilderStore from "../../../store/builderStore";
+import {YearlyBy} from "../Repeat.types";
 
 export default {
   title: "Repeat/RepeatYearly",
   component: RepeatYearly,
+  argTypes: {
+    enableYearlyInterval: {
+      control: {
+        type: "boolean",
+      },
+    },
+  }
 } as Meta<typeof RepeatYearly>;
 
 const Template: StoryFn<typeof RepeatYearly> = () => {
-  const builderStore = useBuilderStore();
+  const {repeatDetails, setRepeatDetails, radioValue, setRadioValue } = useBuilderStore();
   return (
-  // @ts-ignore - fix never in RepeatYearly
-    <RepeatYearly value={builderStore.repeatDetails} onChange={builderStore.setRepeatDetails} />
+    <RepeatYearly value={repeatDetails} onChange={setRepeatDetails} radioValue={radioValue as YearlyBy} setRadioValue={setRadioValue} />
   );
 };
 
