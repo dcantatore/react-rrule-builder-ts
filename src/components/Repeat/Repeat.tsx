@@ -3,6 +3,7 @@ import { Frequency } from "rrule";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
+import { TextFieldProps } from "@mui/material/TextField";
 import RepeatHourly from "./RepeatHourly";
 import { frequencyTextMapping } from "./utils";
 import RepeatWeekly from "./RepeatWeekly";
@@ -17,6 +18,8 @@ interface RepeatSelectProps {
   onFrequencyChange: (frequency: Frequency) => void
   frequencySelected: Frequency
   enableYearlyInterval: boolean;
+  inputSize: TextFieldProps["size"];
+  inputVariant: TextFieldProps["variant"];
 }
 
 const defaultFrequencyOptions: Frequency[] = [
@@ -32,6 +35,8 @@ const RepeatSelect = ({
   frequencySelected,
   onFrequencyChange,
   enableYearlyInterval,
+  inputSize,
+  inputVariant,
 }: RepeatSelectProps) => {
   const {
     setRepeatDetails, repeatDetails, radioValue, setRadioValue,
@@ -52,6 +57,8 @@ const RepeatSelect = ({
             <RepeatHourly
               value={repeatDetails}
               onChange={setRepeatDetails}
+              inputSize={inputSize}
+              inputVariant={inputVariant}
             />
           );
         case Frequency.DAILY:
@@ -59,6 +66,8 @@ const RepeatSelect = ({
             <RepeatDaily
               value={repeatDetails}
               onChange={setRepeatDetails}
+              inputSize={inputSize}
+              inputVariant={inputVariant}
             />
           );
         case Frequency.WEEKLY:
@@ -66,6 +75,8 @@ const RepeatSelect = ({
             <RepeatWeekly
               value={repeatDetails}
               onChange={setRepeatDetails}
+              inputSize={inputSize}
+              inputVariant={inputVariant}
             />
           );
         case Frequency.MONTHLY:
@@ -75,6 +86,8 @@ const RepeatSelect = ({
               onChange={setRepeatDetails}
               radioValue={radioValue as MonthBy}
               setRadioValue={setRadioValue}
+              inputSize={inputSize}
+              inputVariant={inputVariant}
             />
           );
         case Frequency.YEARLY:
@@ -85,13 +98,15 @@ const RepeatSelect = ({
               enableYearlyInterval={enableYearlyInterval}
               radioValue={radioValue as YearlyBy}
               setRadioValue={setRadioValue}
+              inputSize={inputSize}
+              inputVariant={inputVariant}
             />
           );
         default:
           return null;
       }
     },
-    [enableYearlyInterval, frequencySelected, radioValue, repeatDetails, setRadioValue, setRepeatDetails],
+    [enableYearlyInterval, frequencySelected, inputSize, inputVariant, radioValue, repeatDetails, setRadioValue, setRepeatDetails],
   );
 
   return (
@@ -100,6 +115,8 @@ const RepeatSelect = ({
         value={frequencySelected}
         onChange={(e) => onFrequencyChange(e.target.value as Frequency)}
         fullWidth
+        variant={inputVariant}
+        size={inputSize}
       >
         {menuItems}
       </Select>

@@ -6,6 +6,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import { DateTime } from "luxon";
 import { Frequency } from "rrule";
+import { useTheme } from "@mui/material/styles";
+import { TextFieldProps } from "@mui/material/TextField";
 import RepeatSelect from "../Repeat/Repeat";
 import useBuilderStore from "../../store/builderStore";
 import End from "../End/End";
@@ -19,6 +21,8 @@ interface RRuleBuilderProps {
   enableYearlyInterval?: boolean;
   showStartDate?: boolean;
   defaultFrequency?: Frequency;
+  inputSize: TextFieldProps["size"];
+  inputVariant: TextFieldProps["variant"];
   // used to set initial data in the builder
   // rruleOptions?: Options;
   // enableSmallScreenDetection?: boolean;
@@ -42,6 +46,8 @@ const RRuleBuilder = ({
   enableYearlyInterval = false,
   showStartDate = true,
   defaultFrequency = Frequency.WEEKLY,
+  inputSize = "small",
+  inputVariant = "outlined",
 }: RRuleBuilderProps) => {
   const {
     // TODO Implement validation errors on date picker
@@ -55,6 +61,9 @@ const RRuleBuilder = ({
     onChange: onChangeStored,
   } = useBuilderStore();
 
+  const theme = useTheme();
+  const fieldDefaultSize = theme.components?.MuiTextField?.defaultProps?.size || inputSize;
+  const fieldDefaultVariant = theme.components?.MuiTextField?.defaultProps?.variant || inputVariant;
   // TODO Implement small screen detection
   // const containerRef = useRef<HTMLDivElement>(null);
   // const [size, setSize] = useState(0);
@@ -117,6 +126,7 @@ const RRuleBuilder = ({
             onChange={(newDate) => setStartDate(newDate)}
             slotProps={{
               field: { clearable: true, onClear: () => setStartDate(null) },
+              textField: { size: fieldDefaultSize, variant: fieldDefaultVariant },
             }}
           />
         )}
@@ -124,8 +134,10 @@ const RRuleBuilder = ({
           frequencySelected={frequency}
           onFrequencyChange={setFrequency}
           enableYearlyInterval={enableYearlyInterval}
+          inputSize={fieldDefaultSize}
+          inputVariant={fieldDefaultVariant}
         />
-        <End datePickerEndLabel={datePickerEndLabel} />
+        <End datePickerEndLabel={datePickerEndLabel} inputSize={fieldDefaultSize} inputVariant={fieldDefaultVariant} />
       </LocalizationProvider>
     </Stack>
   );

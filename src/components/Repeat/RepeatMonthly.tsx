@@ -7,6 +7,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 import Box from "@mui/material/Box";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
+import { TextFieldProps } from "@mui/material/TextField";
 import {
   MonthBy,
   AllRepeatDetails,
@@ -21,6 +22,9 @@ interface RepeatMonthlyProps {
   onChange: (value: AllRepeatDetails) => void;
   radioValue: MonthBy;
   setRadioValue: (value: MonthBy) => void;
+  inputSize: TextFieldProps["size"];
+  inputVariant: TextFieldProps["variant"];
+
 }
 
 const RepeatMonthly = (
@@ -29,6 +33,8 @@ const RepeatMonthly = (
     onChange,
     radioValue,
     setRadioValue,
+    inputSize,
+    inputVariant,
   }: RepeatMonthlyProps,
 ) => {
   const maxDaysInMonth = 31;
@@ -66,7 +72,14 @@ const RepeatMonthly = (
 
   return (
     <Stack direction="column" spacing={2} alignItems="flex-start" width="100%">
-      <IntervalTextInput value={value} onChange={onChange} unit="month" pluralizeUnit />
+      <IntervalTextInput
+        value={value}
+        onChange={onChange}
+        unit="month"
+        pluralizeUnit
+        inputSize={inputSize}
+        inputVariant={inputVariant}
+      />
       <RadioGroup
         name="monthly"
         value={radioValue}
@@ -81,6 +94,7 @@ const RepeatMonthly = (
               control={<Radio />}
               label={(
                 <Typography
+                  fontSize={inputSize}
                   sx={{ color: disabledOnBYMONTHDAY ? "text.disabled" : "text.primary", paddingLeft: 2 }}
                 >
                   On Day
@@ -93,6 +107,8 @@ const RepeatMonthly = (
               onChange={handleOnDayChange}
               maxDaysInMonth={maxDaysInMonth}
               disabled={disabledOnBYMONTHDAY}
+              inputSize={inputSize}
+              inputVariant={inputVariant}
             />
           </Box>
           {/* ON THE SECTION */}
@@ -103,6 +119,7 @@ const RepeatMonthly = (
                 control={<Radio />}
                 label={(
                   <Typography
+                    fontSize={inputSize}
                     sx={{ color: disabledOnBYSETPOS ? "text.disabled" : "text.primary", paddingLeft: 2 }}
                   >
                     On The
@@ -118,10 +135,22 @@ const RepeatMonthly = (
                 width: size < 301 ? "100%" : "auto",
               }}
             >
-              <SelectPosition value={value} onChange={handleOnTheChange} disabled={disabledOnBYSETPOS} />
+              <SelectPosition
+                value={value}
+                onChange={handleOnTheChange}
+                disabled={disabledOnBYSETPOS}
+                inputSize={inputSize}
+                inputVariant={inputVariant}
+              />
             </Box>
             <Box sx={{ minWidth: 120, marginX: { xs: 0, sm: 2 }, width: size < 301 ? "100%" : "auto" }}>
-              <SelectDayWeek value={value} onChange={handleOnTheChange} disabled={disabledOnBYSETPOS} />
+              <SelectDayWeek
+                value={value}
+                onChange={handleOnTheChange}
+                disabled={disabledOnBYSETPOS}
+                inputSize={inputSize}
+                inputVariant={inputVariant}
+              />
             </Box>
           </Stack>
         </Stack>

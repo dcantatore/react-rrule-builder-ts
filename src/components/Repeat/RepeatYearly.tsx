@@ -7,6 +7,7 @@ import RadioGroup from "@mui/material/RadioGroup";
 
 import { DateTime } from "luxon";
 
+import { TextFieldProps } from "@mui/material/TextField";
 import { YearlyBy, AllRepeatDetails } from "./Repeat.types";
 import SelectDayWeek from "./Inputs/SelectDayWeek";
 import SelectPosition from "./Inputs/SelectPosition";
@@ -20,6 +21,8 @@ interface RepeatYearlyProps {
   enableYearlyInterval?: boolean;
   radioValue: YearlyBy;
   setRadioValue: (value: YearlyBy) => void;
+  inputSize: TextFieldProps["size"];
+  inputVariant: TextFieldProps["variant"];
 }
 
 const RepeatYearly = (
@@ -29,6 +32,8 @@ const RepeatYearly = (
     enableYearlyInterval,
     radioValue,
     setRadioValue,
+    inputSize,
+    inputVariant,
   }: RepeatYearlyProps,
 ) => {
   const maxDaysInMonth = useMemo(() => {
@@ -69,7 +74,7 @@ const RepeatYearly = (
   return (
     <Stack direction="column" spacing={2} alignItems="flex-start">
       {enableYearlyInterval && (
-        <IntervalTextInput value={value} onChange={onChange} unit="year" pluralizeUnit />
+        <IntervalTextInput value={value} onChange={onChange} unit="year" pluralizeUnit inputSize={inputSize} inputVariant={inputVariant} />
       )}
       <RadioGroup name="Yearly" value={radioValue} onChange={handleRadioChange}>
         <Stack direction="column" spacing={2} alignItems="flex-start">
@@ -78,9 +83,22 @@ const RepeatYearly = (
               value={YearlyBy.BYMONTH}
               name="day"
             />
-            <Typography sx={{ color: disabledOnBYMONTH ? "text.disabled" : "text.primary" }}>On</Typography>
-            <SelectMonth value={value} onChange={handleOnChange} disabled={disabledOnBYMONTH} />
-            <SelectDayCalendar maxDaysInMonth={maxDaysInMonth} value={value} onChange={handleOnChange} disabled={disabledOnBYMONTH} />
+            <Typography fontSize={inputSize} sx={{ color: disabledOnBYMONTH ? "text.disabled" : "text.primary" }}>On</Typography>
+            <SelectMonth
+              value={value}
+              onChange={handleOnChange}
+              disabled={disabledOnBYMONTH}
+              inputVariant={inputVariant}
+              inputSize={inputSize}
+            />
+            <SelectDayCalendar
+              maxDaysInMonth={maxDaysInMonth}
+              value={value}
+              onChange={handleOnChange}
+              disabled={disabledOnBYMONTH}
+              inputVariant={inputVariant}
+              inputSize={inputSize}
+            />
           </Stack>
           <Stack direction="row" spacing={4} alignItems="center">
             <Radio
@@ -88,14 +106,33 @@ const RepeatYearly = (
               name="day"
             />
             <Typography
+              fontSize={inputSize}
               sx={{ color: disabledOnBYSETPOS ? "text.disabled" : "text.primary" }}
             >
               On The
             </Typography>
-            <SelectPosition value={value} onChange={handleOnTheChange} disabled={disabledOnBYSETPOS} />
-            <SelectDayWeek value={value} onChange={handleOnTheChange} disabled={disabledOnBYSETPOS} />
-            <Typography sx={{ color: disabledOnBYSETPOS ? "text.disabled" : "text.primary" }}>of</Typography>
-            <SelectMonth value={value} onChange={handleOnTheChange} disabled={disabledOnBYSETPOS} />
+            <SelectPosition
+              value={value}
+              onChange={handleOnTheChange}
+              disabled={disabledOnBYSETPOS}
+              inputVariant={inputVariant}
+              inputSize={inputSize}
+            />
+            <SelectDayWeek
+              value={value}
+              onChange={handleOnTheChange}
+              disabled={disabledOnBYSETPOS}
+              inputVariant={inputVariant}
+              inputSize={inputSize}
+            />
+            <Typography fontSize={inputSize} sx={{ color: disabledOnBYSETPOS ? "text.disabled" : "text.primary" }}>of</Typography>
+            <SelectMonth
+              value={value}
+              onChange={handleOnTheChange}
+              disabled={disabledOnBYSETPOS}
+              inputVariant={inputVariant}
+              inputSize={inputSize}
+            />
           </Stack>
         </Stack>
       </RadioGroup>
