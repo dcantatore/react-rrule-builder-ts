@@ -1,6 +1,6 @@
 {
   "name": "react-rrule-builder-ts",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "rrule component for react with mui",
   "main": "index.js",
   "scripts": {
@@ -39,7 +39,6 @@
     "zustand": "^4.5.2"
   },
   "devDependencies": {
-    "@chromatic-com/storybook": "^1.5.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@eslint/js": "^9.4.0",

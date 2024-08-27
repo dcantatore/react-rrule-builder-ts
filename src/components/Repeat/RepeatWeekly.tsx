@@ -3,6 +3,7 @@ import React from "react";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
+import { TextFieldProps } from "@mui/material/TextField";
 import { AllRepeatDetails, Weekday } from "./Repeat.types";
 import { weekdayShortTextMapping } from "./utils";
 import IntervalTextInput from "./Inputs/IntervalTextInput";
@@ -10,17 +11,28 @@ import IntervalTextInput from "./Inputs/IntervalTextInput";
 interface RepeatWeeklyProps {
   value: AllRepeatDetails;
   onChange: (value: AllRepeatDetails) => void;
+  inputSize: TextFieldProps["size"];
+  inputVariant: TextFieldProps["variant"];
 }
 
 const RepeatWeekly = (
   {
     value,
     onChange,
+    inputSize,
+    inputVariant,
   }: RepeatWeeklyProps,
 ) => (
   <Stack direction="column" spacing={2} alignItems="flex-start">
     <Stack direction="row" spacing={2} alignItems="center">
-      <IntervalTextInput value={value} onChange={onChange} unit="week" pluralizeUnit />
+      <IntervalTextInput
+        value={value}
+        onChange={onChange}
+        unit="week"
+        pluralizeUnit
+        inputSize={inputSize}
+        inputVariant={inputVariant}
+      />
     </Stack>
     <ButtonGroup variant="contained">
       {/* TODO - do this type/iteration better */}

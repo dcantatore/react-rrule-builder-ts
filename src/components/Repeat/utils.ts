@@ -1,4 +1,6 @@
 import { Frequency } from "rrule";
+import { TextFieldProps } from "@mui/material/TextField";
+import { InputLabelProps } from "@mui/material";
 import { Months, Weekday, WeekdayExtras } from "./Repeat.types";
 
 export const frequencyTextMapping = {
@@ -79,3 +81,6 @@ export const addOrRemoveFromArray = (array: number[], value: number) => {
 
   return [...array, value];
 };
+
+// get the label equivalent of input size
+export const getLabelSize = (inputSize: TextFieldProps["size"]): InputLabelProps["size"] => (inputSize === "small" ? "small" : "normal");

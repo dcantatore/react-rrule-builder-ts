@@ -1,24 +1,29 @@
 import React, { useCallback, useEffect, useState } from "react";
 
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select, { SelectChangeEvent, SelectProps } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
+import { TextFieldProps } from "@mui/material/TextField";
 import {
   AllRepeatDetails,
   AllWeekDayOptions,
   Weekday,
 } from "../Repeat.types";
-import { weekdayFullTextMapping } from "../utils";
+import { getLabelSize, weekdayFullTextMapping } from "../utils";
 
 interface SelectDayWeekProps {
   value: AllRepeatDetails;
   onChange: (value: AllRepeatDetails) => void;
   disabled: boolean;
+  inputSize: SelectProps["size"];
+  inputVariant: TextFieldProps["variant"];
 }
 const sxMinWidth = { minWidth: 120 };
 
-const SelectDayWeek = ({ value, onChange, disabled }: SelectDayWeekProps) => {
+const SelectDayWeek = ({
+  value, onChange, disabled, inputSize, inputVariant,
+}: SelectDayWeekProps) => {
   const [selectedByDay, setSelectedByDay] = useState<typeof AllWeekDayOptions | "">("");
 
   // keep select sync with store
@@ -55,11 +60,14 @@ const SelectDayWeek = ({ value, onChange, disabled }: SelectDayWeekProps) => {
     setSelectedByDay(changeVal as typeof AllWeekDayOptions);
   }, [onChange, value]);
 
+  const labelSize = getLabelSize(inputSize);
+
   return (
     <FormControl fullWidth>
       <InputLabel
         id="select-day-label"
         disabled={disabled}
+        size={labelSize}
       >
         Select Day
       </InputLabel>
@@ -70,6 +78,8 @@ const SelectDayWeek = ({ value, onChange, disabled }: SelectDayWeekProps) => {
         value={selectedByDay}
         labelId="select-day-label"
         label="Select Day"
+        size={inputSize}
+        variant={inputVariant}
       >
         {Object.keys(AllWeekDayOptions).map((key) => (
           <MenuItem key={key} value={key}>{weekdayFullTextMapping[key as keyof typeof AllWeekDayOptions]}</MenuItem>

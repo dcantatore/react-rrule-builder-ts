@@ -4,32 +4,39 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
-import { Typography } from "@mui/material";
-import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import TextField, { TextFieldProps } from "@mui/material/TextField";
 import useBuilderStore from "../../store/builderStore";
 import { EndType } from "./End.types";
+import { getLabelSize } from "../Repeat/utils";
 
 interface EndProps {
   datePickerEndLabel: string;
+  inputSize: TextFieldProps["size"];
+  inputVariant: TextFieldProps["variant"];
 }
 
-const End = ({ datePickerEndLabel }: EndProps) => {
+const End = ({ datePickerEndLabel, inputSize, inputVariant }: EndProps) => {
   const {
     startDate, endDetails, setEndDetails,
   } = useBuilderStore();
+  const labelSize = getLabelSize(inputSize);
+
   return (
     <>
       <FormControl>
-        <InputLabel id="end-label">End</InputLabel>
+        <InputLabel id="end-label" size={labelSize}>End</InputLabel>
         <Select
           value={endDetails?.endingType}
           onChange={(e) => setEndDetails({ ...endDetails, endingType: e.target.value as EndType })}
           labelId="end-label"
           label="End"
+          size={inputSize}
+          variant={inputVariant}
         >
           {Object.entries(EndType).map(([key, value]) => (
             <MenuItem key={key} value={value}>
-              <Typography sx={{ textTransform: "capitalize" }}>
+              <Typography fontSize={inputSize} sx={{ textTransform: "capitalize" }}>
                 {value}
               </Typography>
             </MenuItem>
@@ -46,6 +53,7 @@ const End = ({ datePickerEndLabel }: EndProps) => {
            onChange={(newDate) => setEndDetails({ ...endDetails, endDate: newDate })}
            slotProps={{
              field: { clearable: true, onClear: () => setEndDetails({ ...endDetails, endDate: null }) },
+             textField: { size: inputSize, variant: inputVariant },
            }}
          />
        )}
@@ -56,6 +64,8 @@ const End = ({ datePickerEndLabel }: EndProps) => {
             type="number"
             value={endDetails.occurrences ?? ""}
             onChange={(e) => setEndDetails({ ...endDetails, occurrences: parseInt(e.target.value, 10) })}
+            size={inputSize}
+            variant={inputVariant}
           />
         </FormControl>
       )}
