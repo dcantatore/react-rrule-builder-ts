@@ -21,8 +21,8 @@ interface RRuleBuilderProps {
   enableYearlyInterval?: boolean;
   showStartDate?: boolean;
   defaultFrequency?: Frequency;
-  inputSize: TextFieldProps["size"];
-  inputVariant: TextFieldProps["variant"];
+  inputSize?: TextFieldProps["size"];
+  inputVariant?: TextFieldProps["variant"];
   // used to set initial data in the builder
   // rruleOptions?: Options;
   // enableSmallScreenDetection?: boolean;

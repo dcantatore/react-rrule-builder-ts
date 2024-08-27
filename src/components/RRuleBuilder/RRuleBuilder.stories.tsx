@@ -25,6 +25,14 @@ export default {
     showStartDate: {
       control: "boolean",
     },
+    inputSize: {
+      control: "select",
+      options: ["small", "medium"],
+    },
+    inputVariant: {
+      control:  "select",
+      options: ["standard", "outlined", "filled"],
+    },
   },
 } as Meta<typeof RRuleBuilder>;
 
