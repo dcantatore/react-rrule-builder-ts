@@ -59,7 +59,7 @@ const MyComponent = () => {
 ## API
 
 ### RRuleBuilder Props
-
+🛠️ = Coming soon / in progress
 - **`datePickerInitialDate`** (`DateTime`)  
   Initial date for the date picker component.
 
@@ -91,26 +91,36 @@ const MyComponent = () => {
     Label for the start date picker.
   - **`endDatePickerLabel`** (`string`)  
     Label for the end date picker.
+    
+- **`enableSmallScreenDetection`** (`boolean`) 🛠️
+Enables detection of the parent container to adjust the layout accordingly for better responsiveness. If set to true, the component will monitor the screen size and adjust its design elements to fit smaller parents
+
+- **`smallScreenBreakpoint`** (`number`) 🛠️
+Defines the breakpoint (in pixels) for small containers. When the parent container width is below this value, the component will switch to a layout optimized for smaller containers. Default is typically set to 350 pixels.
+
+- **`dense`** (`boolean`) 🛠️
+Enables a denser layout with reduced padding and margins, suitable for compact displays or when conserving screen space is desired.
 
 ## Store and Actions
 
 The component uses a Zustand store for state management, with the following state and actions:
 
 ### BuilderState
-
+🛠️ = Coming soon / in progress
 - **`repeatDetails`**: Manages details for repeat rules.
 - **`frequency`**: Current frequency of the RRULE.
 - **`startDate`**: The selected start date.
-- **`validationErrors`**: Holds validation errors.
+- **`validationErrors`**:  🛠️ Holds validation errors.
 - **`endDetails`**: Manages end conditions for the RRULE.
 - **`RRuleString`**: The generated RRULE string.
 - **`radioValue`**: Option for monthly and yearly rule settings.
 
 ### BuilderActions
+🛠️ = Coming soon / in progress
 
 - **`setFrequency(frequency: Frequency)`**: Sets the frequency and resets relevant state.
 - **`setRepeatDetails(details: AllRepeatDetails)`**: Updates repeat rule details and rebuilds the RRULE string.
-- **`validateForm()`**: Validates the form using Yup and returns a boolean indicating success.
+- **`validateForm()`**: 🛠️ Validates the form using Yup and returns a boolean indicating success.
 - **`setEndDetails(details: EndDetails)`**: Updates the end details of the rule.
 - **`setStartDate(startDate: DateTime | null)`**: Sets the start date and adjusts end date if necessary.
 - **`buildRRuleString()`**: Constructs the RRULE string from the current state.
