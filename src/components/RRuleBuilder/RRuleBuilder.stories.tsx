@@ -71,8 +71,10 @@ const Template: StoryFn<typeof RRuleBuilder> = (args) => {
 };
 export const Primary = Template.bind({});
 Primary.args = {
-  datePickerStartLabel: "Start Date",
-  datePickerEndLabel: "End Date",
+  lang: {
+    startDatePickerLabel: "Start Date",
+    endDatePickerLabel: "End Date",
+  },
   datePickerInitialDate: DateTime.now(),
   enableYearlyInterval: true,
   showStartDate: true,
@@ -101,8 +103,10 @@ const WithRRuleStringTemplate: StoryFn<typeof RRuleBuilder> = (args) => (
 
 export const WithRRuleString = WithRRuleStringTemplate.bind({});
 WithRRuleString.args = {
-  datePickerStartLabel: "Start Date",
-  datePickerEndLabel: "End Date",
+  lang: {
+    startDatePickerLabel: "Initial Deadline Date",
+    endDatePickerLabel: "Never After Date",
+  },
   datePickerInitialDate: DateTime.now(),
   // rruleString: "DTSTART:20240917T114341Z\nRRULE:INTERVAL=2;FREQ=WEEKLY;BYDAY=FR;COUNT=2",
   // *** rehydrate month with radio selected testing:

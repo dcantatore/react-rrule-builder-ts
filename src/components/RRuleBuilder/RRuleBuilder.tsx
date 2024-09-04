@@ -12,9 +12,12 @@ import RepeatSelect from "../Repeat/Repeat";
 import useBuilderStore from "../../store/builderStore";
 import End from "../End/End";
 
+type Lang = {
+  startDatePickerLabel: string;
+  endDatePickerLabel: string;
+};
+
 interface RRuleBuilderProps {
-  datePickerStartLabel?: string;
-  datePickerEndLabel?: string;
   datePickerInitialDate?: DateTime;
   onChange?: (rruleString: string) => void;
   rruleString?: string;
@@ -23,6 +26,7 @@ interface RRuleBuilderProps {
   defaultFrequency?: Frequency;
   inputSize?: TextFieldProps["size"];
   inputVariant?: TextFieldProps["variant"];
+  lang?: Lang;
   // used to set initial data in the builder
   // rruleOptions?: Options;
   // enableSmallScreenDetection?: boolean;
@@ -31,8 +35,6 @@ interface RRuleBuilderProps {
 }
 
 const RRuleBuilder = ({
-  datePickerStartLabel = "Start Date",
-  datePickerEndLabel = "End Date",
   datePickerInitialDate,
   onChange,
   rruleString,
@@ -48,6 +50,10 @@ const RRuleBuilder = ({
   defaultFrequency = Frequency.WEEKLY,
   inputSize = "small",
   inputVariant = "outlined",
+  lang = {
+    startDatePickerLabel: "Start Date",
+    endDatePickerLabel: "End Date",
+  },
 }: RRuleBuilderProps) => {
   const {
     // TODO Implement validation errors on date picker
@@ -121,7 +127,7 @@ const RRuleBuilder = ({
       <LocalizationProvider dateAdapter={AdapterLuxon}>
         {showStartDate && (
           <DatePicker
-            label={datePickerStartLabel}
+            label={lang?.startDatePickerLabel}
             value={startDate}
             onChange={(newDate) => setStartDate(newDate)}
             slotProps={{
@@ -137,7 +143,7 @@ const RRuleBuilder = ({
           inputSize={fieldDefaultSize}
           inputVariant={fieldDefaultVariant}
         />
-        <End datePickerEndLabel={datePickerEndLabel} inputSize={fieldDefaultSize} inputVariant={fieldDefaultVariant} />
+        <End datePickerEndLabel={lang?.endDatePickerLabel} inputSize={fieldDefaultSize} inputVariant={fieldDefaultVariant} />
       </LocalizationProvider>
     </Stack>
   );
