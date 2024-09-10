@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -14,13 +14,17 @@ interface EndProps {
   datePickerEndLabel: string;
   inputSize: TextFieldProps["size"];
   inputVariant: TextFieldProps["variant"];
+  enableOpenOnClickDatePicker: boolean;
 }
 
-const End = ({ datePickerEndLabel, inputSize, inputVariant }: EndProps) => {
+const End = ({
+  datePickerEndLabel, inputSize, inputVariant, enableOpenOnClickDatePicker,
+}: EndProps) => {
   const {
     startDate, endDetails, setEndDetails,
   } = useBuilderStore();
   const labelSize = getLabelSize(inputSize);
+  const [datePickerOpen, setDatePickerOpen] = useState(false);
 
   return (
     <>
@@ -50,10 +54,17 @@ const End = ({ datePickerEndLabel, inputSize, inputVariant }: EndProps) => {
            value={endDetails?.endDate}
               // earliest possible end date is the start date
            minDate={startDate ?? undefined}
+           open={enableOpenOnClickDatePicker ? datePickerOpen : undefined}
+           onOpen={enableOpenOnClickDatePicker ? () => setDatePickerOpen(true) : undefined}
+           onClose={enableOpenOnClickDatePicker ? () => setDatePickerOpen(false) : undefined}
            onChange={(newDate) => setEndDetails({ ...endDetails, endDate: newDate })}
            slotProps={{
              field: { clearable: true, onClear: () => setEndDetails({ ...endDetails, endDate: null }) },
-             textField: { size: inputSize, variant: inputVariant },
+             textField: {
+               size: inputSize,
+               variant: inputVariant,
+               onClick: enableOpenOnClickDatePicker ? () => setDatePickerOpen(true) : undefined,
+             },
            }}
          />
        )}

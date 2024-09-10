@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import Stack from "@mui/material/Stack";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -23,6 +23,7 @@ interface RRuleBuilderProps<TDate> {
   rruleString?: string;
   enableYearlyInterval?: boolean;
   showStartDate?: boolean;
+  enableOpenOnClickDatePicker?: boolean;
   defaultFrequency?: Frequency;
   inputSize?: TextFieldProps["size"];
   inputVariant?: TextFieldProps["variant"];
@@ -40,6 +41,7 @@ const RRuleBuilder = <TDate extends MuiPickersAdapter<any, any>>({
   rruleString,
   enableYearlyInterval = false,
   showStartDate = true,
+  enableOpenOnClickDatePicker = true,
   defaultFrequency = Frequency.WEEKLY,
   inputSize = "small",
   inputVariant = "outlined",
@@ -72,6 +74,8 @@ const RRuleBuilder = <TDate extends MuiPickersAdapter<any, any>>({
   const theme = useTheme();
   const fieldDefaultSize = theme.components?.MuiTextField?.defaultProps?.size || inputSize;
   const fieldDefaultVariant = theme.components?.MuiTextField?.defaultProps?.variant || inputVariant;
+  const [datePickerOpen, setDatePickerOpen] = useState(false);
+
   // TODO Implement small screen detection
   // const containerRef = useRef<HTMLDivElement>(null);
   // const [size, setSize] = useState(0);
@@ -135,9 +139,16 @@ const RRuleBuilder = <TDate extends MuiPickersAdapter<any, any>>({
             label={lang?.startDatePickerLabel}
             value={startDate}
             onChange={(newDate) => setStartDate(newDate)}
+            open={enableOpenOnClickDatePicker ? datePickerOpen : undefined}
+            onOpen={enableOpenOnClickDatePicker ? () => setDatePickerOpen(true) : undefined}
+            onClose={enableOpenOnClickDatePicker ? () => setDatePickerOpen(false) : undefined}
             slotProps={{
               field: { clearable: true, onClear: () => setStartDate(null) },
-              textField: { size: fieldDefaultSize, variant: fieldDefaultVariant },
+              textField: {
+                size: fieldDefaultSize,
+                variant: fieldDefaultVariant,
+                onClick: enableOpenOnClickDatePicker ? () => setDatePickerOpen(true) : undefined,
+              },
             }}
           />
         )}
@@ -148,7 +159,12 @@ const RRuleBuilder = <TDate extends MuiPickersAdapter<any, any>>({
           inputSize={fieldDefaultSize}
           inputVariant={fieldDefaultVariant}
         />
-        <End datePickerEndLabel={lang?.endDatePickerLabel} inputSize={fieldDefaultSize} inputVariant={fieldDefaultVariant} />
+        <End
+          datePickerEndLabel={lang?.endDatePickerLabel}
+          inputSize={fieldDefaultSize}
+          inputVariant={fieldDefaultVariant}
+          enableOpenOnClickDatePicker={enableOpenOnClickDatePicker}
+        />
       </LocalizationProvider>
     </Stack>
   );

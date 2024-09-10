@@ -75,6 +75,9 @@ const MyComponent = () => {
 - **`rruleString`** (`string`)  
   Initial RRULE string to initialize the component state.
 
+- **`enableOpenOnClickDatePicker`** (`boolean`)  
+  When enabled, the date picker will open when the input field is clicked. This is true by default.
+
 - **`enableYearlyInterval`** (`boolean`)  
   Enables the yearly interval option in the frequency selector.
 
