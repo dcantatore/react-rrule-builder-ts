@@ -1,5 +1,3 @@
-import { DateTime } from "luxon";
-
 export enum EndType {
   NEVER = "never",
   AFTER = "after",
@@ -7,8 +5,8 @@ export enum EndType {
 
 }
 
-export interface EndDetails {
-  endDate: DateTime | null;
+export interface EndDetails<TDate> {
+  endDate: TDate | null;
   endingType: EndType;
   occurrences: number | null;
 }

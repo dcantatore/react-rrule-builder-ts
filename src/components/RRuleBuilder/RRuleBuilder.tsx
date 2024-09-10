@@ -2,9 +2,8 @@ import React, { useEffect } from "react";
 
 import Stack from "@mui/material/Stack";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
-import { DateTime } from "luxon";
+import { LocalizationProvider, MuiPickersAdapter } from "@mui/x-date-pickers";
+
 import { Frequency } from "rrule";
 import { useTheme } from "@mui/material/styles";
 import { TextFieldProps } from "@mui/material/TextField";
@@ -17,8 +16,9 @@ type Lang = {
   endDatePickerLabel: string;
 };
 
-interface RRuleBuilderProps {
-  datePickerInitialDate?: DateTime;
+interface RRuleBuilderProps<TDate> {
+  dateAdapter: new (...args: any[]) => MuiPickersAdapter<TDate>;
+  datePickerInitialDate?: TDate;
   onChange?: (rruleString: string) => void;
   rruleString?: string;
   enableYearlyInterval?: boolean;
@@ -34,17 +34,10 @@ interface RRuleBuilderProps {
   // dense?: boolean;
 }
 
-const RRuleBuilder = ({
+const RRuleBuilder = <TDate extends MuiPickersAdapter<any, any>>({
   datePickerInitialDate,
   onChange,
   rruleString,
-  // TODO implement rruleOptions object
-  // rruleOptions,
-  // TODO implement small screen detection
-  // enableSmallScreenDetection = true,
-  // smallScreenBreakpoint = 350,
-  // TODO implement dense mode - make all things smaller with less padding
-  // dense = false,
   enableYearlyInterval = false,
   showStartDate = true,
   defaultFrequency = Frequency.WEEKLY,
@@ -54,7 +47,15 @@ const RRuleBuilder = ({
     startDatePickerLabel: "Start Date",
     endDatePickerLabel: "End Date",
   },
-}: RRuleBuilderProps) => {
+  dateAdapter,
+  // TODO implement rruleOptions object
+  // rruleOptions,
+  // TODO implement small screen detection
+  // enableSmallScreenDetection = true,
+  // smallScreenBreakpoint = 350,
+  // TODO implement dense mode - make all things smaller with less padding
+  // dense = false,
+}: RRuleBuilderProps<TDate>) => {
   const {
     // TODO Implement validation errors on date picker
     // validationErrors,
@@ -65,6 +66,7 @@ const RRuleBuilder = ({
     setOnChange,
     setStoreFromRRuleString,
     onChange: onChangeStored,
+    setAdapter,
   } = useBuilderStore();
 
   const theme = useTheme();
@@ -96,6 +98,9 @@ const RRuleBuilder = ({
 
   // init the store with user provided initial data
   useEffect(() => {
+    // eslint-disable-next-line new-cap
+    setAdapter(new dateAdapter());
+
     if (!showStartDate) { // clear the start date if we don't have the option to show it
       setStartDate(null);
     }
@@ -124,7 +129,7 @@ const RRuleBuilder = ({
 
   return (
     <Stack direction="column" spacing={2}>
-      <LocalizationProvider dateAdapter={AdapterLuxon}>
+      <LocalizationProvider dateAdapter={dateAdapter}>
         {showStartDate && (
           <DatePicker
             label={lang?.startDatePickerLabel}
