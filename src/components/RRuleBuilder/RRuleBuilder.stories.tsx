@@ -2,9 +2,9 @@ import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 import { Box, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
-import { DateTime } from "luxon";
 import RRuleBuilder from "./RRuleBuilder";
 import { useBuilderStore } from "../../index";
+import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 
 export default {
   title: "RRuleBuilder",
@@ -75,9 +75,9 @@ Primary.args = {
     startDatePickerLabel: "Start Date",
     endDatePickerLabel: "End Date",
   },
-  datePickerInitialDate: DateTime.now(),
   enableYearlyInterval: true,
   showStartDate: true,
+  dateAdapter: AdapterLuxon,
 };
 
 const SmallTemplate: StoryFn<typeof RRuleBuilder> = (args) => (
@@ -87,6 +87,16 @@ const SmallTemplate: StoryFn<typeof RRuleBuilder> = (args) => (
 );
 
 export const SmallEmbedded = SmallTemplate.bind({});
+SmallEmbedded.args = {
+  lang: {
+    startDatePickerLabel: "Small Date",
+    endDatePickerLabel: "End Date",
+  },
+  enableYearlyInterval: true,
+  showStartDate: true,
+  dateAdapter: AdapterLuxon,
+};
+
 
 const WithRRuleStringTemplate: StoryFn<typeof RRuleBuilder> = (args) => (
   <>
@@ -107,11 +117,11 @@ WithRRuleString.args = {
     startDatePickerLabel: "Initial Deadline Date",
     endDatePickerLabel: "Never After Date",
   },
-  datePickerInitialDate: DateTime.now(),
+  dateAdapter: AdapterLuxon,
   // rruleString: "DTSTART:20240917T114341Z\nRRULE:INTERVAL=2;FREQ=WEEKLY;BYDAY=FR;COUNT=2",
   // *** rehydrate month with radio selected testing:
   // rruleString: "DTSTART:20240917T114341Z \n RRULE:BYMONTHDAY=11;INTERVAL=2;UNTIL=20290605T020600Z;FREQ=MONTHLY",
-  rruleString: "DTSTART:20240917T114341Z \n RRULE:BYSETPOS=2,-1;BYDAY=SA;INTERVAL=1.5;UNTIL=20290605T020600Z;FREQ=MONTHLY",
+  rruleString: "DTSTART:20251217T114341Z \n RRULE:BYSETPOS=2,-1;BYDAY=SA;INTERVAL=1.5;UNTIL=20290605T020600Z;FREQ=MONTHLY",
   // *** rehydrate year with radio selected testing:
   // rruleString: "DTSTART:20240917T114341Z \n RRULE:BYMONTH=6;BYMONTHDAY=2;INTERVAL=1;UNTIL=20290605T020600Z;FREQ=YEARLY",
   // rruleString: "DTSTART:20240917T114341Z \n RRULE:BYMONTH=3;BYSETPOS=2;BYDAY=TU;INTERVAL=1;UNTIL=20290605T020600Z;FREQ=YEARLY",
