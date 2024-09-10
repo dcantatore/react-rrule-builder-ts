@@ -1,6 +1,6 @@
 {
   "name": "react-rrule-builder-ts",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "rrule component for react with mui",
   "main": "index.js",
   "scripts": {
