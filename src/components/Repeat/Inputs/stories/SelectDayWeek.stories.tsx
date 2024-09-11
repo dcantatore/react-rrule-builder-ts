@@ -6,27 +6,33 @@ import useBuilderStore from "../../../../store/builderStore";
 export default {
   title: "Inputs/SelectDayWeek",
   component: SelectDayWeek,
-   argTypes: {
+  argTypes: {
     inputSize: {
       control: "select",
       options: ["small", "medium"],
     },
     inputVariant: {
-      control:  "select",
+      control: "select",
       options: ["standard", "outlined", "filled"],
     },
   },
-   args: {
-      inputSize: "small",
-      inputVariant: "outlined",
+  args: {
+    inputSize: "small",
+    inputVariant: "outlined",
   },
 } as Meta<typeof SelectDayWeek>;
 
 const Template: StoryFn<typeof SelectDayWeek> = (args) => {
   const builderStore = useBuilderStore();
-  const { disabled } = args;
+  const { disabled, inputVariant, inputSize } = args;
   return (
-    <SelectDayWeek value={builderStore.repeatDetails} onChange={builderStore.setRepeatDetails} disabled={disabled}  inputVariant={args.inputVariant} inputSize={args.inputSize} />
+    <SelectDayWeek
+      value={builderStore.repeatDetails}
+      onChange={builderStore.setRepeatDetails}
+      disabled={disabled}
+      inputVariant={inputVariant}
+      inputSize={inputSize}
+    />
   );
 };
 

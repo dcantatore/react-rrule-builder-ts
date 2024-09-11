@@ -9,7 +9,7 @@ export default {
   component: End,
   args: {
     enableOpenOnClickDatePicker: true,
-  }
+  },
 } as Meta<typeof End>;
 
 const Template: StoryFn<typeof End> = (args) => <LocalizationProvider dateAdapter={AdapterLuxon}><End {...args} /></LocalizationProvider>;

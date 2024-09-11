@@ -2,9 +2,9 @@ import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 import { Box, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
+import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import RRuleBuilder from "./RRuleBuilder";
 import { useBuilderStore } from "../../index";
-import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 
 export default {
   title: "RRuleBuilder",
@@ -30,7 +30,7 @@ export default {
       options: ["small", "medium"],
     },
     inputVariant: {
-      control:  "select",
+      control: "select",
       options: ["standard", "outlined", "filled"],
     },
   },
@@ -96,7 +96,6 @@ SmallEmbedded.args = {
   showStartDate: true,
   dateAdapter: AdapterLuxon,
 };
-
 
 const WithRRuleStringTemplate: StoryFn<typeof RRuleBuilder> = (args) => (
   <>

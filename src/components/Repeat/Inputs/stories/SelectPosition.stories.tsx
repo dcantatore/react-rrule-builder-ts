@@ -6,27 +6,33 @@ import useBuilderStore from "../../../../store/builderStore";
 export default {
   title: "Inputs/SelectPosition",
   component: SelectPosition,
-   argTypes: {
+  argTypes: {
     inputSize: {
       control: "select",
       options: ["small", "medium"],
     },
     inputVariant: {
-      control:  "select",
+      control: "select",
       options: ["standard", "outlined", "filled"],
     },
   },
-   args: {
-      inputSize: "small",
-      inputVariant: "outlined",
+  args: {
+    inputSize: "small",
+    inputVariant: "outlined",
   },
 } as Meta<typeof SelectPosition>;
 
 const Template: StoryFn<typeof SelectPosition> = (args) => {
   const builderStore = useBuilderStore();
-  const { disabled } = args;
+  const { disabled, inputVariant, inputSize } = args;
   return (
-    <SelectPosition value={builderStore.repeatDetails} onChange={builderStore.setRepeatDetails} disabled={disabled}  inputVariant={args.inputVariant} inputSize={args.inputSize} />
+    <SelectPosition
+      value={builderStore.repeatDetails}
+      onChange={builderStore.setRepeatDetails}
+      disabled={disabled}
+      inputVariant={inputVariant}
+      inputSize={inputSize}
+    />
   );
 };
 

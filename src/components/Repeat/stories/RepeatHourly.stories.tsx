@@ -6,26 +6,31 @@ import useBuilderStore from "../../../store/builderStore";
 export default {
   title: "Repeat/RepeatHourly",
   component: RepeatHourly,
-   argTypes: {
+  argTypes: {
     inputSize: {
       control: "select",
       options: ["small", "medium"],
     },
     inputVariant: {
-      control:  "select",
+      control: "select",
       options: ["standard", "outlined", "filled"],
     },
   },
-   args: {
-      inputSize: "small",
-      inputVariant: "outlined",
+  args: {
+    inputSize: "small",
+    inputVariant: "outlined",
   },
 } as Meta<typeof RepeatHourly>;
 
 const Template: StoryFn<typeof RepeatHourly> = (args) => {
   const builderStore = useBuilderStore();
   return (
-    <RepeatHourly value={builderStore.repeatDetails} onChange={builderStore.setRepeatDetails} inputVariant={args.inputVariant} inputSize={args.inputSize} />
+    <RepeatHourly
+      value={builderStore.repeatDetails}
+      onChange={builderStore.setRepeatDetails}
+      inputVariant={args.inputVariant}
+      inputSize={args.inputSize}
+    />
   );
 };
 

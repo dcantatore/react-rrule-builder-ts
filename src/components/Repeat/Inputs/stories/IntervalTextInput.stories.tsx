@@ -12,7 +12,7 @@ export default {
     },
     pluralizeUnit: {
       control: "boolean",
-    }
+    },
   },
 
 } as Meta<typeof IntervalTextInput>;

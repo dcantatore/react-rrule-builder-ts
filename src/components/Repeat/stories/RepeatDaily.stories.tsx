@@ -6,26 +6,26 @@ import useBuilderStore from "../../../store/builderStore";
 export default {
   title: "Repeat/RepeatDaily",
   component: RepeatDaily,
-   argTypes: {
+  argTypes: {
     inputSize: {
       control: "select",
       options: ["small", "medium"],
     },
     inputVariant: {
-      control:  "select",
+      control: "select",
       options: ["standard", "outlined", "filled"],
     },
   },
-   args: {
-      inputSize: "small",
-      inputVariant: "outlined",
+  args: {
+    inputSize: "small",
+    inputVariant: "outlined",
   },
 } as Meta<typeof RepeatDaily>;
 
 const Template: StoryFn<typeof RepeatDaily> = () => {
   const builderStore = useBuilderStore();
   return (
-    <RepeatDaily value={builderStore.repeatDetails} onChange={builderStore.setRepeatDetails}  inputVariant="outlined" inputSize="small" />
+    <RepeatDaily value={builderStore.repeatDetails} onChange={builderStore.setRepeatDetails} inputVariant="outlined" inputSize="small" />
   );
 };
 
