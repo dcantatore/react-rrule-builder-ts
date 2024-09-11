@@ -16,8 +16,8 @@ type Lang = {
   endDatePickerLabel: string;
 };
 
-interface RRuleBuilderProps<TDate> {
-  dateAdapter: new (...args: any[]) => MuiPickersAdapter<TDate>;
+interface RRuleBuilderProps<TAdapter extends MuiPickersAdapter<TDate, any>, TDate> {
+  dateAdapter: new (...args: any[]) => MuiPickersAdapter<TAdapter>;
   datePickerInitialDate?: TDate;
   onChange?: (rruleString: string) => void;
   rruleString?: string;
@@ -35,7 +35,7 @@ interface RRuleBuilderProps<TDate> {
   // dense?: boolean;
 }
 
-const RRuleBuilder = <TDate extends MuiPickersAdapter<any, any>>({
+const RRuleBuilder = <TDate, TAdapter extends MuiPickersAdapter<TDate, any>>({
   datePickerInitialDate,
   onChange,
   rruleString,
@@ -57,7 +57,7 @@ const RRuleBuilder = <TDate extends MuiPickersAdapter<any, any>>({
   // smallScreenBreakpoint = 350,
   // TODO implement dense mode - make all things smaller with less padding
   // dense = false,
-}: RRuleBuilderProps<TDate>) => {
+}: RRuleBuilderProps<TAdapter, TDate>) => {
   const {
     // TODO Implement validation errors on date picker
     // validationErrors,
