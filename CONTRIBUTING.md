@@ -22,7 +22,7 @@ Thank you for considering contributing to our project! We appreciate your time a
 1. Clone your forked repository to your local machine:
 
    ```bash
-   git clone https://github.com/dcantatore/react-rrule-builder-ts.git
+   git clone https://github.com/*YOURNAMEHERE*/react-rrule-builder-ts.git
    ```
 
 2. Navigate into your forked repository's directory:
