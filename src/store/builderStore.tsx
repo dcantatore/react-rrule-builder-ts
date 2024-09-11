@@ -16,7 +16,7 @@ interface BuilderState<TDate> {
   repeatDetails: AllRepeatDetails;
   frequency: Frequency;
   startDate: TDate | null;
-  dateAdapter?: MuiPickersAdapter<TDate>; // Change from constructor to instance type
+  dateAdapter?: MuiPickersAdapter<TDate>;
   validationErrors: Record<string, string>;
   endDetails: EndDetails<TDate>;
   RRuleString?: string;
@@ -46,7 +46,7 @@ export const baseRepeatDetails: AllRepeatDetails = {
   byDay: [],
 };
 
-const initialState: BuilderState<MuiPickersAdapter<any>> = {
+const initialState: BuilderState<any> = {
   repeatDetails: baseRepeatDetails,
   frequency: Frequency.WEEKLY,
   startDate: null,
@@ -55,7 +55,7 @@ const initialState: BuilderState<MuiPickersAdapter<any>> = {
   radioValue: null,
 };
 
-const useBuilderStore = create<BuilderState<MuiPickersAdapter<any>> & BuilderActions<MuiPickersAdapter<any>>>((set, get) => ({
+const useBuilderStore = create<BuilderState<any> & BuilderActions<any>>((set, get) => ({
   ...initialState,
   validationErrors: {},
   setRadioValue: (radioValue) => set({ radioValue }),

@@ -12,20 +12,25 @@ export default {
       options: ["small", "medium"],
     },
     inputVariant: {
-      control:  "select",
+      control: "select",
       options: ["standard", "outlined", "filled"],
     },
   },
-   args: {
-      inputSize: "small",
-      inputVariant: "outlined",
+  args: {
+    inputSize: "small",
+    inputVariant: "outlined",
   },
 } as Meta<typeof RepeatWeekly>;
 
 const Template: StoryFn<typeof RepeatWeekly> = (args) => {
   const builderStore = useBuilderStore();
   return (
-    <RepeatWeekly value={builderStore.repeatDetails} onChange={builderStore.setRepeatDetails}  inputVariant={args.inputVariant} inputSize={args.inputSize} />
+    <RepeatWeekly
+      value={builderStore.repeatDetails}
+      onChange={builderStore.setRepeatDetails}
+      inputVariant={args.inputVariant}
+      inputSize={args.inputSize}
+    />
   );
 };
 

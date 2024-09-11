@@ -2,20 +2,20 @@ import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 import RepeatMonthly from "../RepeatMonthly";
 import useBuilderStore from "../../../store/builderStore";
-import {MonthBy} from "../Repeat.types";
+import { MonthBy } from "../Repeat.types";
 
 export default {
   title: "Repeat/RepeatMonthly",
   component: RepeatMonthly,
   argTypes: {
-  inputSize: {
-    control: "select",
-    options: ["small", "medium"],
-  },
-  inputVariant: {
-    control:  "select",
-    options: ["standard", "outlined", "filled"],
-  },
+    inputSize: {
+      control: "select",
+      options: ["small", "medium"],
+    },
+    inputVariant: {
+      control: "select",
+      options: ["standard", "outlined", "filled"],
+    },
   },
   args: {
     inputSize: "small",

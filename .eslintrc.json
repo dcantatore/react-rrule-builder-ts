@@ -36,5 +36,13 @@
     // prop spreading is allowed
     "react/jsx-props-no-spreading": "off"
   },
-  "ignorePatterns": ["node_modules/", "storybook-static/", "*.stories.tsx"]
+  "overrides": [
+    {
+      "files": ["**/*.stories.*"],
+      "rules": {
+        "import/no-extraneous-dependencies": "off"
+      }
+    }
+  ],
+  "ignorePatterns": ["node_modules/", "storybook-static/"]
 }
