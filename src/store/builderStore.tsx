@@ -1,10 +1,10 @@
 import { create } from "zustand";
 import * as Yup from "yup";
 import { Frequency, RRule } from "rrule";
-import { DateTime } from "luxon";
 import { WeekdayStr } from "rrule/dist/esm/weekday";
 import isNil from "lodash/isNil";
 
+import { MuiPickersAdapter } from "@mui/x-date-pickers";
 import {
   AllRepeatDetails, MonthBy, Weekday, YearlyBy,
 } from "../components/Repeat/Repeat.types";
@@ -12,23 +12,25 @@ import getValidationSchema from "../validation/validationSchema";
 import { EndDetails, EndType } from "../components/End/End.types";
 import { buildRRuleString } from "../utils/buildRRuleString";
 
-interface BuilderState {
+interface BuilderState<TDate> {
   repeatDetails: AllRepeatDetails;
   frequency: Frequency;
-  startDate: DateTime | null;
+  startDate: TDate | null;
+  dateAdapter?: MuiPickersAdapter<TDate>; // Change from constructor to instance type
   validationErrors: Record<string, string>;
-  endDetails: EndDetails;
+  endDetails: EndDetails<TDate>;
   RRuleString?: string;
   radioValue: MonthBy | YearlyBy | null,
 }
 
-interface BuilderActions {
+interface BuilderActions<TDate> {
   validationErrors: Record<string, string>;
+  setAdapter: (dateAdapter: MuiPickersAdapter<TDate>) => void;
   setFrequency: (frequency: Frequency) => void;
   setRepeatDetails: (details: AllRepeatDetails) => void;
   validateForm: () => Promise<boolean>;
-  setEndDetails: (details: EndDetails) => void;
-  setStartDate: (startDate: DateTime | null) => void;
+  setEndDetails: (details: EndDetails<TDate>) => void;
+  setStartDate: (startDate: TDate | null) => void;
   buildRRuleString: () => void;
   onChange?: (rruleString: string) => void;
   setOnChange: (onChange: (rruleString: string) => void) => void;
@@ -44,7 +46,7 @@ export const baseRepeatDetails: AllRepeatDetails = {
   byDay: [],
 };
 
-const initialState: BuilderState = {
+const initialState: BuilderState<MuiPickersAdapter<any>> = {
   repeatDetails: baseRepeatDetails,
   frequency: Frequency.WEEKLY,
   startDate: null,
@@ -53,7 +55,7 @@ const initialState: BuilderState = {
   radioValue: null,
 };
 
-const useBuilderStore = create<BuilderState & BuilderActions>((set, get) => ({
+const useBuilderStore = create<BuilderState<MuiPickersAdapter<any>> & BuilderActions<MuiPickersAdapter<any>>>((set, get) => ({
   ...initialState,
   validationErrors: {},
   setRadioValue: (radioValue) => set({ radioValue }),
@@ -68,11 +70,20 @@ const useBuilderStore = create<BuilderState & BuilderActions>((set, get) => ({
   },
   setStartDate: (startDate) => {
     const { endDate } = get().endDetails;
-    // don't allow end date to be before start date, add one 1 day
-    if (endDate && startDate && startDate > endDate) {
-      set({ endDetails: { ...get().endDetails, endDate: startDate.plus({ days: 1 }) } });
+    const { dateAdapter } = get();
+    // without a date adapter, we can't do anything
+    if (!dateAdapter) {
+      return;
     }
 
+    // Use the dateAdapter methods to compare and manipulate dates
+    if (endDate && startDate && dateAdapter.isBefore(endDate, startDate)) {
+      // Adjust the end date to ensure it is not before the start date
+      const adjustedEndDate = dateAdapter.addDays(startDate, 1);
+      set({
+        endDetails: { ...get().endDetails, endDate: adjustedEndDate },
+      });
+    }
     // set the value
     set({ startDate });
     // clear validation errors
@@ -116,14 +127,19 @@ const useBuilderStore = create<BuilderState & BuilderActions>((set, get) => ({
   },
   buildRRuleString: () => {
     const {
-      repeatDetails, frequency, startDate, endDetails,
+      repeatDetails, frequency, startDate, endDetails, dateAdapter,
     } = get();
+
+    if (!dateAdapter) {
+      return;
+    }
 
     const output = buildRRuleString({
       frequency,
       startDate,
       repeatDetails,
       endDetails,
+      dateAdapter,
     });
 
     set({ RRuleString: output });
@@ -136,7 +152,7 @@ const useBuilderStore = create<BuilderState & BuilderActions>((set, get) => ({
   setStoreFromRRuleString: (rruleString) => {
     const parsedObj = RRule.parseString(rruleString);
     const {
-      setFrequency, setStartDate, setEndDetails, setRepeatDetails,
+      setFrequency, setStartDate, setEndDetails, setRepeatDetails, dateAdapter,
     } = get();
 
     // set the frequency
@@ -158,12 +174,14 @@ const useBuilderStore = create<BuilderState & BuilderActions>((set, get) => ({
     }
     // set the start date
     if (parsedObj.dtstart) {
-      setStartDate(DateTime.fromJSDate(parsedObj.dtstart));
+      const parsedDateStart = dateAdapter?.date(parsedObj.dtstart.toISOString()) ?? null;
+      setStartDate(parsedDateStart);
     }
 
     // set the end date
     if (parsedObj.until) {
-      setEndDetails({ endingType: EndType.ON, endDate: DateTime.fromJSDate(parsedObj.until), occurrences: null });
+      const parsedDateEnd = dateAdapter?.date(parsedObj.until.toISOString()) ?? null;
+      setEndDetails({ endingType: EndType.ON, endDate: parsedDateEnd, occurrences: null });
     } else if (parsedObj.count) {
       setEndDetails({ endingType: EndType.AFTER, occurrences: parsedObj.count, endDate: null });
     }
@@ -221,6 +239,9 @@ const useBuilderStore = create<BuilderState & BuilderActions>((set, get) => ({
     }
 
     setRepeatDetails(repeatDetails);
+  },
+  setAdapter: (dateAdapter) => {
+    set({ dateAdapter });
   },
 }));
 

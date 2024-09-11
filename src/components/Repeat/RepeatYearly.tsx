@@ -5,8 +5,6 @@ import Radio from "@mui/material/Radio";
 import Typography from "@mui/material/Typography";
 import RadioGroup from "@mui/material/RadioGroup";
 
-import { DateTime } from "luxon";
-
 import { TextFieldProps } from "@mui/material/TextField";
 import { YearlyBy, AllRepeatDetails } from "./Repeat.types";
 import SelectDayWeek from "./Inputs/SelectDayWeek";
@@ -38,7 +36,14 @@ const RepeatYearly = (
 ) => {
   const maxDaysInMonth = useMemo(() => {
     if (value.byMonth) {
-      return DateTime.fromObject({ month: value.byMonth[0] }).daysInMonth || 31;
+      const month = value.byMonth[0];
+      // always return 29 for February for safety
+      if (month === 2) {
+        return 29;
+      }
+      const year = new Date().getFullYear();
+      // the 0 gets the last day of the previous month and byMonth is 1 based
+      return new Date(year, month, 0).getDate();
     }
     return 31;
   }, [value]);

@@ -1,18 +1,19 @@
 import { RRule, Frequency, Options } from "rrule";
-import { DateTime } from "luxon";
+import { MuiPickersAdapter } from "@mui/x-date-pickers";
 import { AllRepeatDetails } from "../components/Repeat/Repeat.types";
 import { EndDetails, EndType } from "../components/End/End.types";
 
-export interface BuildRRuleStringParams {
+export interface BuildRRuleStringParams<TDate> {
   frequency: Frequency;
-  startDate: DateTime | null;
+  startDate: TDate | null;
   repeatDetails: AllRepeatDetails;
-  endDetails: EndDetails;
+  endDetails: EndDetails<TDate>
+  dateAdapter: MuiPickersAdapter<TDate>;
 }
 
-export const buildRRuleString = (options: BuildRRuleStringParams) => {
+export const buildRRuleString = (options: BuildRRuleStringParams<MuiPickersAdapter<any>>): string => {
   const {
-    frequency, startDate, repeatDetails, endDetails,
+    frequency, startDate, repeatDetails, endDetails, dateAdapter,
   } = options;
 
   const ruleOptions: Options = {
@@ -34,7 +35,7 @@ export const buildRRuleString = (options: BuildRRuleStringParams) => {
     until: null,
     wkst: null,
     freq: frequency,
-    dtstart: startDate?.toJSDate() ?? null,
+    dtstart: startDate ? dateAdapter?.toJsDate(startDate) : null,
   };
 
   if (repeatDetails.interval) {
@@ -64,7 +65,7 @@ export const buildRRuleString = (options: BuildRRuleStringParams) => {
       ruleOptions.count = endDetails.occurrences ?? null;
       break;
     case EndType.ON:
-      ruleOptions.until = endDetails.endDate?.toJSDate() ?? null;
+      ruleOptions.until = endDetails.endDate ? dateAdapter.toJsDate(endDetails.endDate) : null;
       break;
     default:
       break;

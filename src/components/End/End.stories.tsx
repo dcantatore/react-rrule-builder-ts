@@ -7,6 +7,9 @@ import End from "./End";
 export default {
   title: "End/End",
   component: End,
+  args: {
+    enableOpenOnClickDatePicker: true,
+  }
 } as Meta<typeof End>;
 
 const Template: StoryFn<typeof End> = (args) => <LocalizationProvider dateAdapter={AdapterLuxon}><End {...args} /></LocalizationProvider>;

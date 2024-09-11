@@ -39,7 +39,8 @@ npm install react-rrule-builder-ts
 
 ```jsx
 import RRuleBuilder from 'react-rrule-builder-ts';
-import { DateTime } from 'luxon';
+import {AdapterLuxon} from "@mui/x-date-pickers/AdapterLuxon"; // ** YOUR DATE ADAPTER **
+import {DateTime} from "luxon"; // ** BASED ON YOUR DATE ADAPTER **
 
 const MyComponent = () => {
   const handleRRuleChange = (rruleString) => {
@@ -48,7 +49,8 @@ const MyComponent = () => {
 
   return (
     <RRuleBuilder
-      datePickerInitialDate={DateTime.now()}
+      dateAdapter={AdapterLuxon} // ** YOUR DATE ADAPTER **
+      datePickerInitialDate={DateTime.now()} // ** BASED ON YOUR DATE ADAPTER ** 
       onChange={handleRRuleChange}
       enableYearlyInterval={true}
     />
@@ -60,14 +62,21 @@ const MyComponent = () => {
 
 ### RRuleBuilder Props
 🛠️ = Coming soon / in progress
-- **`datePickerInitialDate`** (`DateTime`)  
-  Initial date for the date picker component.
+
+- **`dateAdapter`** (`new (...args: any[]) => MuiPickersAdapter<TDate>;`) 
+  This is an instance of the date adapter used by the date picker component. Such as AdapterDateFns, AdapterLuxon, AdapterDayjs, etc.
+
+- **`datePickerInitialDate`** (`TDate`)  
+  Initial date for the date picker component, the type of this needs to match the date adapter used.
 
 - **`onChange`** (`(rruleString: string) => void`)  
   Callback function triggered when the RRULE string changes.
 
 - **`rruleString`** (`string`)  
   Initial RRULE string to initialize the component state.
+
+- **`enableOpenOnClickDatePicker`** (`boolean`)  
+  When enabled, the date picker will open when the input field is clicked. This is true by default.
 
 - **`enableYearlyInterval`** (`boolean`)  
   Enables the yearly interval option in the frequency selector.
@@ -122,7 +131,7 @@ The component uses a Zustand store for state management, with the following stat
 - **`setRepeatDetails(details: AllRepeatDetails)`**: Updates repeat rule details and rebuilds the RRULE string.
 - **`validateForm()`**: 🛠️ Validates the form using Yup and returns a boolean indicating success.
 - **`setEndDetails(details: EndDetails)`**: Updates the end details of the rule.
-- **`setStartDate(startDate: DateTime | null)`**: Sets the start date and adjusts end date if necessary.
+- **`setStartDate(startDate: TDate | null)`**: Sets the start date and adjusts end date if necessary, needs to be the Date type of the date adapter used.
 - **`buildRRuleString()`**: Constructs the RRULE string from the current state.
 - **`setOnChange(onChange: (rruleString: string) => void)`**: Sets the onChange callback function.
 - **`setStoreFromRRuleString(rruleString: string)`**: Populates the store state from an existing RRULE string.
@@ -131,5 +140,5 @@ The component uses a Zustand store for state management, with the following stat
 ## Other Notes
 
 - MUI is currently a peer dependency and is used for UI components.
-- The package uses MUI's DatePicker for date selection, which might be customizable to other date pickers in the future.
+- The package uses MUI's DatePicker for date selection, you can use your own Adapter for the date picker.
 - Zustand is used to manage state, making it observable and enabling external validation, which is beneficial for complex form interactions.

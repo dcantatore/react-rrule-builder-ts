@@ -1,10 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import Stack from "@mui/material/Stack";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
-import { DateTime } from "luxon";
+import { LocalizationProvider, MuiPickersAdapter } from "@mui/x-date-pickers";
+
 import { Frequency } from "rrule";
 import { useTheme } from "@mui/material/styles";
 import { TextFieldProps } from "@mui/material/TextField";
@@ -17,12 +16,14 @@ type Lang = {
   endDatePickerLabel: string;
 };
 
-interface RRuleBuilderProps {
-  datePickerInitialDate?: DateTime;
+interface RRuleBuilderProps<TDate> {
+  dateAdapter: new (...args: any[]) => MuiPickersAdapter<TDate>;
+  datePickerInitialDate?: TDate;
   onChange?: (rruleString: string) => void;
   rruleString?: string;
   enableYearlyInterval?: boolean;
   showStartDate?: boolean;
+  enableOpenOnClickDatePicker?: boolean;
   defaultFrequency?: Frequency;
   inputSize?: TextFieldProps["size"];
   inputVariant?: TextFieldProps["variant"];
@@ -34,19 +35,13 @@ interface RRuleBuilderProps {
   // dense?: boolean;
 }
 
-const RRuleBuilder = ({
+const RRuleBuilder = <TDate extends MuiPickersAdapter<any, any>>({
   datePickerInitialDate,
   onChange,
   rruleString,
-  // TODO implement rruleOptions object
-  // rruleOptions,
-  // TODO implement small screen detection
-  // enableSmallScreenDetection = true,
-  // smallScreenBreakpoint = 350,
-  // TODO implement dense mode - make all things smaller with less padding
-  // dense = false,
   enableYearlyInterval = false,
   showStartDate = true,
+  enableOpenOnClickDatePicker = true,
   defaultFrequency = Frequency.WEEKLY,
   inputSize = "small",
   inputVariant = "outlined",
@@ -54,7 +49,15 @@ const RRuleBuilder = ({
     startDatePickerLabel: "Start Date",
     endDatePickerLabel: "End Date",
   },
-}: RRuleBuilderProps) => {
+  dateAdapter,
+  // TODO implement rruleOptions object
+  // rruleOptions,
+  // TODO implement small screen detection
+  // enableSmallScreenDetection = true,
+  // smallScreenBreakpoint = 350,
+  // TODO implement dense mode - make all things smaller with less padding
+  // dense = false,
+}: RRuleBuilderProps<TDate>) => {
   const {
     // TODO Implement validation errors on date picker
     // validationErrors,
@@ -65,11 +68,14 @@ const RRuleBuilder = ({
     setOnChange,
     setStoreFromRRuleString,
     onChange: onChangeStored,
+    setAdapter,
   } = useBuilderStore();
 
   const theme = useTheme();
   const fieldDefaultSize = theme.components?.MuiTextField?.defaultProps?.size || inputSize;
   const fieldDefaultVariant = theme.components?.MuiTextField?.defaultProps?.variant || inputVariant;
+  const [datePickerOpen, setDatePickerOpen] = useState(false);
+
   // TODO Implement small screen detection
   // const containerRef = useRef<HTMLDivElement>(null);
   // const [size, setSize] = useState(0);
@@ -96,6 +102,9 @@ const RRuleBuilder = ({
 
   // init the store with user provided initial data
   useEffect(() => {
+    // eslint-disable-next-line new-cap
+    setAdapter(new dateAdapter());
+
     if (!showStartDate) { // clear the start date if we don't have the option to show it
       setStartDate(null);
     }
@@ -124,15 +133,22 @@ const RRuleBuilder = ({
 
   return (
     <Stack direction="column" spacing={2}>
-      <LocalizationProvider dateAdapter={AdapterLuxon}>
+      <LocalizationProvider dateAdapter={dateAdapter}>
         {showStartDate && (
           <DatePicker
             label={lang?.startDatePickerLabel}
             value={startDate}
             onChange={(newDate) => setStartDate(newDate)}
+            open={enableOpenOnClickDatePicker ? datePickerOpen : undefined}
+            onOpen={enableOpenOnClickDatePicker ? () => setDatePickerOpen(true) : undefined}
+            onClose={enableOpenOnClickDatePicker ? () => setDatePickerOpen(false) : undefined}
             slotProps={{
               field: { clearable: true, onClear: () => setStartDate(null) },
-              textField: { size: fieldDefaultSize, variant: fieldDefaultVariant },
+              textField: {
+                size: fieldDefaultSize,
+                variant: fieldDefaultVariant,
+                onClick: enableOpenOnClickDatePicker ? () => setDatePickerOpen(true) : undefined,
+              },
             }}
           />
         )}
@@ -143,7 +159,12 @@ const RRuleBuilder = ({
           inputSize={fieldDefaultSize}
           inputVariant={fieldDefaultVariant}
         />
-        <End datePickerEndLabel={lang?.endDatePickerLabel} inputSize={fieldDefaultSize} inputVariant={fieldDefaultVariant} />
+        <End
+          datePickerEndLabel={lang?.endDatePickerLabel}
+          inputSize={fieldDefaultSize}
+          inputVariant={fieldDefaultVariant}
+          enableOpenOnClickDatePicker={enableOpenOnClickDatePicker}
+        />
       </LocalizationProvider>
     </Stack>
   );

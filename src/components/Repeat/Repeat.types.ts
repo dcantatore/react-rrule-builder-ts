@@ -58,5 +58,6 @@ export type AllRepeatDetails = {
   bySetPos: number[] | null;
   byDay: Weekday[] | null;
   byMonthDay: number[] | null;
+  // not zero based
   byMonth: number[] | null;
 };

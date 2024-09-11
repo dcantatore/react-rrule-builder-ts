@@ -6,6 +6,20 @@ import useBuilderStore from "../../../../store/builderStore";
 export default {
   title: "Inputs/SelectDayCalendar",
   component: SelectDayCalendar,
+   argTypes: {
+    inputSize: {
+      control: "select",
+      options: ["small", "medium"],
+    },
+    inputVariant: {
+      control:  "select",
+      options: ["standard", "outlined", "filled"],
+    },
+  },
+   args: {
+      inputSize: "small",
+      inputVariant: "outlined",
+  },
 } as Meta<typeof SelectDayCalendar>;
 
 const Template: StoryFn<typeof SelectDayCalendar> = (args) => {
@@ -17,6 +31,8 @@ const Template: StoryFn<typeof SelectDayCalendar> = (args) => {
       onChange={builderStore.setRepeatDetails}
       disabled={disabled}
       maxDaysInMonth={maxDaysInMonth}
+      inputVariant={args.inputVariant}
+      inputSize={args.inputSize}
     />
   );
 };
