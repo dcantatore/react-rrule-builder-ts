@@ -16,8 +16,8 @@ type Lang = {
   endDatePickerLabel: string;
 };
 
-interface RRuleBuilderProps<TAdapter extends MuiPickersAdapter<TDate, any>, TDate> {
-  dateAdapter: new (...args: any[]) => MuiPickersAdapter<TAdapter>;
+interface RRuleBuilderProps<TDate> {
+  dateAdapter: new (...args: any[]) => MuiPickersAdapter<TDate, any>;
   datePickerInitialDate?: TDate;
   onChange?: (rruleString: string) => void;
   rruleString?: string;
@@ -28,14 +28,13 @@ interface RRuleBuilderProps<TAdapter extends MuiPickersAdapter<TDate, any>, TDat
   inputSize?: TextFieldProps["size"];
   inputVariant?: TextFieldProps["variant"];
   lang?: Lang;
-  // used to set initial data in the builder
-  // rruleOptions?: Options;
   // enableSmallScreenDetection?: boolean;
   // smallScreenBreakpoint?: number;
   // dense?: boolean;
 }
 
-const RRuleBuilder = <TDate, TAdapter extends MuiPickersAdapter<TDate, any>>({
+// eslint-disable-next-line @typescript-eslint/comma-dangle
+const RRuleBuilder = <TDate,>({
   datePickerInitialDate,
   onChange,
   rruleString,
@@ -50,14 +49,12 @@ const RRuleBuilder = <TDate, TAdapter extends MuiPickersAdapter<TDate, any>>({
     endDatePickerLabel: "End Date",
   },
   dateAdapter,
-  // TODO implement rruleOptions object
-  // rruleOptions,
-  // TODO implement small screen detection
+  // TODO implement small container detection
   // enableSmallScreenDetection = true,
   // smallScreenBreakpoint = 350,
-  // TODO implement dense mode - make all things smaller with less padding
+  // TODO implement dense mode - make all things with less padding /margin
   // dense = false,
-}: RRuleBuilderProps<TAdapter, TDate>) => {
+}: RRuleBuilderProps<TDate>) => {
   const {
     // TODO Implement validation errors on date picker
     // validationErrors,
