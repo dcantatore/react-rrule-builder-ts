@@ -21,6 +21,7 @@ interface BuilderState<TDate> {
   endDetails: EndDetails<TDate>;
   RRuleString?: string;
   radioValue: MonthBy | YearlyBy | null,
+  minEndDate?: TDate;
 }
 
 interface BuilderActions<TDate> {
@@ -76,8 +77,15 @@ const useBuilderStore = create<BuilderState<any> & BuilderActions<any>>((set, ge
       return;
     }
 
+    // set the min end date
+    if (startDate) {
+      const minEndDate = dateAdapter.addDays(startDate, 1);
+      set({ minEndDate });
+    }
+
     // Use the dateAdapter methods to compare and manipulate dates
-    if (endDate && startDate && dateAdapter.isBefore(endDate, startDate)) {
+    if (endDate && startDate
+      && (dateAdapter.isEqual(startDate, endDate) || dateAdapter.isBefore(startDate, endDate))) {
       // Adjust the end date to ensure it is not before the start date
       const adjustedEndDate = dateAdapter.addDays(startDate, 1);
       set({

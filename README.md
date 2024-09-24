@@ -100,6 +100,9 @@ const MyComponent = () => {
     Label for the start date picker.
   - **`endDatePickerLabel`** (`string`)  
     Label for the end date picker.
+ 
+- **`timezone`** (`string`)  
+  Timezone to use for the date picker and RRULE string. Default is 'UTC'. This is also largely dependent on the date adapter used, read MUIs documentation for more information.
     
 - **`enableSmallScreenDetection`** (`boolean`) 🛠️
 Enables detection of the parent container to adjust the layout accordingly for better responsiveness. If set to true, the component will monitor the screen size and adjust its design elements to fit smaller parents
@@ -123,6 +126,7 @@ The component uses a Zustand store for state management, with the following stat
 - **`endDetails`**: Manages end conditions for the RRULE.
 - **`RRuleString`**: The generated RRULE string.
 - **`radioValue`**: Option for monthly and yearly rule settings.
+- **`minEndDate`**: Minimum end date based on the start date. This is always the start date plus one day, an RRULE cannot have an end date before or on the start date, it would not run. 
 
 ### BuilderActions
 🛠️ = Coming soon / in progress
