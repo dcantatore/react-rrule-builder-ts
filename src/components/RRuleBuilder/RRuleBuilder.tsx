@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import Stack from "@mui/material/Stack";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { LocalizationProvider, MuiPickersAdapter } from "@mui/x-date-pickers";
+import { LocalizationProvider, MuiPickersAdapter, PickersTimezone } from "@mui/x-date-pickers";
 
 import { Frequency } from "rrule";
 import { useTheme } from "@mui/material/styles";
@@ -28,6 +28,7 @@ interface RRuleBuilderProps<TDate> {
   inputSize?: TextFieldProps["size"];
   inputVariant?: TextFieldProps["variant"];
   lang?: Lang;
+  timeZone?: PickersTimezone;
   // enableSmallScreenDetection?: boolean;
   // smallScreenBreakpoint?: number;
   // dense?: boolean;
@@ -38,6 +39,7 @@ const RRuleBuilder = <TDate,>({
   datePickerInitialDate,
   onChange,
   rruleString,
+  dateAdapter,
   enableYearlyInterval = false,
   showStartDate = true,
   enableOpenOnClickDatePicker = true,
@@ -48,7 +50,7 @@ const RRuleBuilder = <TDate,>({
     startDatePickerLabel: "Start Date",
     endDatePickerLabel: "End Date",
   },
-  dateAdapter,
+  timeZone = "UTC",
   // TODO implement small container detection
   // enableSmallScreenDetection = true,
   // smallScreenBreakpoint = 350,
@@ -135,6 +137,7 @@ const RRuleBuilder = <TDate,>({
           <DatePicker
             label={lang?.startDatePickerLabel}
             value={startDate}
+            timezone={timeZone}
             onChange={(newDate) => setStartDate(newDate)}
             open={enableOpenOnClickDatePicker ? datePickerOpen : undefined}
             onOpen={enableOpenOnClickDatePicker ? () => setDatePickerOpen(true) : undefined}
@@ -161,6 +164,7 @@ const RRuleBuilder = <TDate,>({
           inputSize={fieldDefaultSize}
           inputVariant={fieldDefaultVariant}
           enableOpenOnClickDatePicker={enableOpenOnClickDatePicker}
+          timeZone={timeZone}
         />
       </LocalizationProvider>
     </Stack>

@@ -34,8 +34,18 @@ const Template: StoryFn<typeof RepeatYearly> = (args) => {
   const {
     repeatDetails, setRepeatDetails, radioValue, setRadioValue,
   } = useBuilderStore();
+
+  const { inputSize, inputVariant, enableYearlyInterval } = args;
   return (
-    <RepeatYearly value={repeatDetails} onChange={setRepeatDetails} radioValue={radioValue as YearlyBy} setRadioValue={setRadioValue} inputVariant={args.inputVariant} inputSize={args.inputSize} enableYearlyInterval={args.enableYearlyInterval} />
+    <RepeatYearly
+      value={repeatDetails}
+      onChange={setRepeatDetails}
+      radioValue={radioValue as YearlyBy}
+      setRadioValue={setRadioValue}
+      inputVariant={inputVariant}
+      inputSize={inputSize}
+      enableYearlyInterval={enableYearlyInterval}
+    />
   );
 };
 

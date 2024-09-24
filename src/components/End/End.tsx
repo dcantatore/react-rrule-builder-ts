@@ -6,6 +6,7 @@ import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Typography from "@mui/material/Typography";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
+import { PickersTimezone } from "@mui/x-date-pickers";
 import useBuilderStore from "../../store/builderStore";
 import { EndType } from "./End.types";
 import { getLabelSize } from "../Repeat/utils";
@@ -15,13 +16,18 @@ interface EndProps {
   inputSize: TextFieldProps["size"];
   inputVariant: TextFieldProps["variant"];
   enableOpenOnClickDatePicker: boolean;
+  timeZone: PickersTimezone
 }
 
 const End = ({
-  datePickerEndLabel, inputSize, inputVariant, enableOpenOnClickDatePicker,
+  datePickerEndLabel,
+  inputSize,
+  inputVariant,
+  enableOpenOnClickDatePicker,
+  timeZone,
 }: EndProps) => {
   const {
-    startDate, endDetails, setEndDetails,
+    endDetails, setEndDetails, minEndDate,
   } = useBuilderStore();
   const labelSize = getLabelSize(inputSize);
   const [datePickerOpen, setDatePickerOpen] = useState(false);
@@ -52,8 +58,9 @@ const End = ({
          <DatePicker
            label={datePickerEndLabel}
            value={endDetails?.endDate}
-              // earliest possible end date is the start date
-           minDate={startDate ?? undefined}
+           timezone={timeZone}
+            // earliest possible end date is the start date plus one day
+           minDate={minEndDate ?? undefined}
            open={enableOpenOnClickDatePicker ? datePickerOpen : undefined}
            onOpen={enableOpenOnClickDatePicker ? () => setDatePickerOpen(true) : undefined}
            onClose={enableOpenOnClickDatePicker ? () => setDatePickerOpen(false) : undefined}

@@ -24,12 +24,16 @@ export default {
 
 const Template: StoryFn<typeof RepeatWeekly> = (args) => {
   const builderStore = useBuilderStore();
+  const {
+    setRepeatDetails, repeatDetails,
+  } = builderStore;
+  const { inputSize, inputVariant } = args;
   return (
     <RepeatWeekly
-      value={builderStore.repeatDetails}
-      onChange={builderStore.setRepeatDetails}
-      inputVariant={args.inputVariant}
-      inputSize={args.inputSize}
+      value={repeatDetails}
+      onChange={setRepeatDetails}
+      inputVariant={inputVariant}
+      inputSize={inputSize}
     />
   );
 };
