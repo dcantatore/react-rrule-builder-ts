@@ -25,14 +25,18 @@ export default {
 
 const Template: StoryFn<typeof RepeatMonthly> = (args) => {
   const builderStore = useBuilderStore();
+  const {
+    radioValue, setRepeatDetails, setRadioValue, repeatDetails,
+  } = builderStore;
+  const { inputSize, inputVariant } = args;
   return (
     <RepeatMonthly
-      value={builderStore.repeatDetails}
-      onChange={builderStore.setRepeatDetails}
-      radioValue={builderStore.radioValue as MonthBy}
-      setRadioValue={builderStore.setRadioValue}
-      inputVariant={args.inputVariant}
-      inputSize={args.inputSize}
+      value={repeatDetails}
+      onChange={setRepeatDetails}
+      radioValue={radioValue as MonthBy}
+      setRadioValue={setRadioValue}
+      inputVariant={inputVariant}
+      inputSize={inputSize}
     />
   );
 };

@@ -24,12 +24,14 @@ export default {
 
 const Template: StoryFn<typeof RepeatHourly> = (args) => {
   const builderStore = useBuilderStore();
+  const { repeatDetails, setRepeatDetails } = builderStore;
+  const { inputSize, inputVariant } = args;
   return (
     <RepeatHourly
-      value={builderStore.repeatDetails}
-      onChange={builderStore.setRepeatDetails}
-      inputVariant={args.inputVariant}
-      inputSize={args.inputSize}
+      value={repeatDetails}
+      onChange={setRepeatDetails}
+      inputVariant={inputVariant}
+      inputSize={inputSize}
     />
   );
 };
