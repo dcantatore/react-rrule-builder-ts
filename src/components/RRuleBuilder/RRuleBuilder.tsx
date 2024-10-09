@@ -58,15 +58,12 @@ const RRuleBuilder = <TDate,>({
   // dense = false,
 }: RRuleBuilderProps<TDate>) => {
   const {
-    // TODO Implement validation errors on date picker
-    // validationErrors,
     startDate,
     setStartDate,
     frequency,
     setFrequency,
     setOnChange,
     setStoreFromRRuleString,
-    onChange: onChangeStored,
     setAdapter,
   } = useBuilderStore();
 
@@ -109,7 +106,7 @@ const RRuleBuilder = <TDate,>({
     }
 
     // store the users onChange function if it exists and is not already stored
-    if (onChange && !onChangeStored) {
+    if (onChange) {
       setOnChange(onChange);
     }
 
