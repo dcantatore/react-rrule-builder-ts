@@ -16,8 +16,10 @@ type Lang = {
   endDatePickerLabel: string;
 };
 
+type MuiPickersAdapterConstructor<TDate> = new (...args: any[]) => MuiPickersAdapter<TDate>;
+
 interface RRuleBuilderProps<TDate> {
-  dateAdapter: new (...args: any[]) => MuiPickersAdapter<TDate, any>;
+  dateAdapter: MuiPickersAdapterConstructor<TDate>;
   datePickerInitialDate?: TDate;
   onChange?: (rruleString: string) => void;
   rruleString?: string;

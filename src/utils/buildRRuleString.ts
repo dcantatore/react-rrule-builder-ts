@@ -7,7 +7,7 @@ export interface BuildRRuleStringParams<TDate> {
   frequency: Frequency;
   startDate: TDate | null;
   repeatDetails: AllRepeatDetails;
-  endDetails: EndDetails<TDate>
+  endDetails: EndDetails<TDate>;
   dateAdapter: MuiPickersAdapter<TDate>;
 }
 
