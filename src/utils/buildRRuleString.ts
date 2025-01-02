@@ -1,9 +1,10 @@
 import { RRule, Frequency, Options } from "rrule";
 import { MuiPickersAdapter } from "@mui/x-date-pickers";
+import { DateTime } from "luxon";
 import { AllRepeatDetails } from "../components/Repeat/Repeat.types";
 import { EndDetails, EndType } from "../components/End/End.types";
 
-export interface BuildRRuleStringParams<TDate> {
+export interface BuildRRuleStringParams<TDate extends DateTime<boolean>> {
   frequency: Frequency;
   startDate: TDate | null;
   repeatDetails: AllRepeatDetails;
@@ -11,7 +12,9 @@ export interface BuildRRuleStringParams<TDate> {
   dateAdapter: MuiPickersAdapter<TDate>;
 }
 
-export const buildRRuleString = (options: BuildRRuleStringParams<MuiPickersAdapter<any>>): string => {
+export const buildRRuleString = <TDate extends DateTime<boolean>>(
+  options: BuildRRuleStringParams<TDate>,
+): string => {
   const {
     frequency, startDate, repeatDetails, endDetails, dateAdapter,
   } = options;

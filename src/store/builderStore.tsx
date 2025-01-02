@@ -5,6 +5,7 @@ import { WeekdayStr } from "rrule/dist/esm/weekday";
 import isNil from "lodash/isNil";
 
 import { MuiPickersAdapter } from "@mui/x-date-pickers";
+import { DateTime } from "luxon";
 import {
   AllRepeatDetails, MonthBy, Weekday, YearlyBy,
 } from "../components/Repeat/Repeat.types";
@@ -12,7 +13,7 @@ import getValidationSchema from "../validation/validationSchema";
 import { EndDetails, EndType } from "../components/End/End.types";
 import { buildRRuleString } from "../utils/buildRRuleString";
 
-interface BuilderState<TDate> {
+interface BuilderState<TDate extends DateTime<boolean>> {
   repeatDetails: AllRepeatDetails;
   frequency: Frequency;
   startDate: TDate | null;
@@ -24,7 +25,7 @@ interface BuilderState<TDate> {
   minEndDate?: TDate;
 }
 
-interface BuilderActions<TDate> {
+interface BuilderActions<TDate extends DateTime<boolean>> {
   validationErrors: Record<string, string>;
   setAdapter: (dateAdapter: MuiPickersAdapter<TDate>) => void;
   setFrequency: (frequency: Frequency) => void;

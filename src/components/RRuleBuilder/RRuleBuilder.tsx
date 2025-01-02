@@ -7,6 +7,7 @@ import { LocalizationProvider, MuiPickersAdapter, PickersTimezone } from "@mui/x
 import { Frequency } from "rrule";
 import { useTheme } from "@mui/material/styles";
 import { TextFieldProps } from "@mui/material/TextField";
+import { DateTime } from "luxon";
 import RepeatSelect from "../Repeat/Repeat";
 import useBuilderStore from "../../store/builderStore";
 import End from "../End/End";
@@ -16,9 +17,11 @@ type Lang = {
   endDatePickerLabel: string;
 };
 
-type MuiPickersAdapterConstructor<TDate> = new (...args: any[]) => MuiPickersAdapter<TDate>;
+type MuiPickersAdapterConstructor<TDate extends DateTime<boolean>> = new (
+  ...args: any[]
+) => MuiPickersAdapter<TDate>;
 
-interface RRuleBuilderProps<TDate> {
+interface RRuleBuilderProps<TDate extends DateTime<boolean>> {
   dateAdapter: MuiPickersAdapterConstructor<TDate>;
   datePickerInitialDate?: TDate;
   onChange?: (rruleString: string) => void;
@@ -37,7 +40,7 @@ interface RRuleBuilderProps<TDate> {
 }
 
 // eslint-disable-next-line @typescript-eslint/comma-dangle
-const RRuleBuilder = <TDate,>({
+const RRuleBuilder = <TDate extends DateTime<boolean>,>({
   datePickerInitialDate,
   onChange,
   rruleString,

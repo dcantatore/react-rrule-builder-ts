@@ -1,6 +1,6 @@
 {
   "name": "react-rrule-builder-ts",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "description": "rrule component for react with mui",
   "main": "index.js",
   "scripts": {
@@ -31,6 +31,7 @@
     "@mui/material": "^6.3.0",
     "@mui/x-date-pickers": "^7.23.3",
     "lodash": "^4.17.21",
+    "luxon": "^3.5.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "rrule": "^2.8.1",
@@ -51,6 +52,7 @@
     "@storybook/react": "^8.2.9",
     "@storybook/react-vite": "^8.2.9",
     "@storybook/test": "^8.2.9",
+    "@types/luxon": "^3.4.2",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
