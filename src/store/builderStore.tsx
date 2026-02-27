@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import * as Yup from "yup";
 import { Frequency, RRule } from "rrule";
-import { WeekdayStr } from "rrule/dist/esm/weekday";
 import isNil from "lodash/isNil";
 
 import { MuiPickersAdapter } from "@mui/x-date-pickers";
@@ -238,17 +237,10 @@ const useBuilderStore = create<BuilderState<DateTime> & BuilderActions<DateTime>
     }
 
     if (parsedObj.byweekday) {
-      if (!Array.isArray(parsedObj.byweekday)) {
-        repeatDetails.byDay = [parsedObj.byweekday as Weekday];
+      if (Array.isArray(parsedObj.byweekday)) {
+        repeatDetails.byDay = parsedObj.byweekday.map((day) => day.toString() as Weekday);
       } else {
-        repeatDetails.byDay = parsedObj.byweekday.map((day) => {
-          if (typeof day !== "number") {
-            // @ts-ignore
-            return Weekday[day];
-          }
-          // TODO what is the number parse to weekday?
-          return day as unknown as WeekdayStr;
-        });
+        repeatDetails.byDay = [parsedObj.byweekday.toString() as Weekday];
       }
     }
 
