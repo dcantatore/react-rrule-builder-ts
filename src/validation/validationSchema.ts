@@ -2,7 +2,6 @@ import * as Yup from "yup";
 import { Frequency } from "rrule";
 import { Weekday } from "../components/Repeat/Repeat.types";
 
-// TODO clean up the schemas to match types
 
 const repeatDetailsBaseSchema = Yup.object({
   frequency: Yup.mixed<Frequency>().required("Frequency is required"),
@@ -15,7 +14,7 @@ const yearlyRepeatDetailsSchema = repeatDetailsBaseSchema.shape({
   byDay: Yup.array().of(Yup.mixed<Weekday>()).optional(),
   byMonthDay: Yup.array().of(Yup.number()).optional(),
   byMonth: Yup.array().of(Yup.number()).optional(),
-  interval: Yup.mixed<never>().optional().notRequired(),
+  interval: Yup.number().optional().notRequired(),
 });
 
 const monthlyRepeatDetailsSchema = repeatDetailsBaseSchema.shape({
