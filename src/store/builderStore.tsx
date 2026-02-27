@@ -64,7 +64,7 @@ const useBuilderStore = create<BuilderState<DateTime> & BuilderActions<DateTime>
   setFrequency: (frequency) => {
     set({ frequency });
     // clear repeat details when changing frequency
-    set({ repeatDetails: initialState.repeatDetails });
+    set({ repeatDetails: { ...baseRepeatDetails } });
     // clear validation errors
     set({ validationErrors: {} });
     // rebuild the rrule string
