@@ -48,7 +48,7 @@ export const baseRepeatDetails: AllRepeatDetails = {
   byDay: [],
 };
 
-const initialState: BuilderState<any> = {
+const initialState: BuilderState<DateTime> = {
   repeatDetails: baseRepeatDetails,
   frequency: Frequency.WEEKLY,
   startDate: null,
@@ -57,7 +57,7 @@ const initialState: BuilderState<any> = {
   radioValue: null,
 };
 
-const useBuilderStore = create<BuilderState<any> & BuilderActions<any>>((set, get) => ({
+const useBuilderStore = create<BuilderState<DateTime> & BuilderActions<DateTime>>((set, get) => ({
   ...initialState,
   validationErrors: {},
   setRadioValue: (radioValue) => set({ radioValue }),
