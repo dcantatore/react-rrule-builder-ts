@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import Stack from "@mui/material/Stack";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -10,6 +10,7 @@ import { TextFieldProps } from "@mui/material/TextField";
 import { DateTime } from "luxon";
 import RepeatSelect from "../Repeat/Repeat";
 import useBuilderStore from "../../store/builderStore";
+import { BuilderStoreContext, BuilderStoreProvider } from "../../store/builderStore";
 import End from "../End/End";
 
 type Lang = {
@@ -40,7 +41,7 @@ interface RRuleBuilderProps<TDate extends DateTime<boolean>> {
 }
 
 // eslint-disable-next-line @typescript-eslint/comma-dangle
-const RRuleBuilder = <TDate extends DateTime<boolean>,>({
+const RRuleBuilderInner = <TDate extends DateTime<boolean>,>({
   datePickerInitialDate,
   onChange,
   rruleString,
@@ -170,6 +171,24 @@ const RRuleBuilder = <TDate extends DateTime<boolean>,>({
         />
       </LocalizationProvider>
     </Stack>
+  );
+};
+
+// Auto-wraps in BuilderStoreProvider if not already inside one
+// eslint-disable-next-line @typescript-eslint/comma-dangle
+const RRuleBuilder = <TDate extends DateTime<boolean>,>(
+  props: RRuleBuilderProps<TDate>,
+) => {
+  const existingStore = useContext(BuilderStoreContext);
+
+  if (existingStore) {
+    return <RRuleBuilderInner {...props} />;
+  }
+
+  return (
+    <BuilderStoreProvider>
+      <RRuleBuilderInner {...props} />
+    </BuilderStoreProvider>
   );
 };
 

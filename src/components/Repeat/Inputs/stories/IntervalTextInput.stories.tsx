@@ -1,11 +1,12 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 import IntervalTextInput from "../IntervalTextInput";
-import useBuilderStore from "../../../../store/builderStore";
+import useBuilderStore, { BuilderStoreProvider } from "../../../../store/builderStore";
 
 export default {
   title: "Inputs/IntervalTextInput",
   component: IntervalTextInput,
+  decorators: [(Story: React.ComponentType) => (<BuilderStoreProvider><Story /></BuilderStoreProvider>)],
   argTypes: {
     unit: {
       control: "text",

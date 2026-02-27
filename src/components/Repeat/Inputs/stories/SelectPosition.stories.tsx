@@ -1,11 +1,12 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 import SelectPosition from "../SelectPosition";
-import useBuilderStore from "../../../../store/builderStore";
+import useBuilderStore, { BuilderStoreProvider } from "../../../../store/builderStore";
 
 export default {
   title: "Inputs/SelectPosition",
   component: SelectPosition,
+  decorators: [(Story: React.ComponentType) => (<BuilderStoreProvider><Story /></BuilderStoreProvider>)],
   argTypes: {
     inputSize: {
       control: "select",

@@ -1,4 +1,5 @@
-import { create } from "zustand";
+import React, { createContext, useContext, useRef } from "react";
+import { createStore, useStore } from "zustand";
 import * as Yup from "yup";
 import { Frequency, RRule } from "rrule";
 import isNil from "lodash/isNil";
@@ -56,7 +57,10 @@ const initialState: BuilderState<DateTime> = {
   radioValue: null,
 };
 
-const useBuilderStore = create<BuilderState<DateTime> & BuilderActions<DateTime>>((set, get) => ({
+type BuilderStoreState = BuilderState<DateTime> & BuilderActions<DateTime>;
+type BuilderStoreInstance = ReturnType<typeof createBuilderStore>;
+
+const createBuilderStore = () => createStore<BuilderStoreState>((set, get) => ({
   ...initialState,
   validationErrors: {},
   setRadioValue: (radioValue) => set({ radioValue }),
@@ -270,5 +274,33 @@ const useBuilderStore = create<BuilderState<DateTime> & BuilderActions<DateTime>
     set({ dateAdapter });
   },
 }));
+
+// --- React Context for per-instance store ---
+
+export const BuilderStoreContext = createContext<BuilderStoreInstance | null>(null);
+
+interface BuilderStoreProviderProps {
+  children: React.ReactNode;
+}
+
+export const BuilderStoreProvider = ({ children }: BuilderStoreProviderProps) => {
+  const storeRef = useRef<BuilderStoreInstance | null>(null);
+  if (!storeRef.current) {
+    storeRef.current = createBuilderStore();
+  }
+  return (
+    <BuilderStoreContext.Provider value={storeRef.current}>
+      {children}
+    </BuilderStoreContext.Provider>
+  );
+};
+
+const useBuilderStore = (): BuilderStoreState => {
+  const store = useContext(BuilderStoreContext);
+  if (isNil(store)) {
+    throw new Error("useBuilderStore must be used within a BuilderStoreProvider or RRuleBuilder");
+  }
+  return useStore(store);
+};
 
 export default useBuilderStore;

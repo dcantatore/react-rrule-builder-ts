@@ -4,11 +4,12 @@ import { Box, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import RRuleBuilder from "./RRuleBuilder";
-import { useBuilderStore } from "../../index";
+import { useBuilderStore, BuilderStoreProvider } from "../../index";
 
 export default {
   title: "RRuleBuilder",
   component: RRuleBuilder,
+  decorators: [(Story: React.ComponentType) => (<BuilderStoreProvider><Story /></BuilderStoreProvider>)],
   argTypes: {
     datePickerStartLabel: {
       control: "text",

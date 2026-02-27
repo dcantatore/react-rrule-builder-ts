@@ -1,11 +1,12 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 import SelectDayCalendar from "../SelectDayCalendar";
-import useBuilderStore from "../../../../store/builderStore";
+import useBuilderStore, { BuilderStoreProvider } from "../../../../store/builderStore";
 
 export default {
   title: "Inputs/SelectDayCalendar",
   component: SelectDayCalendar,
+  decorators: [(Story: React.ComponentType) => (<BuilderStoreProvider><Story /></BuilderStoreProvider>)],
   argTypes: {
     inputSize: {
       control: "select",

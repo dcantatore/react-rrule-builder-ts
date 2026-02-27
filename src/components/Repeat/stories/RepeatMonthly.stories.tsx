@@ -1,12 +1,13 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 import RepeatMonthly from "../RepeatMonthly";
-import useBuilderStore from "../../../store/builderStore";
+import useBuilderStore, { BuilderStoreProvider } from "../../../store/builderStore";
 import { MonthBy } from "../Repeat.types";
 
 export default {
   title: "Repeat/RepeatMonthly",
   component: RepeatMonthly,
+  decorators: [(Story: React.ComponentType) => (<BuilderStoreProvider><Story /></BuilderStoreProvider>)],
   argTypes: {
     inputSize: {
       control: "select",

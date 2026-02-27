@@ -1,11 +1,12 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 import RepeatDaily from "../RepeatDaily";
-import useBuilderStore from "../../../store/builderStore";
+import useBuilderStore, { BuilderStoreProvider } from "../../../store/builderStore";
 
 export default {
   title: "Repeat/RepeatDaily",
   component: RepeatDaily,
+  decorators: [(Story: React.ComponentType) => (<BuilderStoreProvider><Story /></BuilderStoreProvider>)],
   argTypes: {
     inputSize: {
       control: "select",
