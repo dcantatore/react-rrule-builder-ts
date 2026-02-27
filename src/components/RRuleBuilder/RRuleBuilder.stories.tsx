@@ -55,7 +55,7 @@ const Template: StoryFn<typeof RRuleBuilder> = (args) => {
         Validate
       </Button>
       {!errors.length ? <Typography color="info">Form is valid</Typography> : <Typography color="error">Form is invalid</Typography>}
-      {!errors.length && errors.map((key) => (
+      {errors.length > 0 && errors.map((key) => (
         <Typography key={key} color="error">{validationErrors[key]}</Typography>
       ))}
       <hr />
