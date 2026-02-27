@@ -4,6 +4,7 @@ import Select, { SelectProps } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
+import isNil from "lodash/isNil";
 import { AllRepeatDetails, Months } from "../Repeat.types";
 import { getLabelSize, monthShortTextMapping } from "../utils";
 
@@ -20,7 +21,8 @@ const sxMinWidth = { minWidth: 120 };
 const SelectMonth = ({
   value, onChange, disabled, inputSize, inputVariant,
 }: SelectMonthProps) => {
-  const displayValue = disabled ? null : value?.byMonth?.[0] ?? null;
+  const rawMonth = disabled ? null : value?.byMonth?.[0] ?? null;
+  const displayValue = isNil(rawMonth) ? "" : String(rawMonth);
   const labelSize = getLabelSize(inputSize);
 
   return (
