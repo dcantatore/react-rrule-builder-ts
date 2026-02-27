@@ -113,7 +113,7 @@ const useBuilderStore = create<BuilderState<any> & BuilderActions<any>>((set, ge
   },
   validateForm: async () => {
     const { repeatDetails, frequency } = get();
-    if (!frequency) {
+    if (isNil(frequency)) {
       set({ validationErrors: { frequency: "Frequency is required" } });
       return false;
     }
