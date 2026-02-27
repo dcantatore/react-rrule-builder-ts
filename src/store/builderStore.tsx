@@ -160,69 +160,76 @@ const useBuilderStore = create<BuilderState<any> & BuilderActions<any>>((set, ge
   setOnChange: (onChange) => set({ onChange }),
   setStoreFromRRuleString: (rruleString) => {
     const parsedObj = RRule.parseString(rruleString);
-    const {
-      setFrequency, setStartDate, setEndDetails, setRepeatDetails, dateAdapter,
-    } = get();
+    const { dateAdapter } = get();
 
-    // set the frequency
+    // --- Build all state up front, then apply once ---
+
+    // frequency
+    let frequency = initialState.frequency;
     if (!isNil(parsedObj.freq)) {
-      setFrequency(parsedObj.freq);
-      if (parsedObj.freq === Frequency.YEARLY) {
-        if (parsedObj.byweekday || parsedObj.bysetpos) {
-          set({ radioValue: YearlyBy.BYSETPOS });
-        } else if (parsedObj.bymonth || parsedObj.bymonthday) {
-          set({ radioValue: YearlyBy.BYMONTH });
-        }
-      } else if (parsedObj.freq === Frequency.MONTHLY) {
-        if (parsedObj.bymonthday) {
-          set({ radioValue: MonthBy.BYMONTHDAY });
-        } else if (parsedObj.bysetpos || parsedObj.byweekday) {
-          set({ radioValue: MonthBy.BYSETPOS });
-        }
+      frequency = parsedObj.freq;
+    }
+
+    // radio value
+    let radioValue: MonthBy | YearlyBy | null = null;
+    if (frequency === Frequency.YEARLY) {
+      if (parsedObj.byweekday || parsedObj.bysetpos) {
+        radioValue = YearlyBy.BYSETPOS;
+      } else if (parsedObj.bymonth || parsedObj.bymonthday) {
+        radioValue = YearlyBy.BYMONTH;
+      }
+    } else if (frequency === Frequency.MONTHLY) {
+      if (parsedObj.bymonthday) {
+        radioValue = MonthBy.BYMONTHDAY;
+      } else if (parsedObj.bysetpos || parsedObj.byweekday) {
+        radioValue = MonthBy.BYSETPOS;
       }
     }
-    // set the start date
-    if (parsedObj.dtstart) {
-      const parsedDateStart = dateAdapter?.date(parsedObj.dtstart.toISOString()) ?? null;
-      setStartDate(parsedDateStart);
+
+    // start date
+    let startDate = initialState.startDate;
+    let minEndDate;
+    if (parsedObj.dtstart && dateAdapter) {
+      startDate = dateAdapter.date(parsedObj.dtstart.toISOString()) ?? null;
+      if (startDate) {
+        minEndDate = dateAdapter.addDays(startDate, 1);
+      }
     }
 
-    // set the end date
-    if (parsedObj.until) {
-      const parsedDateEnd = dateAdapter?.date(parsedObj.until.toISOString()) ?? null;
-      setEndDetails({ endingType: EndType.ON, endDate: parsedDateEnd, occurrences: null });
+    // end details
+    let endDetails = initialState.endDetails;
+    if (parsedObj.until && dateAdapter) {
+      const parsedDateEnd = dateAdapter.date(parsedObj.until.toISOString()) ?? null;
+      endDetails = { endingType: EndType.ON, endDate: parsedDateEnd, occurrences: null };
     } else if (parsedObj.count) {
-      setEndDetails({ endingType: EndType.AFTER, occurrences: parsedObj.count, endDate: null });
+      endDetails = { endingType: EndType.AFTER, occurrences: parsedObj.count, endDate: null };
     }
 
-    // set the repeat details
+    // repeat details
     const repeatDetails: AllRepeatDetails = {
-      interval: parsedObj.interval ?? null,
+      interval: isNil(parsedObj.interval) ? null : parsedObj.interval,
       byDay: [],
       byMonthDay: [],
       byMonth: [],
       bySetPos: [],
     };
 
-    // set the byMonth
     if (parsedObj.bymonth) {
-      if (!Array.isArray(parsedObj.bymonth)) {
-        repeatDetails.byMonth = [parsedObj.bymonth];
-      } else {
+      if (Array.isArray(parsedObj.bymonth)) {
         repeatDetails.byMonth = parsedObj.bymonth;
-      }
-    }
-
-    // set the byMonthDay
-    if (parsedObj.bymonthday) {
-      if (!Array.isArray(parsedObj.bymonthday)) {
-        repeatDetails.byMonthDay = [parsedObj.bymonthday];
       } else {
-        repeatDetails.byMonthDay = parsedObj.bymonthday;
+        repeatDetails.byMonth = [parsedObj.bymonth];
       }
     }
 
-    // set the byDay (by weekday)
+    if (parsedObj.bymonthday) {
+      if (Array.isArray(parsedObj.bymonthday)) {
+        repeatDetails.byMonthDay = parsedObj.bymonthday;
+      } else {
+        repeatDetails.byMonthDay = [parsedObj.bymonthday];
+      }
+    }
+
     if (parsedObj.byweekday) {
       if (!Array.isArray(parsedObj.byweekday)) {
         repeatDetails.byDay = [parsedObj.byweekday as Weekday];
@@ -238,16 +245,27 @@ const useBuilderStore = create<BuilderState<any> & BuilderActions<any>>((set, ge
       }
     }
 
-    // set the bySetPos
     if (parsedObj.bysetpos) {
-      if (!Array.isArray(parsedObj.bysetpos)) {
-        repeatDetails.bySetPos = [parsedObj.bysetpos];
-      } else {
+      if (Array.isArray(parsedObj.bysetpos)) {
         repeatDetails.bySetPos = parsedObj.bysetpos;
+      } else {
+        repeatDetails.bySetPos = [parsedObj.bysetpos];
       }
     }
 
-    setRepeatDetails(repeatDetails);
+    // --- Single batched update ---
+    set({
+      frequency,
+      radioValue,
+      startDate,
+      minEndDate,
+      endDetails,
+      repeatDetails,
+      validationErrors: {},
+    });
+
+    // build once with final state, fires onChange once with correct value
+    get().buildRRuleString();
   },
   setAdapter: (dateAdapter) => {
     set({ dateAdapter });
