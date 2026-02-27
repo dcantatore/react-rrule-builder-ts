@@ -2,8 +2,14 @@
   "name": "react-rrule-builder-ts",
   "version": "0.0.21",
   "description": "rrule component for react with mui",
-  "main": "index.js",
+  "main": "dist/rrule-generator.umd.js",
+  "module": "dist/rrule-generator.es.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
+    "build": "vite build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
