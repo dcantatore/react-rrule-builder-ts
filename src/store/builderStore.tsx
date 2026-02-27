@@ -84,9 +84,9 @@ const useBuilderStore = create<BuilderState<any> & BuilderActions<any>>((set, ge
       set({ minEndDate });
     }
 
-    // Use the dateAdapter methods to compare and manipulate dates
+    // Adjust the end date if the start date is on or after it
     if (endDate && startDate
-      && (dateAdapter.isEqual(startDate, endDate) || dateAdapter.isBefore(startDate, endDate))) {
+      && (dateAdapter.isEqual(startDate, endDate) || dateAdapter.isAfter(startDate, endDate))) {
       // Adjust the end date to ensure it is not before the start date
       const adjustedEndDate = dateAdapter.addDays(startDate, 1);
       set({
