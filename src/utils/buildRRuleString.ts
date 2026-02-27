@@ -33,7 +33,7 @@ export const buildRRuleString = <TDate extends DateTime<boolean>>(
     byweekno: null,
     byyearday: null,
     count: null,
-    interval: 0,
+    interval: 1,
     tzid: null,
     until: null,
     wkst: null,
