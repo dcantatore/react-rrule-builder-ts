@@ -5,7 +5,7 @@ import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import { AllRepeatDetails } from "../Repeat.types";
-import { getLabelSize } from "../utils";
+import { getLabelSize, safeParseInt } from "../utils";
 
 interface SelectDayCalendarProps {
   value: AllRepeatDetails
@@ -34,7 +34,12 @@ const SelectDayCalendar = ({
       <Select
         sx={sxMinWidth}
         disabled={disabled}
-        onChange={(e) => onChange({ ...value, byMonthDay: [parseInt(e.target.value as string, 10)] })}
+        onChange={(e) => {
+          const parsed = safeParseInt(e.target.value as string);
+          if (parsed !== undefined) {
+            onChange({ ...value, byMonthDay: [parsed] });
+          }
+        }}
         value={value.byMonthDay?.[0] ?? ""}
         labelId="select-day-cal-label"
         label="Select Day"

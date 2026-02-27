@@ -84,3 +84,12 @@ export const addOrRemoveFromArray = (array: number[], value: number) => {
 
 // get the label equivalent of input size
 export const getLabelSize = (inputSize: TextFieldProps["size"]): InputLabelProps["size"] => (inputSize === "small" ? "small" : "normal");
+
+// safe parseInt that returns undefined instead of NaN
+export const safeParseInt = (value: string): number | undefined => {
+  const parsed = parseInt(value, 10);
+  if (Number.isNaN(parsed)) {
+    return undefined;
+  }
+  return parsed;
+};

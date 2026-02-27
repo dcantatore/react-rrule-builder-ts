@@ -9,7 +9,7 @@ import {
   AllRepeatDetails,
   OnThe,
 } from "../Repeat.types";
-import { getLabelSize, onTheTextMapping } from "../utils";
+import { getLabelSize, onTheTextMapping, safeParseInt } from "../utils";
 
 interface SelectPositionProps {
   value: AllRepeatDetails
@@ -50,7 +50,7 @@ const SelectPosition = ({
         variant={inputVariant}
       >
         {Object.keys(OnThe).map((key) => (
-          <MenuItem key={key} value={parseInt(OnThe[key as keyof typeof OnThe], 10)}>
+          <MenuItem key={key} value={safeParseInt(OnThe[key as keyof typeof OnThe])}>
             {onTheTextMapping[OnThe[key as keyof typeof OnThe]]}
           </MenuItem>
         ))}

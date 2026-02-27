@@ -3,6 +3,7 @@ import Stack from "@mui/material/Stack";
 import { Typography } from "@mui/material";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
 import { AllRepeatDetails } from "../Repeat.types";
+import { safeParseInt } from "../utils";
 
 type IntervalTextInputProps = {
   value: AllRepeatDetails;
@@ -30,7 +31,12 @@ const IntervalTextInput = ({
       value={value.interval}
       size={inputSize}
       variant={inputVariant}
-      onChange={(e) => onChange({ ...value, interval: parseInt(e.target.value, 10) })}
+      onChange={(e) => {
+        const parsed = safeParseInt(e.target.value);
+        if (parsed !== undefined) {
+          onChange({ ...value, interval: parsed });
+        }
+      }}
     />
     <Typography fontSize={inputSize}>
       {`${unit}${pluralizeUnit ? "(s)" : ""}`}

@@ -9,7 +9,7 @@ import TextField, { TextFieldProps } from "@mui/material/TextField";
 import { PickersTimezone } from "@mui/x-date-pickers";
 import useBuilderStore from "../../store/builderStore";
 import { EndType } from "./End.types";
-import { getLabelSize } from "../Repeat/utils";
+import { getLabelSize, safeParseInt } from "../Repeat/utils";
 
 interface EndProps {
   datePickerEndLabel: string;
@@ -81,7 +81,12 @@ const End = ({
             label="Occurrences"
             type="number"
             value={endDetails.occurrences ?? ""}
-            onChange={(e) => setEndDetails({ ...endDetails, occurrences: parseInt(e.target.value, 10) })}
+            onChange={(e) => {
+              const parsed = safeParseInt(e.target.value);
+              if (parsed !== undefined) {
+                setEndDetails({ ...endDetails, occurrences: parsed });
+              }
+            }}
             size={inputSize}
             variant={inputVariant}
           />

@@ -6,7 +6,7 @@ import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import isNil from "lodash/isNil";
 import { AllRepeatDetails, Months } from "../Repeat.types";
-import { getLabelSize, monthShortTextMapping } from "../utils";
+import { getLabelSize, monthShortTextMapping, safeParseInt } from "../utils";
 
 interface SelectMonthProps {
   value: AllRepeatDetails
@@ -38,7 +38,12 @@ const SelectMonth = ({
       <Select
         sx={sxMinWidth}
         disabled={disabled}
-        onChange={(e) => onChange({ ...value, byMonth: [parseInt(e.target.value as string, 10)] })}
+        onChange={(e) => {
+          const parsed = safeParseInt(e.target.value as string);
+          if (parsed !== undefined) {
+            onChange({ ...value, byMonth: [parsed] });
+          }
+        }}
         value={displayValue}
         labelId="select-month-label"
         label={!disabled && !!displayValue ? "Select Month" : undefined}
