@@ -35,7 +35,7 @@ const SelectDayCalendar = ({
         sx={sxMinWidth}
         disabled={disabled}
         onChange={(e) => onChange({ ...value, byMonthDay: [parseInt(e.target.value as string, 10)] })}
-        value={value.byMonthDay}
+        value={value.byMonthDay?.[0] ?? ""}
         labelId="select-day-cal-label"
         label="Select Day"
         size={inputSize}
