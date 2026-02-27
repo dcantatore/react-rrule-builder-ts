@@ -159,7 +159,14 @@ const useBuilderStore = create<BuilderState<DateTime> & BuilderActions<DateTime>
   },
   setOnChange: (onChange) => set({ onChange }),
   setStoreFromRRuleString: (rruleString) => {
-    const parsedObj = RRule.parseString(rruleString);
+    let parsedObj;
+    try {
+      parsedObj = RRule.parseString(rruleString);
+    } catch (error) {
+      console.error("Failed to parse RRULE string:", error);
+      set({ validationErrors: { rruleString: "Invalid RRULE string" } });
+      return;
+    }
     const { dateAdapter } = get();
 
     // --- Build all state up front, then apply once ---
