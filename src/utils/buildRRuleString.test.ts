@@ -3,7 +3,7 @@ import { Frequency } from "rrule";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import { DateTime } from "luxon";
 import { buildRRuleString } from "./buildRRuleString";
-import { EndType } from "../components/End/End.types";
+import { EndDetails, EndType } from "../components/End/End.types";
 import { Weekday } from "../components/Repeat/Repeat.types";
 import { baseRepeatDetails } from "../store/builderStore";
 
@@ -13,7 +13,7 @@ const makeParams = (overrides: Record<string, unknown> = {}) => ({
   frequency: Frequency.WEEKLY,
   startDate: null,
   repeatDetails: { ...baseRepeatDetails },
-  endDetails: { endingType: EndType.NEVER, endDate: null, occurrences: null },
+  endDetails: { endingType: EndType.NEVER } as EndDetails<DateTime>,
   dateAdapter: adapter,
   ...overrides,
 });
@@ -47,10 +47,8 @@ describe("buildRRuleString", () => {
   });
 
   describe("interval", () => {
-    it("defaults to INTERVAL=1 when interval is null", () => {
-      const result = buildRRuleString(makeParams({
-        repeatDetails: { ...baseRepeatDetails, interval: null },
-      }));
+    it("defaults to INTERVAL=1 with base repeat details", () => {
+      const result = buildRRuleString(makeParams());
       expect(result).toContain("INTERVAL=1");
     });
 
@@ -62,9 +60,7 @@ describe("buildRRuleString", () => {
     });
 
     it("never outputs INTERVAL=0", () => {
-      const result = buildRRuleString(makeParams({
-        repeatDetails: { ...baseRepeatDetails, interval: null },
-      }));
+      const result = buildRRuleString(makeParams());
       expect(result).not.toContain("INTERVAL=0");
     });
   });
@@ -85,7 +81,7 @@ describe("buildRRuleString", () => {
   describe("end details", () => {
     it("omits COUNT and UNTIL for EndType.NEVER", () => {
       const result = buildRRuleString(makeParams({
-        endDetails: { endingType: EndType.NEVER, endDate: null, occurrences: null },
+        endDetails: { endingType: EndType.NEVER },
       }));
       expect(result).not.toContain("COUNT=");
       expect(result).not.toContain("UNTIL=");
@@ -93,7 +89,7 @@ describe("buildRRuleString", () => {
 
     it("includes COUNT for EndType.AFTER", () => {
       const result = buildRRuleString(makeParams({
-        endDetails: { endingType: EndType.AFTER, occurrences: 5, endDate: null },
+        endDetails: { endingType: EndType.AFTER, occurrences: 5 },
       }));
       expect(result).toContain("COUNT=5");
     });
@@ -101,7 +97,7 @@ describe("buildRRuleString", () => {
     it("includes UNTIL for EndType.ON", () => {
       const endDate = DateTime.fromISO("2026-12-31T00:00:00.000Z");
       const result = buildRRuleString(makeParams({
-        endDetails: { endingType: EndType.ON, endDate, occurrences: null },
+        endDetails: { endingType: EndType.ON, endDate },
       }));
       expect(result).toContain("UNTIL=");
     });
@@ -148,7 +144,7 @@ describe("buildRRuleString", () => {
         frequency: Frequency.WEEKLY,
         startDate,
         repeatDetails: { ...baseRepeatDetails, interval: 2, byDay: [Weekday.MO, Weekday.WE, Weekday.FR] },
-        endDetails: { endingType: EndType.AFTER, occurrences: 10, endDate: null },
+        endDetails: { endingType: EndType.AFTER, occurrences: 10 },
       }));
       expect(result).toContain("FREQ=WEEKLY");
       expect(result).toContain("INTERVAL=2");

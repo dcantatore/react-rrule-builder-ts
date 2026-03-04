@@ -5,8 +5,7 @@ export enum EndType {
 
 }
 
-export interface EndDetails<TDate> {
-  endDate: TDate | null;
-  endingType: EndType;
-  occurrences: number | null;
-}
+export type EndDetails<TDate> =
+  | { endingType: EndType.NEVER }
+  | { endingType: EndType.AFTER; occurrences: number | null }
+  | { endingType: EndType.ON; endDate: TDate | null };

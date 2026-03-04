@@ -28,7 +28,7 @@ const SelectDayWeek = ({
 
   // keep select sync with store
   useEffect(() => {
-    if (value.byDay === null || value.byDay.length === 0) {
+    if (value.byDay.length === 0) {
       setSelectedByDay("");
       return;
     }

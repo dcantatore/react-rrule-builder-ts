@@ -6,7 +6,7 @@ import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import isNil from "lodash/isNil";
 import { AllRepeatDetails, Months } from "../Repeat.types";
-import { getLabelSize, monthShortTextMapping, safeParseInt } from "../utils";
+import { getLabelSize, monthShortTextMapping } from "../utils";
 
 interface SelectMonthProps {
   value: AllRepeatDetails
@@ -21,8 +21,8 @@ const sxMinWidth = { minWidth: 120 };
 const SelectMonth = ({
   value, onChange, disabled, inputSize, inputVariant,
 }: SelectMonthProps) => {
-  const rawMonth = disabled ? null : value?.byMonth?.[0] ?? null;
-  const displayValue = isNil(rawMonth) ? "" : String(rawMonth);
+  const rawMonth = disabled ? undefined : value.byMonth[0];
+  const displayValue = isNil(rawMonth) ? "" : rawMonth;
   const labelSize = getLabelSize(inputSize);
 
   return (
@@ -39,10 +39,7 @@ const SelectMonth = ({
         sx={sxMinWidth}
         disabled={disabled}
         onChange={(e) => {
-          const parsed = safeParseInt(e.target.value as string);
-          if (parsed !== undefined) {
-            onChange({ ...value, byMonth: [parsed] });
-          }
+          onChange({ ...value, byMonth: [e.target.value as number] });
         }}
         value={displayValue}
         labelId="select-month-label"
@@ -50,8 +47,8 @@ const SelectMonth = ({
         size={inputSize}
         variant={inputVariant}
       >
-        {Object.values(Months).map((key) => (
-          <MenuItem key={key} value={key}>{monthShortTextMapping[key]}</MenuItem>
+        {Object.values(Months).map((monthNum) => (
+          <MenuItem key={monthNum} value={monthNum}>{monthShortTextMapping[monthNum]}</MenuItem>
         ))}
       </Select>
     </FormControl>

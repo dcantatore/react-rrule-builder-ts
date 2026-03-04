@@ -53,7 +53,7 @@ const initialState: BuilderState<DateTime> = {
   frequency: Frequency.WEEKLY,
   startDate: null,
   validationErrors: {},
-  endDetails: { endingType: EndType.NEVER, endDate: null, occurrences: null },
+  endDetails: { endingType: EndType.NEVER },
   radioValue: null,
 };
 
@@ -74,7 +74,7 @@ const createBuilderStore = () => createStore<BuilderStoreState>((set, get) => ({
     get().buildRRuleString();
   },
   setStartDate: (startDate) => {
-    const { endDate } = get().endDetails;
+    const currentEndDetails = get().endDetails;
     const { dateAdapter } = get();
     // without a date adapter, we can't do anything
     if (!dateAdapter) {
@@ -88,12 +88,13 @@ const createBuilderStore = () => createStore<BuilderStoreState>((set, get) => ({
     }
 
     // Adjust the end date if the start date is on or after it
-    if (endDate && startDate
-      && (dateAdapter.isEqual(startDate, endDate) || dateAdapter.isAfter(startDate, endDate))) {
-      // Adjust the end date to ensure it is not before the start date
+    if (currentEndDetails.endingType === EndType.ON
+      && currentEndDetails.endDate && startDate
+      && (dateAdapter.isEqual(startDate, currentEndDetails.endDate)
+        || dateAdapter.isAfter(startDate, currentEndDetails.endDate))) {
       const adjustedEndDate = dateAdapter.addDays(startDate, 1);
       set({
-        endDetails: { ...get().endDetails, endDate: adjustedEndDate },
+        endDetails: { endingType: EndType.ON, endDate: adjustedEndDate },
       });
     }
     // set the value
@@ -207,17 +208,17 @@ const createBuilderStore = () => createStore<BuilderStoreState>((set, get) => ({
     }
 
     // end details
-    let endDetails = initialState.endDetails;
+    let endDetails: EndDetails<DateTime> = initialState.endDetails;
     if (parsedObj.until && dateAdapter) {
       const parsedDateEnd = dateAdapter.date(parsedObj.until.toISOString()) ?? null;
-      endDetails = { endingType: EndType.ON, endDate: parsedDateEnd, occurrences: null };
+      endDetails = { endingType: EndType.ON, endDate: parsedDateEnd };
     } else if (parsedObj.count) {
-      endDetails = { endingType: EndType.AFTER, occurrences: parsedObj.count, endDate: null };
+      endDetails = { endingType: EndType.AFTER, occurrences: parsedObj.count };
     }
 
     // repeat details
     const repeatDetails: AllRepeatDetails = {
-      interval: isNil(parsedObj.interval) ? null : parsedObj.interval,
+      interval: isNil(parsedObj.interval) ? 1 : parsedObj.interval,
       byDay: [],
       byMonthDay: [],
       byMonth: [],

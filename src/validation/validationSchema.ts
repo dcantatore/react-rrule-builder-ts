@@ -5,30 +5,30 @@ import { Weekday } from "../components/Repeat/Repeat.types";
 
 const repeatDetailsBaseSchema = Yup.object({
   frequency: Yup.mixed<Frequency>().required("Frequency is required"),
-  interval: Yup.number().required(),
+  interval: Yup.number().required().min(1, "Interval must be at least 1"),
 });
 
 const yearlyRepeatDetailsSchema = repeatDetailsBaseSchema.shape({
   frequency: Yup.mixed<Frequency.YEARLY>().required(),
-  bySetPos: Yup.array().of(Yup.number()).optional(),
+  bySetPos: Yup.array().of(Yup.number().min(-1).max(4)).optional(),
   byDay: Yup.array().of(Yup.mixed<Weekday>()).optional(),
-  byMonthDay: Yup.array().of(Yup.number()).optional(),
-  byMonth: Yup.array().of(Yup.number()).optional(),
-  interval: Yup.number().optional().notRequired(),
+  byMonthDay: Yup.array().of(Yup.number().min(1).max(31)).optional(),
+  byMonth: Yup.array().of(Yup.number().min(1).max(12)).optional(),
+  interval: Yup.number().optional().notRequired().min(1, "Interval must be at least 1"),
 });
 
 const monthlyRepeatDetailsSchema = repeatDetailsBaseSchema.shape({
   frequency: Yup.mixed<Frequency.MONTHLY>().required(),
-  interval: Yup.number().required(),
-  bySetPos: Yup.array().of(Yup.number()).optional(),
+  interval: Yup.number().required().min(1, "Interval must be at least 1"),
+  bySetPos: Yup.array().of(Yup.number().min(-1).max(4)).optional(),
   byDay: Yup.array().of(Yup.mixed<Weekday>()).optional(),
-  byMonthDay: Yup.array().of(Yup.number()).optional(),
+  byMonthDay: Yup.array().of(Yup.number().min(1).max(31)).optional(),
 });
 
 const weeklyRepeatDetailsSchema = repeatDetailsBaseSchema.shape({
   frequency: Yup.mixed<Frequency.WEEKLY>().required(),
-  interval: Yup.number().required(),
-  byDay: Yup.array().of(Yup.mixed<Weekday>()).required(),
+  interval: Yup.number().required().min(1, "Interval must be at least 1"),
+  byDay: Yup.array().of(Yup.mixed<Weekday>()).required().min(1, "At least one day must be selected"),
 });
 
 const getValidationSchema = (frequency: Frequency) => {

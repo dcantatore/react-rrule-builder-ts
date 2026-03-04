@@ -35,7 +35,7 @@ const RepeatYearly = (
   }: RepeatYearlyProps,
 ) => {
   const maxDaysInMonth = useMemo(() => {
-    if (value.byMonth) {
+    if (value.byMonth.length > 0) {
       const month = value.byMonth[0];
       // always return 29 for February for safety
       if (month === 2) {
@@ -46,7 +46,7 @@ const RepeatYearly = (
       return new Date(year, month, 0).getDate();
     }
     return 31;
-  }, [value]);
+  }, [value.byMonth]);
   const disabledOnBYSETPOS = radioValue === YearlyBy.BYMONTH;
   const disabledOnBYMONTH = radioValue === YearlyBy.BYSETPOS;
 

@@ -31,8 +31,6 @@ describe("builderStore", () => {
       expect(result.current.repeatDetails).toEqual(baseRepeatDetails);
       expect(result.current.endDetails).toEqual({
         endingType: EndType.NEVER,
-        endDate: null,
-        occurrences: null,
       });
       expect(result.current.validationErrors).toEqual({});
       expect(result.current.radioValue).toBeNull();
@@ -117,18 +115,19 @@ describe("builderStore", () => {
         result.current.setEndDetails({
           endingType: EndType.ON,
           endDate,
-          occurrences: null,
         });
       });
       act(() => {
         result.current.setStartDate(startDate);
       });
       // End date should have been adjusted to be after the start date
-      expect(result.current.endDetails.endDate).toBeTruthy();
-      if (result.current.endDetails.endDate) {
-        expect(
-          result.current.endDetails.endDate > startDate
-        ).toBe(true);
+      const endDets = result.current.endDetails;
+      expect(endDets.endingType).toBe(EndType.ON);
+      if (endDets.endingType === EndType.ON) {
+        expect(endDets.endDate).toBeTruthy();
+        if (endDets.endDate) {
+          expect(endDets.endDate > startDate).toBe(true);
+        }
       }
     });
 
@@ -167,11 +166,13 @@ describe("builderStore", () => {
         result.current.setEndDetails({
           endingType: EndType.AFTER,
           occurrences: 10,
-          endDate: null,
         });
       });
-      expect(result.current.endDetails.endingType).toBe(EndType.AFTER);
-      expect(result.current.endDetails.occurrences).toBe(10);
+      const endDets = result.current.endDetails;
+      expect(endDets.endingType).toBe(EndType.AFTER);
+      if (endDets.endingType === EndType.AFTER) {
+        expect(endDets.occurrences).toBe(10);
+      }
     });
   });
 
@@ -241,7 +242,7 @@ describe("builderStore", () => {
       act(() => {
         result.current.setRepeatDetails({
           ...baseRepeatDetails,
-          byDay: null,
+          byDay: [],
         });
       });
       let isValid = true;
@@ -327,8 +328,11 @@ describe("builderStore", () => {
       act(() => {
         result.current.setStoreFromRRuleString("RRULE:FREQ=DAILY;COUNT=5");
       });
-      expect(result.current.endDetails.endingType).toBe(EndType.AFTER);
-      expect(result.current.endDetails.occurrences).toBe(5);
+      const afterDets = result.current.endDetails;
+      expect(afterDets.endingType).toBe(EndType.AFTER);
+      if (afterDets.endingType === EndType.AFTER) {
+        expect(afterDets.occurrences).toBe(5);
+      }
     });
 
     it("parses UNTIL for EndType.ON", () => {
@@ -339,8 +343,11 @@ describe("builderStore", () => {
       act(() => {
         result.current.setStoreFromRRuleString("RRULE:FREQ=DAILY;UNTIL=20261231T000000Z");
       });
-      expect(result.current.endDetails.endingType).toBe(EndType.ON);
-      expect(result.current.endDetails.endDate).toBeTruthy();
+      const onDets = result.current.endDetails;
+      expect(onDets.endingType).toBe(EndType.ON);
+      if (onDets.endingType === EndType.ON) {
+        expect(onDets.endDate).toBeTruthy();
+      }
     });
 
     it("parses DTSTART", () => {

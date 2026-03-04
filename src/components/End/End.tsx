@@ -37,8 +37,17 @@ const End = ({
       <FormControl>
         <InputLabel id="end-label" size={labelSize}>End</InputLabel>
         <Select
-          value={endDetails?.endingType}
-          onChange={(e) => setEndDetails({ ...endDetails, endingType: e.target.value as EndType })}
+          value={endDetails.endingType}
+          onChange={(e) => {
+            const newType = e.target.value as EndType;
+            if (newType === EndType.NEVER) {
+              setEndDetails({ endingType: EndType.NEVER });
+            } else if (newType === EndType.AFTER) {
+              setEndDetails({ endingType: EndType.AFTER, occurrences: null });
+            } else {
+              setEndDetails({ endingType: EndType.ON, endDate: null });
+            }
+          }}
           labelId="end-label"
           label="End"
           size={inputSize}
@@ -53,20 +62,20 @@ const End = ({
           ))}
         </Select>
       </FormControl>
-      {endDetails?.endingType === EndType.ON
+      {endDetails.endingType === EndType.ON
        && (
          <DatePicker
            label={datePickerEndLabel}
-           value={endDetails?.endDate}
+           value={endDetails.endDate}
            timezone={timeZone}
             // earliest possible end date is the start date plus one day
            minDate={minEndDate ?? undefined}
            open={enableOpenOnClickDatePicker ? datePickerOpen : undefined}
            onOpen={enableOpenOnClickDatePicker ? () => setDatePickerOpen(true) : undefined}
            onClose={enableOpenOnClickDatePicker ? () => setDatePickerOpen(false) : undefined}
-           onChange={(newDate) => setEndDetails({ ...endDetails, endDate: newDate })}
+           onChange={(newDate) => setEndDetails({ endingType: EndType.ON, endDate: newDate })}
            slotProps={{
-             field: { clearable: true, onClear: () => setEndDetails({ ...endDetails, endDate: null }) },
+             field: { clearable: true, onClear: () => setEndDetails({ endingType: EndType.ON, endDate: null }) },
              textField: {
                size: inputSize,
                variant: inputVariant,
@@ -75,7 +84,7 @@ const End = ({
            }}
          />
        )}
-      {endDetails?.endingType === EndType.AFTER && (
+      {endDetails.endingType === EndType.AFTER && (
         <FormControl>
           <TextField
             label="Occurrences"
@@ -84,7 +93,7 @@ const End = ({
             onChange={(e) => {
               const parsed = safeParseInt(e.target.value);
               if (parsed !== undefined) {
-                setEndDetails({ ...endDetails, occurrences: parsed });
+                setEndDetails({ endingType: EndType.AFTER, occurrences: parsed });
               }
             }}
             size={inputSize}

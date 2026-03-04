@@ -45,19 +45,19 @@ export const buildRRuleString = <TDate extends DateTime<boolean>>(
     ruleOptions.interval = repeatDetails.interval;
   }
 
-  if ("byDay" in repeatDetails && repeatDetails.byDay) {
+  if (repeatDetails.byDay.length > 0) {
     ruleOptions.byweekday = repeatDetails.byDay.map((day) => RRule[day]);
   }
 
-  if ("byMonthDay" in repeatDetails && repeatDetails.byMonthDay) {
+  if (repeatDetails.byMonthDay.length > 0) {
     ruleOptions.bymonthday = repeatDetails.byMonthDay;
   }
 
-  if ("byMonth" in repeatDetails && repeatDetails.byMonth) {
+  if (repeatDetails.byMonth.length > 0) {
     ruleOptions.bymonth = repeatDetails.byMonth;
   }
 
-  if ("bySetPos" in repeatDetails && repeatDetails.bySetPos) {
+  if (repeatDetails.bySetPos.length > 0) {
     ruleOptions.bysetpos = repeatDetails.bySetPos;
   }
 

@@ -42,11 +42,11 @@ const RepeatWeekly = (
           <Button
             size="small"
             key={dayKey}
-            color={value?.byDay?.includes(dayKey) ? "primary" : "inherit"}
+            color={value.byDay.includes(dayKey) ? "primary" : "inherit"}
             onClick={() => {
-              let selectedDays = value?.byDay || [];
-              if (value?.byDay?.includes(dayKey)) {
-                selectedDays = value?.byDay.filter((d) => d !== dayKey);
+              let selectedDays = value.byDay;
+              if (value.byDay.includes(dayKey)) {
+                selectedDays = value.byDay.filter((d) => d !== dayKey);
               } else {
                 selectedDays = [...selectedDays, dayKey];
               }
