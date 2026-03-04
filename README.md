@@ -2,7 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/react-rrule-builder-ts.svg)](https://badge.fury.io/js/react-rrule-builder-ts)
 
-[![codecov](https://codecov.io/gh/dcantatore/react-rrule-builder-ts/branch/main/graph/badge.svg)](https://codecov.io/gh/dcantatore/react-rrule-builder-ts)
+[![codecov](https://img.shields.io/codecov/c/github/dcantatore/react-rrule-builder-ts?style=flat-square&logo=codecov&logoColor=white&label=coverage)](https://codecov.io/gh/dcantatore/react-rrule-builder-ts)
 
 [![Storybook](https://img.shields.io/badge/Storybook-React%20RRULE%20Builder%20TS-ff69b4)](https://dcantatore.github.io/react-rrule-builder-ts/)
 
@@ -20,15 +20,22 @@ You can view the demo and explore component functionality in the [storybook](htt
 
 ## Features
 
-- Generates RRULE strings compliant with iCalendar standards.
-- Supports all RRULE options.
-- Includes form validation using Yup.
-- Integrates with MUI (Material-UI) components.
-- Manages state using Zustand, making state observable and accessible for external validation.
+- Generates RRULE strings compliant with iCalendar (RFC 5545) standards.
+- Supports hourly, daily, weekly, monthly, and yearly frequencies with full repeat options.
+- Rehydrate component state from an existing RRULE string.
+- Per-instance Zustand store via React Context — multiple `<RRuleBuilder>` instances work independently on the same page.
+- Includes form validation using Yup with range-checked schemas per frequency.
+- Integrates with MUI (Material-UI) components with customizable size and variant.
+- Exports all public types, enums, and the `BuilderStoreProvider` for external store access.
+- Accessible: ARIA labels on interactive elements, unique IDs via `useId()`.
 
 ## Installation
 
-To install the package, run:
+```bash
+yarn add react-rrule-builder-ts
+```
+
+or
 
 ```bash
 npm install react-rrule-builder-ts
@@ -36,20 +43,20 @@ npm install react-rrule-builder-ts
 
 ## Usage
 
-```jsx
+```tsx
 import RRuleBuilder from 'react-rrule-builder-ts';
-import {AdapterLuxon} from "@mui/x-date-pickers/AdapterLuxon"; // ** YOUR DATE ADAPTER **
-import {DateTime} from "luxon"; // ** BASED ON YOUR DATE ADAPTER **
+import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
+import { DateTime } from "luxon";
 
 const MyComponent = () => {
-  const handleRRuleChange = (rruleString) => {
+  const handleRRuleChange = (rruleString: string) => {
     console.log(rruleString);
   };
 
   return (
     <RRuleBuilder
-      dateAdapter={AdapterLuxon} // ** YOUR DATE ADAPTER **
-      datePickerInitialDate={DateTime.now()} // ** BASED ON YOUR DATE ADAPTER ** 
+      dateAdapter={AdapterLuxon}
+      datePickerInitialDate={DateTime.now()}
       onChange={handleRRuleChange}
       enableYearlyInterval={true}
     />
@@ -57,91 +64,144 @@ const MyComponent = () => {
 };
 ```
 
+### External Store Access
+
+If you need to access the builder's state from sibling components (e.g. to read `validationErrors` or call `validateForm`), wrap both components in a `BuilderStoreProvider`:
+
+```tsx
+import { RRuleBuilder, BuilderStoreProvider, useBuilderStore } from 'react-rrule-builder-ts';
+import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
+
+const ValidationStatus = () => {
+  const { validationErrors, validateForm } = useBuilderStore();
+  return (
+    <div>
+      <button onClick={() => validateForm()}>Validate</button>
+      {Object.entries(validationErrors).map(([field, msg]) => (
+        <p key={field} style={{ color: 'red' }}>{msg}</p>
+      ))}
+    </div>
+  );
+};
+
+const MyPage = () => (
+  <BuilderStoreProvider>
+    <RRuleBuilder dateAdapter={AdapterLuxon} />
+    <ValidationStatus />
+  </BuilderStoreProvider>
+);
+```
+
 ## API
 
 ### RRuleBuilder Props
-🛠️ = Coming soon / in progress
 
-- **`dateAdapter`** (`new (...args: any[]) => MuiPickersAdapter<TDate>;`) 
-  This is an instance of the date adapter used by the date picker component. Such as AdapterDateFns, AdapterLuxon, AdapterDayjs, etc.
+- **`dateAdapter`** (`new (...args: any[]) => MuiPickersAdapter<TDate>`)
+  Date adapter instance used by MUI date pickers (e.g. `AdapterLuxon`, `AdapterDateFns`, `AdapterDayjs`).
 
-- **`datePickerInitialDate`** (`TDate`)  
-  Initial date for the date picker component, the type of this needs to match the date adapter used.
+- **`datePickerInitialDate`** (`TDate`)
+  Initial date for the start date picker. Type must match the date adapter.
 
-- **`onChange`** (`(rruleString: string) => void`)  
-  Callback function triggered when the RRULE string changes.
+- **`onChange`** (`(rruleString: string) => void`)
+  Callback fired when the RRULE string changes.
 
-- **`rruleString`** (`string`)  
-  Initial RRULE string to initialize the component state.
+- **`rruleString`** (`string`)
+  Existing RRULE string to rehydrate component state from.
 
-- **`enableOpenOnClickDatePicker`** (`boolean`)  
-  When enabled, the date picker will open when the input field is clicked. This is true by default.
+- **`enableOpenOnClickDatePicker`** (`boolean`, default: `true`)
+  When enabled, date pickers open when the input field is clicked.
 
-- **`enableYearlyInterval`** (`boolean`)  
-  Enables the yearly interval option in the frequency selector.
+- **`enableYearlyInterval`** (`boolean`, default: `false`)
+  Shows the interval input for yearly frequency.
 
-- **`showStartDate`** (`boolean`)  
+- **`showStartDate`** (`boolean`, default: `true`)
   Shows or hides the start date picker.
 
-- **`defaultFrequency`** (`Frequency`)  
-  Sets the default frequency of the recurrence rule (e.g., daily, weekly).
+- **`defaultFrequency`** (`Frequency`, default: `Frequency.WEEKLY`)
+  Sets the default frequency of the recurrence rule.
 
-- **`inputSize`** (`TextFieldProps["size"]`)  
-  Specifies the size of the input fields (e.g., small, medium).
+- **`inputSize`** (`TextFieldProps["size"]`, default: `"small"`)
+  Size of all input fields. Respects MUI theme defaults.
 
-- **`inputVariant`** (`TextFieldProps["variant"]`)  
-  Specifies the variant of the input fields (e.g., outlined, filled).
+- **`inputVariant`** (`TextFieldProps["variant"]`, default: `"outlined"`)
+  Variant of all input fields. Respects MUI theme defaults.
 
-- **`lang`** (`Lang`)  
-  Localization options for date picker labels.  
-  **`Lang`** object structure:
-  - **`startDatePickerLabel`** (`string`)  
-    Label for the start date picker.
-  - **`endDatePickerLabel`** (`string`)  
-    Label for the end date picker.
- 
-- **`timezone`** (`string`)  
-  Timezone to use for the date picker and RRULE string. Default is 'UTC'. This is also largely dependent on the date adapter used, read MUIs documentation for more information.
-    
-- **`enableSmallScreenDetection`** (`boolean`) 🛠️
-Enables detection of the parent container to adjust the layout accordingly for better responsiveness. If set to true, the component will monitor the screen size and adjust its design elements to fit smaller parents
+- **`lang`** (`{ startDatePickerLabel: string; endDatePickerLabel: string }`)
+  Localization labels for the date pickers.
 
-- **`smallScreenBreakpoint`** (`number`) 🛠️
-Defines the breakpoint (in pixels) for small containers. When the parent container width is below this value, the component will switch to a layout optimized for smaller containers. Default is typically set to 350 pixels.
-
-- **`dense`** (`boolean`) 🛠️
-Enables a denser layout with reduced padding and margins, suitable for compact displays or when conserving screen space is desired.
+- **`timeZone`** (`PickersTimezone`, default: `"UTC"`)
+  Timezone for date pickers and RRULE generation. See MUI's date picker timezone documentation for details.
 
 ## Store and Actions
 
-The component uses a Zustand store for state management, with the following state and actions:
+The component uses a per-instance Zustand store via React Context. Access the store with `useBuilderStore()` inside a `BuilderStoreProvider` or `RRuleBuilder`.
 
 ### BuilderState
-🛠️ = Coming soon / in progress
-- **`repeatDetails`**: Manages details for repeat rules.
-- **`frequency`**: Current frequency of the RRULE.
-- **`startDate`**: The selected start date.
-- **`validationErrors`**:  🛠️ Holds validation errors.
-- **`endDetails`**: Manages end conditions for the RRULE.
-- **`RRuleString`**: The generated RRULE string.
-- **`radioValue`**: Option for monthly and yearly rule settings.
-- **`minEndDate`**: Minimum end date based on the start date. This is always the start date plus one day, an RRULE cannot have an end date before or on the start date, it would not run. 
+
+- **`repeatDetails`** (`AllRepeatDetails`) — Current repeat rule details (interval, byDay, byMonth, byMonthDay, bySetPos).
+- **`frequency`** (`Frequency`) — Current RRULE frequency.
+- **`startDate`** (`TDate | null`) — Selected start date.
+- **`validationErrors`** (`Record<string, string>`) — Validation errors from `validateForm()`.
+- **`endDetails`** (`EndDetails<TDate>`) — End condition (never, after N occurrences, or on a specific date).
+- **`RRuleString`** (`string | undefined`) — The generated RRULE string.
+- **`radioValue`** (`MonthBy | YearlyBy | null`) — Selected radio option for monthly/yearly views.
+- **`minEndDate`** (`TDate | undefined`) — Minimum end date (start date + 1 day).
 
 ### BuilderActions
-🛠️ = Coming soon / in progress
 
-- **`setFrequency(frequency: Frequency)`**: Sets the frequency and resets relevant state.
-- **`setRepeatDetails(details: AllRepeatDetails)`**: Updates repeat rule details and rebuilds the RRULE string.
-- **`validateForm()`**: 🛠️ Validates the form using Yup and returns a boolean indicating success.
-- **`setEndDetails(details: EndDetails)`**: Updates the end details of the rule.
-- **`setStartDate(startDate: TDate | null)`**: Sets the start date and adjusts end date if necessary, needs to be the Date type of the date adapter used.
-- **`buildRRuleString()`**: Constructs the RRULE string from the current state.
-- **`setOnChange(onChange: (rruleString: string) => void)`**: Sets the onChange callback function.
-- **`setStoreFromRRuleString(rruleString: string)`**: Populates the store state from an existing RRULE string.
-- **`setRadioValue(radioValue: MonthBy | YearlyBy | null)`**: Sets the radio value for monthly/yearly repeat details.
+- **`setFrequency(frequency: Frequency)`** — Sets frequency and resets repeat details.
+- **`setRepeatDetails(details: AllRepeatDetails)`** — Updates repeat details and rebuilds the RRULE string.
+- **`validateForm(): Promise<boolean>`** — Validates the form using Yup schemas. Returns `true` if valid, populates `validationErrors` if not.
+- **`setEndDetails(details: EndDetails<TDate>)`** — Updates end condition. Uses a discriminated union:
+  - `{ endingType: EndType.NEVER }`
+  - `{ endingType: EndType.AFTER, occurrences: number | null }`
+  - `{ endingType: EndType.ON, endDate: TDate | null }`
+- **`setStartDate(startDate: TDate | null)`** — Sets start date and auto-adjusts end date if needed.
+- **`buildRRuleString()`** — Rebuilds the RRULE string from current state.
+- **`setOnChange(onChange: (rruleString: string) => void)`** — Sets the onChange callback.
+- **`setStoreFromRRuleString(rruleString: string)`** — Rehydrates store state from an RRULE string.
+- **`setRadioValue(radioValue: MonthBy | YearlyBy | null)`** — Sets the radio option for monthly/yearly.
+
+## Exported Types
+
+```typescript
+import {
+  RRuleBuilder,
+  useBuilderStore,
+  BuilderStoreProvider,
+  // Enums
+  Weekday,        // MO, TU, WE, TH, FR, SA, SU
+  Months,         // JAN=1 through DEC=12
+  MonthBy,        // BYMONTHDAY, BYSETPOS
+  YearlyBy,       // BYMONTH, BYSETPOS
+  WeekdayExtras,  // DAY, WEEKDAY, WEEKEND
+  OnThe,          // 1, 2, 3, 4, -1
+  AllWeekDayOptions,
+  EndType,        // NEVER, AFTER, ON
+  // Types
+  type AllRepeatDetails,
+  type EndDetails,
+} from 'react-rrule-builder-ts';
+```
+
+## Peer Dependencies
+
+This library requires the following peer dependencies:
+
+- `react` >= 18
+- `react-dom` >= 18
+- `@mui/material`
+- `@mui/x-date-pickers`
+- `@emotion/react`
+- `@emotion/styled`
+- `rrule`
+- `zustand`
+- `yup`
+- `luxon`
+- `lodash`
 
 ## Other Notes
 
-- MUI is currently a peer dependency and is used for UI components.
-- The package uses MUI's DatePicker for date selection, you can use your own Adapter for the date picker.
-- Zustand is used to manage state, making it observable and enabling external validation, which is beneficial for complex form interactions.
+- MUI is a peer dependency and is used for all UI components.
+- The package uses MUI's DatePicker — you can use any MUI-compatible date adapter.
+- Zustand manages state per-instance via React Context, making it observable and enabling external validation.
