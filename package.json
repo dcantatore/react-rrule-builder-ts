@@ -10,7 +10,8 @@
   ],
   "scripts": {
     "build": "vite build",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "lint": "eslint . --ext .ts,.tsx"
@@ -58,12 +59,16 @@
     "@storybook/react": "^8.2.9",
     "@storybook/react-vite": "^8.2.9",
     "@storybook/test": "^8.2.9",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@types/luxon": "^3.4.2",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^7.0.0",
     "@vitejs/plugin-react": "^4.3.0",
+    "@vitest/coverage-v8": "^4.0.18",
     "airbnb": "^0.0.2",
     "eslint": "^8.2.0",
     "eslint-config-airbnb": "19.0.4",
@@ -74,6 +79,7 @@
     "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.3.0",
     "globals": "^15.4.0",
+    "jsdom": "^28.1.0",
     "luxon": "^3.5.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -83,6 +89,7 @@
     "typescript-eslint": "^7.12.0",
     "vite": "^5.2.13",
     "vite-plugin-dts": "^3.9.1",
+    "vitest": "^4.0.18",
     "yup": "^1.4.0",
     "zustand": "^4.5.2"
   }

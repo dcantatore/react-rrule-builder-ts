@@ -2,8 +2,7 @@
 
 [![npm version](https://badge.fury.io/js/react-rrule-builder-ts.svg)](https://badge.fury.io/js/react-rrule-builder-ts)
 
-[//]: # ([//]:  TODO - test )
-[//]: # ([![Coverage Status]&#40;https://coveralls.io/repos/github/dcantatore/react-rrule-builder-ts/badge.svg?branch=main&#41;]&#40;https://coveralls.io/github/dcantatore/react-rrule-builder-ts?branch=main&#41;)
+[![codecov](https://codecov.io/gh/dcantatore/react-rrule-builder-ts/branch/main/graph/badge.svg)](https://codecov.io/gh/dcantatore/react-rrule-builder-ts)
 
 [![Storybook](https://img.shields.io/badge/Storybook-React%20RRULE%20Builder%20TS-ff69b4)](https://dcantatore.github.io/react-rrule-builder-ts/)
 

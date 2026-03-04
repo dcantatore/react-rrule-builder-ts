@@ -5,6 +5,10 @@ import dts from "vite-plugin-dts";
 
 export default defineConfig({
   plugins: [react(), dts()],
+  test: {
+    globals: true,
+    environment: "jsdom",
+  },
   build: {
     lib: {
       entry: "src/index.ts",
