@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useId } from "react";
 
 import Select, { SelectProps } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -20,12 +20,13 @@ const sxMinWidth = { minWidth: 120 };
 const SelectDayCalendar = ({
   value, onChange, maxDaysInMonth, disabled, inputSize, inputVariant,
 }: SelectDayCalendarProps) => {
+  const id = useId();
   const labelSize = getLabelSize(inputSize);
 
   return (
     <FormControl fullWidth>
       <InputLabel
-        id="select-day-cal-label"
+        id={id}
         disabled={disabled}
         size={labelSize}
       >
@@ -41,7 +42,7 @@ const SelectDayCalendar = ({
           }
         }}
         value={value.byMonthDay?.[0] ?? ""}
-        labelId="select-day-cal-label"
+        labelId={id}
         label="Select Day"
         size={inputSize}
         variant={inputVariant}

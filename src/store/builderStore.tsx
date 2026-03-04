@@ -65,26 +65,25 @@ const createBuilderStore = () => createStore<BuilderStoreState>((set, get) => ({
   validationErrors: {},
   setRadioValue: (radioValue) => set({ radioValue }),
   setFrequency: (frequency) => {
-    set({ frequency });
-    // clear repeat details when changing frequency
-    set({ repeatDetails: { ...baseRepeatDetails } });
-    // clear validation errors
-    set({ validationErrors: {} });
-    // rebuild the rrule string
+    set({
+      frequency,
+      repeatDetails: { ...baseRepeatDetails },
+      validationErrors: {},
+    });
     get().buildRRuleString();
   },
   setStartDate: (startDate) => {
     const currentEndDetails = get().endDetails;
     const { dateAdapter } = get();
-    // without a date adapter, we can't do anything
     if (!dateAdapter) {
       return;
     }
 
-    // set the min end date
+    let minEndDate = get().minEndDate;
+    let endDetails = currentEndDetails;
+
     if (startDate) {
-      const minEndDate = dateAdapter.addDays(startDate, 1);
-      set({ minEndDate });
+      minEndDate = dateAdapter.addDays(startDate, 1);
     }
 
     // Adjust the end date if the start date is on or after it
@@ -92,16 +91,12 @@ const createBuilderStore = () => createStore<BuilderStoreState>((set, get) => ({
       && currentEndDetails.endDate && startDate
       && (dateAdapter.isEqual(startDate, currentEndDetails.endDate)
         || dateAdapter.isAfter(startDate, currentEndDetails.endDate))) {
-      const adjustedEndDate = dateAdapter.addDays(startDate, 1);
-      set({
-        endDetails: { endingType: EndType.ON, endDate: adjustedEndDate },
-      });
+      endDetails = { endingType: EndType.ON, endDate: dateAdapter.addDays(startDate, 1) };
     }
-    // set the value
-    set({ startDate });
-    // clear validation errors
-    set({ validationErrors: {} });
-    // rebuild the rrule string
+
+    set({
+      startDate, minEndDate, endDetails, validationErrors: {},
+    });
     get().buildRRuleString();
   },
   setEndDetails: (details) => {

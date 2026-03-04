@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useId, useMemo } from "react";
 
 import Select, { SelectChangeEvent, SelectProps } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -24,40 +24,35 @@ const sxMinWidth = { minWidth: 120 };
 const SelectDayWeek = ({
   value, onChange, disabled, inputSize, inputVariant,
 }: SelectDayWeekProps) => {
-  const [selectedByDay, setSelectedByDay] = useState<typeof AllWeekDayOptions | "">("");
+  const id = useId();
 
-  // keep select sync with store
-  useEffect(() => {
+  const selectedByDay = useMemo<typeof AllWeekDayOptions | "">(() => {
     if (value.byDay.length === 0) {
-      setSelectedByDay("");
-      return;
+      return "";
     }
     if (value.byDay.length === 7) {
-      setSelectedByDay(AllWeekDayOptions.DAY as unknown as typeof AllWeekDayOptions);
-    } else if (value.byDay.length === 5 && !value.byDay.includes(Weekday.SA) && !value.byDay.includes(Weekday.SU)) {
-      setSelectedByDay(AllWeekDayOptions.WEEKDAY as unknown as typeof AllWeekDayOptions);
-    } else if (value.byDay.length === 2 && value.byDay.includes(Weekday.SA) && value.byDay.includes(Weekday.SU)) {
-      setSelectedByDay(AllWeekDayOptions.WEEKEND as unknown as typeof AllWeekDayOptions);
-    } else {
-      setSelectedByDay(value.byDay[0] as unknown as typeof AllWeekDayOptions);
+      return AllWeekDayOptions.DAY as unknown as typeof AllWeekDayOptions;
     }
-  }, [value.byDay, setSelectedByDay]);
+    if (value.byDay.length === 5 && !value.byDay.includes(Weekday.SA) && !value.byDay.includes(Weekday.SU)) {
+      return AllWeekDayOptions.WEEKDAY as unknown as typeof AllWeekDayOptions;
+    }
+    if (value.byDay.length === 2 && value.byDay.includes(Weekday.SA) && value.byDay.includes(Weekday.SU)) {
+      return AllWeekDayOptions.WEEKEND as unknown as typeof AllWeekDayOptions;
+    }
+    return value.byDay[0] as unknown as typeof AllWeekDayOptions;
+  }, [value.byDay]);
 
   const handleSelectDayChange = useCallback((e: SelectChangeEvent<typeof AllWeekDayOptions>) => {
     const changeVal = e.target.value;
     let setVal: Weekday[] = [changeVal as Weekday];
     if (changeVal === AllWeekDayOptions.DAY) {
-      // this means all days in the array
       setVal = [Weekday.SU, Weekday.MO, Weekday.TU, Weekday.WE, Weekday.TH, Weekday.FR, Weekday.SA];
     } else if (changeVal === AllWeekDayOptions.WEEKDAY) {
-      // this means all weekdays in the array
       setVal = [Weekday.MO, Weekday.TU, Weekday.WE, Weekday.TH, Weekday.FR];
     } else if (changeVal === AllWeekDayOptions.WEEKEND) {
-      // this means all weekends in the array
       setVal = [Weekday.SA, Weekday.SU];
     }
     onChange({ ...value, byDay: setVal });
-    setSelectedByDay(changeVal as typeof AllWeekDayOptions);
   }, [onChange, value]);
 
   const labelSize = getLabelSize(inputSize);
@@ -65,7 +60,7 @@ const SelectDayWeek = ({
   return (
     <FormControl fullWidth>
       <InputLabel
-        id="select-day-label"
+        id={id}
         disabled={disabled}
         size={labelSize}
       >
@@ -76,7 +71,7 @@ const SelectDayWeek = ({
         disabled={disabled}
         onChange={handleSelectDayChange}
         value={selectedByDay}
-        labelId="select-day-label"
+        labelId={id}
         label="Select Day"
         size={inputSize}
         variant={inputVariant}

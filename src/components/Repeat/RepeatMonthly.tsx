@@ -41,9 +41,6 @@ const RepeatMonthly = (
   const disabledOnBYSETPOS = radioValue === MonthBy.BYMONTHDAY;
   const disabledOnBYMONTHDAY = radioValue === MonthBy.BYSETPOS;
 
-  // TODO GET THIS FROM MAIN COMPONENT - this is just a placeholder
-  const size = 400;
-
   const handleRadioChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const radioVal = e.target.value as MonthBy;
     setRadioValue(radioVal);
@@ -112,7 +109,7 @@ const RepeatMonthly = (
             />
           </Box>
           {/* ON THE SECTION */}
-          <Stack direction={size < 301 ? "column" : "row"} spacing={4} alignItems={size < 301 ? "" : "center"} sx={{ width: "100%" }}>
+          <Stack direction="row" spacing={4} alignItems="center" sx={{ width: "100%" }}>
             <Box sx={{ minWidth: 120, marginRight: 2 }}>
               <FormControlLabel
                 value={MonthBy.BYSETPOS}
@@ -132,7 +129,7 @@ const RepeatMonthly = (
                 minWidth: 120,
                 marginX: { xs: 0, sm: 2 },
                 marginY: { xs: 2, sm: 0 },
-                width: size < 301 ? "100%" : "auto",
+                width: "auto",
               }}
             >
               <SelectPosition
@@ -143,7 +140,7 @@ const RepeatMonthly = (
                 inputVariant={inputVariant}
               />
             </Box>
-            <Box sx={{ minWidth: 120, marginX: { xs: 0, sm: 2 }, width: size < 301 ? "100%" : "auto" }}>
+            <Box sx={{ minWidth: 120, marginX: { xs: 0, sm: 2 }, width: "auto" }}>
               <SelectDayWeek
                 value={value}
                 onChange={handleOnTheChange}

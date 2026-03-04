@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useId } from "react";
 
 import Select, { SelectProps } from "@mui/material/Select";
 import FormControl from "@mui/material/FormControl";
@@ -25,11 +25,12 @@ const sxMinWidth = { minWidth: 150 };
 const SelectPosition = ({
   value, onChange, disabled, inputSize, inputVariant,
 }: SelectPositionProps) => {
+  const id = useId();
   const labelSize = getLabelSize(inputSize);
   return (
     <FormControl fullWidth>
       <InputLabel
-        id="select-pos-label"
+        id={id}
         disabled={disabled}
         size={labelSize}
       >
@@ -44,7 +45,7 @@ const SelectPosition = ({
         }}
         value={value.bySetPos}
         multiple
-        labelId="select-pos-label"
+        labelId={id}
         label="Select Position"
         size={inputSize}
         variant={inputVariant}

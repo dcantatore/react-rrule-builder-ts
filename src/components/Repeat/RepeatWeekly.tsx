@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { TextFieldProps } from "@mui/material/TextField";
 import { AllRepeatDetails, Weekday } from "./Repeat.types";
-import { weekdayShortTextMapping } from "./utils";
+import { weekdayFullTextMapping, weekdayShortTextMapping } from "./utils";
 import IntervalTextInput from "./Inputs/IntervalTextInput";
 
 interface RepeatWeeklyProps {
@@ -34,15 +34,17 @@ const RepeatWeekly = (
         inputVariant={inputVariant}
       />
     </Stack>
-    <ButtonGroup variant="contained">
-      {/* TODO - do this type/iteration better */}
+    <ButtonGroup variant="contained" role="group" aria-label="Select days of the week">
       {Object.keys(Weekday).map((day) => {
         const dayKey = day as Weekday;
+        const isSelected = value.byDay.includes(dayKey);
         return (
           <Button
             size="small"
             key={dayKey}
-            color={value.byDay.includes(dayKey) ? "primary" : "inherit"}
+            color={isSelected ? "primary" : "inherit"}
+            aria-pressed={isSelected}
+            aria-label={weekdayFullTextMapping[dayKey]}
             onClick={() => {
               let selectedDays = value.byDay;
               if (value.byDay.includes(dayKey)) {

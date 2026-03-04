@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useId } from "react";
 
 import Select, { SelectProps } from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -21,6 +21,7 @@ const sxMinWidth = { minWidth: 120 };
 const SelectMonth = ({
   value, onChange, disabled, inputSize, inputVariant,
 }: SelectMonthProps) => {
+  const id = useId();
   const rawMonth = disabled ? undefined : value.byMonth[0];
   const displayValue = isNil(rawMonth) ? "" : rawMonth;
   const labelSize = getLabelSize(inputSize);
@@ -28,7 +29,7 @@ const SelectMonth = ({
   return (
     <FormControl fullWidth>
       <InputLabel
-        id="select-month-label"
+        id={id}
         disabled={disabled}
         shrink={!disabled && !!displayValue}
         size={labelSize}
@@ -42,7 +43,7 @@ const SelectMonth = ({
           onChange({ ...value, byMonth: [e.target.value as number] });
         }}
         value={displayValue}
-        labelId="select-month-label"
+        labelId={id}
         label={!disabled && !!displayValue ? "Select Month" : undefined}
         size={inputSize}
         variant={inputVariant}

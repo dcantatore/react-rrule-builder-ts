@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useId, useState } from "react";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -29,13 +29,14 @@ const End = ({
   const {
     endDetails, setEndDetails, minEndDate,
   } = useBuilderStore();
+  const id = useId();
   const labelSize = getLabelSize(inputSize);
   const [datePickerOpen, setDatePickerOpen] = useState(false);
 
   return (
     <>
       <FormControl>
-        <InputLabel id="end-label" size={labelSize}>End</InputLabel>
+        <InputLabel id={id} size={labelSize}>End</InputLabel>
         <Select
           value={endDetails.endingType}
           onChange={(e) => {
@@ -48,7 +49,7 @@ const End = ({
               setEndDetails({ endingType: EndType.ON, endDate: null });
             }
           }}
-          labelId="end-label"
+          labelId={id}
           label="End"
           size={inputSize}
           variant={inputVariant}
