@@ -15,7 +15,8 @@
     "test:coverage": "vitest run --coverage",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "lint": "eslint . --ext .ts,.tsx"
+    "lint": "eslint . --ext .ts,.tsx",
+    "release": "npm version patch && git push origin main --tags && gh release create v$(node -p \"require('./package.json').version\") --title \"v$(node -p \"require('./package.json').version\")\" --generate-notes"
   },
   "repository": {
     "type": "git",
