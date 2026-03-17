@@ -22,10 +22,14 @@ export default {
       control: "select",
       options: ["standard", "outlined", "filled"],
     },
+    enableResponsiveLayout: {
+      control: "boolean",
+    },
 
   },
   args: {
     enableYearlyInterval: true,
+    enableResponsiveLayout: true,
     inputSize: "small",
     inputVariant: "filled",
   },
@@ -36,7 +40,12 @@ const Template: StoryFn<typeof RepeatYearly> = (args) => {
     repeatDetails, setRepeatDetails, radioValue, setRadioValue,
   } = useBuilderStore();
 
-  const { inputSize, inputVariant, enableYearlyInterval } = args;
+  const {
+    inputSize,
+    inputVariant,
+    enableYearlyInterval,
+    enableResponsiveLayout,
+  } = args;
   return (
     <RepeatYearly
       value={repeatDetails}
@@ -46,6 +55,7 @@ const Template: StoryFn<typeof RepeatYearly> = (args) => {
       inputVariant={inputVariant}
       inputSize={inputSize}
       enableYearlyInterval={enableYearlyInterval}
+      enableResponsiveLayout={enableResponsiveLayout}
     />
   );
 };

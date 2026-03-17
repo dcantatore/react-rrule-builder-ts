@@ -17,10 +17,14 @@ export default {
       control: "select",
       options: ["standard", "outlined", "filled"],
     },
+    enableResponsiveLayout: {
+      control: "boolean",
+    },
   },
   args: {
     inputSize: "small",
     inputVariant: "outlined",
+    enableResponsiveLayout: true,
   },
 } as Meta<typeof RepeatMonthly>;
 
@@ -29,7 +33,7 @@ const Template: StoryFn<typeof RepeatMonthly> = (args) => {
   const {
     radioValue, setRepeatDetails, setRadioValue, repeatDetails,
   } = builderStore;
-  const { inputSize, inputVariant } = args;
+  const { inputSize, inputVariant, enableResponsiveLayout } = args;
   return (
     <RepeatMonthly
       value={repeatDetails}
@@ -38,6 +42,7 @@ const Template: StoryFn<typeof RepeatMonthly> = (args) => {
       setRadioValue={setRadioValue}
       inputVariant={inputVariant}
       inputSize={inputSize}
+      enableResponsiveLayout={enableResponsiveLayout}
     />
   );
 };

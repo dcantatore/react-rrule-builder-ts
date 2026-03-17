@@ -59,6 +59,7 @@ const MyComponent = () => {
       datePickerInitialDate={DateTime.now()}
       onChange={handleRRuleChange}
       enableYearlyInterval={true}
+      enableResponsiveLayout={true}
     />
   );
 };
@@ -113,6 +114,9 @@ const MyPage = () => (
 
 - **`enableYearlyInterval`** (`boolean`, default: `false`)
   Shows the interval input for yearly frequency.
+
+- **`enableResponsiveLayout`** (`boolean`, default: `true`)
+  Enables automatic row-to-column layout switching for monthly/yearly controls based on container width.
 
 - **`showStartDate`** (`boolean`, default: `true`)
   Shows or hides the start date picker.

@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useRef } from "react";
 import { Frequency } from "rrule";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
@@ -18,6 +18,7 @@ interface RepeatSelectProps {
   onFrequencyChange: (frequency: Frequency) => void
   frequencySelected: Frequency
   enableYearlyInterval: boolean;
+  enableResponsiveLayout: boolean;
   inputSize: TextFieldProps["size"];
   inputVariant: TextFieldProps["variant"];
 }
@@ -35,9 +36,11 @@ const RepeatSelect = ({
   frequencySelected,
   onFrequencyChange,
   enableYearlyInterval,
+  enableResponsiveLayout,
   inputSize,
   inputVariant,
 }: RepeatSelectProps) => {
+  const responsiveContainerRef = useRef<HTMLDivElement>(null);
   const {
     setRepeatDetails, repeatDetails, radioValue, setRadioValue,
   } = useBuilderStore();
@@ -88,6 +91,8 @@ const RepeatSelect = ({
               setRadioValue={setRadioValue}
               inputSize={inputSize}
               inputVariant={inputVariant}
+              responsiveContainerRef={responsiveContainerRef}
+              enableResponsiveLayout={enableResponsiveLayout}
             />
           );
         case Frequency.YEARLY:
@@ -100,17 +105,29 @@ const RepeatSelect = ({
               setRadioValue={setRadioValue}
               inputSize={inputSize}
               inputVariant={inputVariant}
+              responsiveContainerRef={responsiveContainerRef}
+              enableResponsiveLayout={enableResponsiveLayout}
             />
           );
         default:
           return null;
       }
     },
-    [enableYearlyInterval, frequencySelected, inputSize, inputVariant, radioValue, repeatDetails, setRadioValue, setRepeatDetails],
+    [
+      enableResponsiveLayout,
+      enableYearlyInterval,
+      frequencySelected,
+      inputSize,
+      inputVariant,
+      radioValue,
+      repeatDetails,
+      setRadioValue,
+      setRepeatDetails,
+    ],
   );
 
   return (
-    <Stack direction="column" spacing={2}>
+    <Stack ref={responsiveContainerRef} direction="column" spacing={2}>
       <Select
         value={frequencySelected}
         onChange={(e) => onFrequencyChange(e.target.value as Frequency)}

@@ -9,8 +9,7 @@ import { useTheme } from "@mui/material/styles";
 import { TextFieldProps } from "@mui/material/TextField";
 import { DateTime } from "luxon";
 import RepeatSelect from "../Repeat/Repeat";
-import useBuilderStore from "../../store/builderStore";
-import { BuilderStoreContext, BuilderStoreProvider } from "../../store/builderStore";
+import useBuilderStore, { BuilderStoreContext, BuilderStoreProvider } from "../../store/builderStore";
 import End from "../End/End";
 
 type Lang = {
@@ -28,6 +27,7 @@ interface RRuleBuilderProps<TDate extends DateTime<boolean>> {
   onChange?: (rruleString: string) => void;
   rruleString?: string;
   enableYearlyInterval?: boolean;
+  enableResponsiveLayout?: boolean;
   showStartDate?: boolean;
   enableOpenOnClickDatePicker?: boolean;
   defaultFrequency?: Frequency;
@@ -47,6 +47,7 @@ const RRuleBuilderInner = <TDate extends DateTime<boolean>,>({
   rruleString,
   dateAdapter,
   enableYearlyInterval = false,
+  enableResponsiveLayout = true,
   showStartDate = true,
   enableOpenOnClickDatePicker = true,
   defaultFrequency = Frequency.WEEKLY,
@@ -159,6 +160,7 @@ const RRuleBuilderInner = <TDate extends DateTime<boolean>,>({
           frequencySelected={frequency}
           onFrequencyChange={setFrequency}
           enableYearlyInterval={enableYearlyInterval}
+          enableResponsiveLayout={enableResponsiveLayout}
           inputSize={fieldDefaultSize}
           inputVariant={fieldDefaultVariant}
         />

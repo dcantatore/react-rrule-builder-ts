@@ -1,4 +1,8 @@
-import React, { useCallback } from "react";
+import React, {
+  useCallback,
+  useMemo,
+  useRef,
+} from "react";
 
 import Stack from "@mui/material/Stack";
 import Radio from "@mui/material/Radio";
@@ -16,6 +20,7 @@ import SelectDayWeek from "./Inputs/SelectDayWeek";
 import SelectPosition from "./Inputs/SelectPosition";
 import SelectDayCalendar from "./Inputs/SelectDayCalendar";
 import IntervalTextInput from "./Inputs/IntervalTextInput";
+import useResponsiveRowLayout, { ResponsiveRowSpec } from "./useResponsiveRowLayout";
 
 interface RepeatMonthlyProps {
   value: AllRepeatDetails;
@@ -24,7 +29,8 @@ interface RepeatMonthlyProps {
   setRadioValue: (value: MonthBy) => void;
   inputSize: TextFieldProps["size"];
   inputVariant: TextFieldProps["variant"];
-
+  responsiveContainerRef?: React.RefObject<HTMLElement>;
+  enableResponsiveLayout: boolean;
 }
 
 const RepeatMonthly = (
@@ -35,8 +41,31 @@ const RepeatMonthly = (
     setRadioValue,
     inputSize,
     inputVariant,
+    responsiveContainerRef,
+    enableResponsiveLayout,
   }: RepeatMonthlyProps,
 ) => {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const measurementContainerRef = useMemo<React.RefObject<HTMLElement>>(
+    () => (responsiveContainerRef ?? wrapperRef) as React.RefObject<HTMLElement>,
+    [responsiveContainerRef],
+  );
+  const rowSpecs = useMemo<ResponsiveRowSpec[]>(() => ([
+    {
+      fixedWidth: 120,
+      selectCount: 1,
+    },
+    {
+      fixedWidth: 120,
+      selectMinWidths: [150, 120],
+    },
+  ]), []);
+  const useColumnLayout = useResponsiveRowLayout({
+    containerRef: measurementContainerRef,
+    rowSpecs,
+    enabled: enableResponsiveLayout,
+  });
+
   const maxDaysInMonth = 31;
   const disabledOnBYSETPOS = radioValue === MonthBy.BYMONTHDAY;
   const disabledOnBYMONTHDAY = radioValue === MonthBy.BYSETPOS;
@@ -68,7 +97,7 @@ const RepeatMonthly = (
   }, [onChange, radioValue, setRadioValue]);
 
   return (
-    <Stack direction="column" spacing={2} alignItems="flex-start" width="100%">
+    <Stack ref={wrapperRef} direction="column" spacing={2} alignItems="flex-start" width="100%">
       <IntervalTextInput
         value={value}
         onChange={onChange}
@@ -85,7 +114,12 @@ const RepeatMonthly = (
       >
         <Stack direction="column" spacing={2} alignItems="flex-start" width="100%">
           {/* ON DAY SECTION */}
-          <Box display="inline-flex" alignItems="center">
+          <Stack
+            direction={useColumnLayout ? "column" : "row"}
+            spacing={useColumnLayout ? 2 : 4}
+            alignItems={useColumnLayout ? "flex-start" : "center"}
+            sx={{ width: "100%" }}
+          >
             <FormControlLabel
               value={MonthBy.BYMONTHDAY}
               control={<Radio />}
@@ -97,20 +131,27 @@ const RepeatMonthly = (
                   On Day
                 </Typography>
               )}
-              sx={{ minWidth: 120, marginRight: 2 }}
+              sx={{ minWidth: 120, margin: 0 }}
             />
-            <SelectDayCalendar
-              value={value}
-              onChange={handleOnDayChange}
-              maxDaysInMonth={maxDaysInMonth}
-              disabled={disabledOnBYMONTHDAY}
-              inputSize={inputSize}
-              inputVariant={inputVariant}
-            />
-          </Box>
+            <Box sx={{ minWidth: 120, width: useColumnLayout ? "100%" : "auto" }}>
+              <SelectDayCalendar
+                value={value}
+                onChange={handleOnDayChange}
+                maxDaysInMonth={maxDaysInMonth}
+                disabled={disabledOnBYMONTHDAY}
+                inputSize={inputSize}
+                inputVariant={inputVariant}
+              />
+            </Box>
+          </Stack>
           {/* ON THE SECTION */}
-          <Stack direction="row" spacing={4} alignItems="center" sx={{ width: "100%" }}>
-            <Box sx={{ minWidth: 120, marginRight: 2 }}>
+          <Stack
+            direction={useColumnLayout ? "column" : "row"}
+            spacing={useColumnLayout ? 2 : 4}
+            alignItems={useColumnLayout ? "flex-start" : "center"}
+            sx={{ width: "100%" }}
+          >
+            <Box sx={{ minWidth: 120 }}>
               <FormControlLabel
                 value={MonthBy.BYSETPOS}
                 control={<Radio />}
@@ -122,14 +163,13 @@ const RepeatMonthly = (
                     On The
                   </Typography>
                 )}
+                sx={{ margin: 0 }}
               />
             </Box>
             <Box
               sx={{
-                minWidth: 120,
-                marginX: { xs: 0, sm: 2 },
-                marginY: { xs: 2, sm: 0 },
-                width: "auto",
+                minWidth: 150,
+                width: useColumnLayout ? "100%" : "auto",
               }}
             >
               <SelectPosition
@@ -140,7 +180,7 @@ const RepeatMonthly = (
                 inputVariant={inputVariant}
               />
             </Box>
-            <Box sx={{ minWidth: 120, marginX: { xs: 0, sm: 2 }, width: "auto" }}>
+            <Box sx={{ minWidth: 120, width: useColumnLayout ? "100%" : "auto" }}>
               <SelectDayWeek
                 value={value}
                 onChange={handleOnTheChange}

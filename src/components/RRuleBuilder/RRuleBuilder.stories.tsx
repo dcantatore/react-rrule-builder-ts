@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
 import {
@@ -25,6 +26,9 @@ export default {
     enableYearlyInterval: {
       control: "boolean",
     },
+    enableResponsiveLayout: {
+      control: "boolean",
+    },
     showStartDate: {
       control: "boolean",
     },
@@ -48,7 +52,7 @@ const Template: StoryFn<typeof RRuleBuilder> = (args) => {
   } = useBuilderStore();
   const errors = Object.keys(validationErrors);
   return (
-    <Box sx={{ maxWidth: 500 }}>
+    <Box sx={{ maxWidth: 700 }}>
       <RRuleBuilder {...args} />
 
       <Divider sx={{ my: 3 }} />
@@ -102,6 +106,7 @@ Primary.args = {
     endDatePickerLabel: "End Date",
   },
   enableYearlyInterval: true,
+  enableResponsiveLayout: true,
   showStartDate: true,
   dateAdapter: AdapterLuxon,
 };
@@ -121,7 +126,9 @@ const SmallTemplate: StoryFn<typeof RRuleBuilder & { containerWidth: number }> =
 export const SmallEmbedded = SmallTemplate.bind({});
 SmallEmbedded.argTypes = {
   containerWidth: {
-    control: { type: "range", min: 200, max: 600, step: 10 },
+    control: {
+      type: "range", min: 200, max: 750, step: 10,
+    },
     description: "Width of the outer container (px)",
     defaultValue: 300,
   },
@@ -133,12 +140,13 @@ SmallEmbedded.args = {
     endDatePickerLabel: "End Date",
   },
   enableYearlyInterval: true,
+  enableResponsiveLayout: true,
   showStartDate: true,
   dateAdapter: AdapterLuxon,
 };
 
 const WithRRuleStringTemplate: StoryFn<typeof RRuleBuilder> = (args) => (
-  <Box sx={{ maxWidth: 500 }}>
+  <Box sx={{ maxWidth: 700 }}>
     <RRuleBuilder {...args} />
 
     <Divider sx={{ my: 3 }} />
