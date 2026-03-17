@@ -1,12 +1,12 @@
 # react-rrule-builder-ts
 
-[![npm version](https://badge.fury.io/js/react-rrule-builder-ts.svg)](https://badge.fury.io/js/react-rrule-builder-ts)
+[![npm version](https://badge.fury.io/js/react-rrule-builder-ts.svg)](https://www.npmjs.com/package/react-rrule-builder-ts)
 
 [![codecov](https://img.shields.io/codecov/c/github/dcantatore/react-rrule-builder-ts?style=flat-square&logo=codecov&logoColor=white&label=coverage)](https://codecov.io/gh/dcantatore/react-rrule-builder-ts)
 
 [![Storybook](https://img.shields.io/badge/Storybook-React%20RRULE%20Builder%20TS-ff69b4)](https://dcantatore.github.io/react-rrule-builder-ts/)
 
-[![NPM](https://nodei.co/npm/react-rrule-builder-ts.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/react-rrule-builder-ts/)
+[![NPM](https://nodei.co/npm/react-rrule-builder-ts.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/react-rrule-builder-ts)
 
 ## Overview
 
