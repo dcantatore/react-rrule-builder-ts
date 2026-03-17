@@ -1,6 +1,8 @@
 import React from "react";
 import { Meta, StoryFn } from "@storybook/react";
-import { Box, Typography } from "@mui/material";
+import {
+  Box, Typography, Divider, Paper,
+} from "@mui/material";
 import Button from "@mui/material/Button";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import RRuleBuilder from "./RRuleBuilder";
@@ -46,28 +48,51 @@ const Template: StoryFn<typeof RRuleBuilder> = (args) => {
   } = useBuilderStore();
   const errors = Object.keys(validationErrors);
   return (
-    <>
+    <Box sx={{ maxWidth: 500 }}>
       <RRuleBuilder {...args} />
-      <hr />
-      <Button onClick={() => {
-        validateForm();
-      }}
-      >
-        Validate
-      </Button>
-      {!errors.length ? <Typography color="info">Form is valid</Typography> : <Typography color="error">Form is invalid</Typography>}
-      {errors.length > 0 && errors.map((key) => (
-        <Typography key={key} color="error">{validationErrors[key]}</Typography>
-      ))}
-      <hr />
-      <Button onClick={buildRRuleString}>
-        Build String
-      </Button>
-      {/*  pre-wrap shows the line break in the output */}
-      <Typography sx={{ whiteSpace: "pre-wrap" }}>
-        {RRuleString}
-      </Typography>
-    </>
+
+      <Divider sx={{ my: 3 }} />
+
+      <Paper variant="outlined" sx={{ p: 2 }}>
+        <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+          Store Tools (not part of the component)
+        </Typography>
+        <Box sx={{ display: "flex", gap: 1 }}>
+          <Button
+            variant="contained"
+            size="small"
+            onClick={() => { validateForm(); }}
+          >
+            Validate
+          </Button>
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={buildRRuleString}
+          >
+            Build String
+          </Button>
+        </Box>
+        {errors.length > 0 && (
+          <Box sx={{ mt: 2 }}>
+            {errors.map((key) => (
+              <Typography key={key} variant="body2" color="error">{validationErrors[key]}</Typography>
+            ))}
+          </Box>
+        )}
+        {!errors.length && RRuleString && (
+          <Box sx={{
+            mt: 2, p: 1.5, borderRadius: 1, bgcolor: "grey.100",
+          }}
+          >
+            <Typography variant="caption" color="text.secondary">Output</Typography>
+            <Typography variant="body2" sx={{ whiteSpace: "pre-wrap", fontFamily: "monospace", mt: 0.5 }}>
+              {RRuleString}
+            </Typography>
+          </Box>
+        )}
+      </Paper>
+    </Box>
   );
 };
 export const Primary = Template.bind({});
@@ -99,23 +124,31 @@ SmallEmbedded.args = {
 };
 
 const WithRRuleStringTemplate: StoryFn<typeof RRuleBuilder> = (args) => (
-  <>
-    <Typography marginY={4} sx={{ whiteSpace: "pre-wrap" }}>
-      {/* eslint-disable-next-line react/destructuring-assignment */}
-      {`Start string:\n${args.rruleString}`}
-    </Typography>
-    <Typography marginY={4}>
-      Important note: To have the date start in the same string you must have a \n after the start date for a new line before the RRULE.
-    </Typography>
+  <Box sx={{ maxWidth: 500 }}>
     <RRuleBuilder {...args} />
-  </>
+
+    <Divider sx={{ my: 3 }} />
+
+    <Paper variant="outlined" sx={{ p: 2 }}>
+      <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+        Input String (not part of the component)
+      </Typography>
+      <Typography variant="body2" sx={{ whiteSpace: "pre-wrap", fontFamily: "monospace" }}>
+        {/* eslint-disable-next-line react/destructuring-assignment */}
+        {args.rruleString}
+      </Typography>
+      <Typography variant="caption" color="text.secondary" sx={{ display: "block", mt: 1 }}>
+        Note: To include a start date, add a \n after DTSTART before the RRULE.
+      </Typography>
+    </Paper>
+  </Box>
 );
 
 export const WithRRuleString = WithRRuleStringTemplate.bind({});
 WithRRuleString.args = {
   lang: {
-    startDatePickerLabel: "Initial Deadline Date",
-    endDatePickerLabel: "Never After Date",
+    startDatePickerLabel: "Custom Start Label",
+    endDatePickerLabel: "Custom End Label",
   },
   dateAdapter: AdapterLuxon,
   // rruleString: "DTSTART:20240917T114341Z\nRRULE:INTERVAL=2;FREQ=WEEKLY;BYDAY=FR;COUNT=2",
