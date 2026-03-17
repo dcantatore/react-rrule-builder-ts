@@ -106,16 +106,30 @@ Primary.args = {
   dateAdapter: AdapterLuxon,
 };
 
-const SmallTemplate: StoryFn<typeof RRuleBuilder> = (args) => (
-  <Box sx={{ width: 300, backgroundColor: "lightblue" }}>
+const SmallTemplate: StoryFn<typeof RRuleBuilder & { containerWidth: number }> = ({
+  containerWidth = 300,
+  ...args
+}) => (
+  <Box sx={{
+    width: containerWidth, border: "1px dashed", borderColor: "grey.400", borderRadius: 1, p: 2,
+  }}
+  >
     <RRuleBuilder {...args} />
   </Box>
 );
 
 export const SmallEmbedded = SmallTemplate.bind({});
+SmallEmbedded.argTypes = {
+  containerWidth: {
+    control: { type: "range", min: 200, max: 600, step: 10 },
+    description: "Width of the outer container (px)",
+    defaultValue: 300,
+  },
+};
 SmallEmbedded.args = {
+  containerWidth: 300,
   lang: {
-    startDatePickerLabel: "Small Date",
+    startDatePickerLabel: "Start Date",
     endDatePickerLabel: "End Date",
   },
   enableYearlyInterval: true,

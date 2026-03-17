@@ -1,6 +1,6 @@
 import React from "react";
 
-import ButtonGroup from "@mui/material/ButtonGroup";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import { TextFieldProps } from "@mui/material/TextField";
@@ -15,14 +15,42 @@ interface RepeatWeeklyProps {
   inputVariant: TextFieldProps["variant"];
 }
 
-const RepeatWeekly = (
-  {
-    value,
-    onChange,
-    inputSize,
-    inputVariant,
-  }: RepeatWeeklyProps,
-) => (
+const weekdays = Object.keys(Weekday) as Weekday[];
+const weekdayKeys = weekdays.filter((d) => d !== Weekday.SA && d !== Weekday.SU);
+
+const renderDayButton = (
+  dayKey: Weekday,
+  value: AllRepeatDetails,
+  onChange: (value: AllRepeatDetails) => void,
+) => {
+  const isSelected = value.byDay.includes(dayKey);
+  return (
+    <Button
+      variant="contained"
+      size="small"
+      key={dayKey}
+      color={isSelected ? "primary" : "inherit"}
+      aria-pressed={isSelected}
+      aria-label={weekdayFullTextMapping[dayKey]}
+      sx={{ flex: 1, minWidth: 48 }}
+      onClick={() => {
+        const selectedDays = value.byDay.includes(dayKey)
+          ? value.byDay.filter((d) => d !== dayKey)
+          : [...value.byDay, dayKey];
+        onChange({ ...value, byDay: selectedDays });
+      }}
+    >
+      {weekdayShortTextMapping[dayKey]}
+    </Button>
+  );
+};
+
+const RepeatWeekly = ({
+  value,
+  onChange,
+  inputSize,
+  inputVariant,
+}: RepeatWeeklyProps) => (
   <Stack direction="column" spacing={2} alignItems="flex-start">
     <Stack direction="row" spacing={2} alignItems="center">
       <IntervalTextInput
@@ -34,36 +62,21 @@ const RepeatWeekly = (
         inputVariant={inputVariant}
       />
     </Stack>
-    <ButtonGroup variant="contained" role="group" aria-label="Select days of the week">
-      {Object.keys(Weekday).map((day) => {
-        const dayKey = day as Weekday;
-        const isSelected = value.byDay.includes(dayKey);
-        return (
-          <Button
-            size="small"
-            key={dayKey}
-            color={isSelected ? "primary" : "inherit"}
-            aria-pressed={isSelected}
-            aria-label={weekdayFullTextMapping[dayKey]}
-            onClick={() => {
-              let selectedDays = value.byDay;
-              if (value.byDay.includes(dayKey)) {
-                selectedDays = value.byDay.filter((d) => d !== dayKey);
-              } else {
-                selectedDays = [...selectedDays, dayKey];
-              }
-              onChange({
-                ...value,
-                byDay: selectedDays,
-              });
-            }}
-          >
-            {weekdayShortTextMapping[dayKey]}
-          </Button>
-        );
-      })}
-
-    </ButtonGroup>
+    <Box
+      role="group"
+      aria-label="Select days of the week"
+      sx={{
+        display: "flex", flexWrap: "wrap", gap: 0.5, width: "100%",
+      }}
+    >
+      <Box key="weekdays" sx={{ display: "flex", gap: 0.5, flex: 5 }}>
+        {weekdayKeys.map((d) => renderDayButton(d, value, onChange))}
+      </Box>
+      <Box key="weekend" sx={{ display: "flex", gap: 0.5, flex: 2 }}>
+        {renderDayButton(Weekday.SA, value, onChange)}
+        {renderDayButton(Weekday.SU, value, onChange)}
+      </Box>
+    </Box>
   </Stack>
 );
 export default RepeatWeekly;
