@@ -1,6 +1,6 @@
 {
   "name": "react-rrule-builder-ts",
-  "version": "0.0.21",
+  "version": "0.1.0",
   "description": "rrule component for react with mui",
   "main": "dist/rrule-generator.umd.js",
   "module": "dist/rrule-generator.es.js",

@@ -16,7 +16,7 @@ You can view the demo and explore component functionality in the [storybook](htt
 
 ## Status
 
-**Semi-Pre-Release**: This package is currently in pre-release. Although it's available on npm, it is not yet stable for production use. The package is under active development and testing. Once it reaches stability, this note will be removed.
+**Beta**: This package is functional and actively used, but has not yet reached a stable 1.0 release. The API may change between minor versions. Bug reports and feedback are welcome.
 
 ## Features
 
