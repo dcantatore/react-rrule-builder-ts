@@ -13,6 +13,7 @@ interface RepeatWeeklyProps {
   onChange: (value: AllRepeatDetails) => void;
   inputSize: TextFieldProps["size"];
   inputVariant: TextFieldProps["variant"];
+  enableResponsiveLayout: boolean;
 }
 
 const weekdays = Object.keys(Weekday) as Weekday[];
@@ -50,6 +51,7 @@ const RepeatWeekly = ({
   onChange,
   inputSize,
   inputVariant,
+  enableResponsiveLayout,
 }: RepeatWeeklyProps) => (
   <Stack direction="column" spacing={2} alignItems="flex-start">
     <Stack direction="row" spacing={2} alignItems="center">
@@ -66,7 +68,7 @@ const RepeatWeekly = ({
       role="group"
       aria-label="Select days of the week"
       sx={{
-        display: "flex", flexWrap: "wrap", gap: 0.5, width: "100%",
+        display: "flex", flexWrap: enableResponsiveLayout ? "wrap" : "nowrap", gap: 0.5, width: "100%",
       }}
     >
       <Box key="weekdays" sx={{ display: "flex", gap: 0.5, flex: 5 }}>

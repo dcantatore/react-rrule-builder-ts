@@ -80,6 +80,7 @@ const RepeatSelect = ({
               onChange={setRepeatDetails}
               inputSize={inputSize}
               inputVariant={inputVariant}
+              enableResponsiveLayout={enableResponsiveLayout}
             />
           );
         case Frequency.MONTHLY:
