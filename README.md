@@ -25,6 +25,7 @@ You can view the demo and explore component functionality in the [storybook](htt
 - Rehydrate component state from an existing RRULE string.
 - Per-instance Zustand store via React Context — multiple `<RRuleBuilder>` instances work independently on the same page.
 - Includes form validation using Yup with range-checked schemas per frequency.
+- Responsive layout — monthly and yearly controls automatically switch from row to column when space is tight. Try resizing the [SmallEmbedded story](https://dcantatore.github.io/react-rrule-builder-ts/?path=/story/rrulebuilder--small-embedded) to see it in action.
 - Integrates with MUI (Material-UI) components with customizable size and variant.
 - Exports all public types, enums, and the `BuilderStoreProvider` for external store access.
 - Accessible: ARIA labels on interactive elements, unique IDs via `useId()`.
