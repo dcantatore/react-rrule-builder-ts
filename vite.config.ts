@@ -1,10 +1,12 @@
 /*  eslint-disable import/no-extraneous-dependencies */
+/// <reference types="vitest" />
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import dts from "vite-plugin-dts";
 
 export default defineConfig({
   plugins: [react(), dts()],
+  // @ts-expect-error -- vitest injects the `test` property; its bundled vite types clash with the top-level vite package
   test: {
     globals: true,
     environment: "jsdom",
