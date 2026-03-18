@@ -122,7 +122,7 @@ const RepeatYearly = (
         <Stack direction="column" spacing={2} alignItems="flex-start" width="100%">
           <Stack
             direction={useColumnLayout ? "column" : "row"}
-            spacing={useColumnLayout ? 2 : 4}
+            spacing={useColumnLayout ? 2 : 3}
             alignItems={useColumnLayout ? "flex-start" : "center"}
             sx={{ width: "100%" }}
           >
@@ -155,7 +155,7 @@ const RepeatYearly = (
           </Stack>
           <Stack
             direction={useColumnLayout ? "column" : "row"}
-            spacing={useColumnLayout ? 2 : 4}
+            spacing={useColumnLayout ? 2 : 3}
             alignItems={useColumnLayout ? "flex-start" : "center"}
             sx={{ width: "100%" }}
           >
@@ -189,9 +189,17 @@ const RepeatYearly = (
                 inputSize={inputSize}
               />
             </Box>
-            <Stack direction="row" spacing={1} alignItems="center" sx={{ width: useColumnLayout ? "100%" : "auto" }}>
-              <Typography fontSize={inputSize} sx={{ color: disabledOnBYSETPOS ? "text.disabled" : "text.primary" }}>of</Typography>
-              <Box sx={{ minWidth: 120, width: useColumnLayout ? "100%" : "auto", flex: useColumnLayout ? 1 : undefined }}>
+            <Stack direction="row" alignItems="center" sx={{ width: useColumnLayout ? "100%" : "auto" }}>
+              <Typography
+                fontSize={inputSize}
+                sx={{ color: disabledOnBYSETPOS ? "text.disabled" : "text.primary" }}
+              >
+                of
+              </Typography>
+              <Box sx={{
+                minWidth: 120, marginLeft: 3, width: useColumnLayout ? "100%" : "auto", flex: useColumnLayout ? 1 : undefined,
+              }}
+              >
                 <SelectMonth
                   value={value}
                   onChange={handleOnTheChange}

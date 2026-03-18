@@ -111,7 +111,7 @@ const RepeatMonthly = (
           {/* ON DAY SECTION */}
           <Stack
             direction={useColumnLayout ? "column" : "row"}
-            spacing={useColumnLayout ? 2 : 4}
+            spacing={useColumnLayout ? 2 : 3}
             alignItems={useColumnLayout ? "flex-start" : "center"}
             sx={{ width: "100%" }}
           >
@@ -142,7 +142,7 @@ const RepeatMonthly = (
           {/* ON THE SECTION */}
           <Stack
             direction={useColumnLayout ? "column" : "row"}
-            spacing={useColumnLayout ? 2 : 4}
+            spacing={useColumnLayout ? 2 : 3}
             alignItems={useColumnLayout ? "flex-start" : "center"}
             sx={{ width: "100%" }}
           >

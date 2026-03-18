@@ -5,6 +5,7 @@ import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import { TextFieldProps } from "@mui/material/TextField";
+import { SxProps } from "@mui/material";
 import {
   AllRepeatDetails,
   AllWeekDayOptions,
@@ -18,11 +19,12 @@ interface SelectDayWeekProps {
   disabled: boolean;
   inputSize: SelectProps["size"];
   inputVariant: TextFieldProps["variant"];
+  inputSx?: SxProps;
 }
 const sxMinWidth = { minWidth: 120 };
 
 const SelectDayWeek = ({
-  value, onChange, disabled, inputSize, inputVariant,
+  value, onChange, disabled, inputSize, inputVariant, inputSx = {},
 }: SelectDayWeekProps) => {
   const id = useId();
 
@@ -67,7 +69,6 @@ const SelectDayWeek = ({
         Select Day
       </InputLabel>
       <Select
-        sx={sxMinWidth}
         disabled={disabled}
         onChange={handleSelectDayChange}
         value={selectedByDay}
@@ -75,6 +76,7 @@ const SelectDayWeek = ({
         label="Select Day"
         size={inputSize}
         variant={inputVariant}
+        sx={{ ...sxMinWidth, ...inputSx }}
       >
         {Object.keys(AllWeekDayOptions).map((key) => (
           <MenuItem key={key} value={key}>{weekdayFullTextMapping[key as keyof typeof AllWeekDayOptions]}</MenuItem>

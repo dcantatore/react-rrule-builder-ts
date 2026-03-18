@@ -16,7 +16,7 @@ interface SelectMonthProps {
   inputVariant: SelectProps["variant"];
 
 }
-const sxMinWidth = { minWidth: 120 };
+const sxMinWidth = { minWidth: 136 };
 
 const SelectMonth = ({
   value, onChange, disabled, inputSize, inputVariant,
