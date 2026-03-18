@@ -35,8 +35,7 @@ interface RRuleBuilderProps<TDate extends DateTime<boolean>> {
   inputVariant?: TextFieldProps["variant"];
   lang?: Lang;
   timeZone?: PickersTimezone;
-  // enableSmallScreenDetection?: boolean;
-  // smallScreenBreakpoint?: number;
+  // TODO implement dense mode - make all things with less padding/margin
   // dense?: boolean;
 }
 
@@ -58,10 +57,7 @@ const RRuleBuilderInner = <TDate extends DateTime<boolean>,>({
     endDatePickerLabel: "End Date",
   },
   timeZone = "UTC",
-  // TODO implement small container detection
-  // enableSmallScreenDetection = true,
-  // smallScreenBreakpoint = 350,
-  // TODO implement dense mode - make all things with less padding /margin
+  // TODO implement dense mode - make all things with less padding/margin
   // dense = false,
 }: RRuleBuilderProps<TDate>) => {
   const {
@@ -78,30 +74,6 @@ const RRuleBuilderInner = <TDate extends DateTime<boolean>,>({
   const fieldDefaultSize = theme.components?.MuiTextField?.defaultProps?.size || inputSize;
   const fieldDefaultVariant = theme.components?.MuiTextField?.defaultProps?.variant || inputVariant;
   const [datePickerOpen, setDatePickerOpen] = useState(false);
-
-  // TODO Implement small screen detection
-  // const containerRef = useRef<HTMLDivElement>(null);
-  // const [size, setSize] = useState(0);
-  //
-  // const handleResize = () => {
-  //   if (containerRef.current) {
-  //     setSize(containerRef.current.getBoundingClientRect().width);
-  //   }
-  // };
-  //
-  // useEffect(() => {
-  //   if (containerRef.current) {
-  //     // Watch width of container for responsive design
-  //     window.addEventListener("resize", handleResize);
-  //   }
-  //
-  //   // Call handleResize initially to set the initial size
-  //   handleResize();
-  //
-  //   return () => {
-  //     window.removeEventListener("resize", handleResize);
-  //   };
-  // }, []);
 
   // init the store with user provided initial data
   useEffect(() => {
