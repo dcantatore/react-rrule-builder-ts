@@ -1,7 +1,6 @@
 import React, {
   useCallback,
   useMemo,
-  useRef,
 } from "react";
 
 import Box from "@mui/material/Box";
@@ -17,7 +16,7 @@ import SelectPosition from "./Inputs/SelectPosition";
 import SelectDayCalendar from "./Inputs/SelectDayCalendar";
 import IntervalTextInput from "./Inputs/IntervalTextInput";
 import SelectMonth from "./Inputs/SelectMonth";
-import useResponsiveRowLayout, { ResponsiveRowSpec } from "./useResponsiveRowLayout";
+import useResponsiveRowLayout, { ResponsiveRowSpec, useContainerRef } from "./useResponsiveRowLayout";
 
 interface RepeatYearlyProps {
   value: AllRepeatDetails;
@@ -44,12 +43,10 @@ const RepeatYearly = (
     enableResponsiveLayout,
   }: RepeatYearlyProps,
 ) => {
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const measurementContainerRef = useMemo<React.RefObject<HTMLElement>>(
-    () => (responsiveContainerRef ?? wrapperRef) as React.RefObject<HTMLElement>,
-    [responsiveContainerRef],
-  );
+  const [wrapperRef, measurementContainerRef] = useContainerRef(responsiveContainerRef);
   const rowSpecs = useMemo<ResponsiveRowSpec[]>(() => {
+    // Approximate rendered width (px) of the Radio + "On"/"On The" label at default MUI theme.
+    // Recalibrate if theme font-size or spacing changes significantly.
     const triggerWidth = inputSize === "small" ? 90 : 98;
     const ofLabelWithGapWidth = inputSize === "small" ? 32 : 36;
     return [

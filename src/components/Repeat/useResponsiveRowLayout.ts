@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 const MUI_SPACING_UNIT_PX = 8;
 const DEFAULT_SELECT_MIN_WIDTH = 120;
@@ -28,6 +28,17 @@ export const getRowMinWidth = (rowSpec: ResponsiveRowSpec) => {
   const gapsWidth = Math.max(itemCount - 1, 0) * spacing * MUI_SPACING_UNIT_PX;
   const selectsWidth = selectWidths.reduce((sum, width) => sum + width, 0);
   return rowSpec.fixedWidth + selectsWidth + gapsWidth;
+};
+
+export const useContainerRef = (
+  externalRef?: React.RefObject<HTMLElement>,
+): [React.RefObject<HTMLDivElement>, React.RefObject<HTMLElement>] => {
+  const localRef = useRef<HTMLDivElement>(null);
+  const resolved = useMemo<React.RefObject<HTMLElement>>(
+    () => (externalRef ?? localRef) as React.RefObject<HTMLElement>,
+    [externalRef],
+  );
+  return [localRef, resolved];
 };
 
 interface UseResponsiveRowLayoutProps {

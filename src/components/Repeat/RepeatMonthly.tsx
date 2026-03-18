@@ -1,7 +1,6 @@
 import React, {
   useCallback,
   useMemo,
-  useRef,
 } from "react";
 
 import Stack from "@mui/material/Stack";
@@ -20,7 +19,7 @@ import SelectDayWeek from "./Inputs/SelectDayWeek";
 import SelectPosition from "./Inputs/SelectPosition";
 import SelectDayCalendar from "./Inputs/SelectDayCalendar";
 import IntervalTextInput from "./Inputs/IntervalTextInput";
-import useResponsiveRowLayout, { ResponsiveRowSpec } from "./useResponsiveRowLayout";
+import useResponsiveRowLayout, { ResponsiveRowSpec, useContainerRef } from "./useResponsiveRowLayout";
 
 interface RepeatMonthlyProps {
   value: AllRepeatDetails;
@@ -45,11 +44,7 @@ const RepeatMonthly = (
     enableResponsiveLayout,
   }: RepeatMonthlyProps,
 ) => {
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const measurementContainerRef = useMemo<React.RefObject<HTMLElement>>(
-    () => (responsiveContainerRef ?? wrapperRef) as React.RefObject<HTMLElement>,
-    [responsiveContainerRef],
-  );
+  const [wrapperRef, measurementContainerRef] = useContainerRef(responsiveContainerRef);
   const rowSpecs = useMemo<ResponsiveRowSpec[]>(() => ([
     {
       fixedWidth: 120,
