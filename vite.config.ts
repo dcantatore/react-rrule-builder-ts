@@ -19,20 +19,8 @@ export default defineConfig({
       fileName: (format) => `rrule-generator.${format}.js`,
     },
     rollupOptions: {
-      external: [
-        "react",
-        "react-dom",
-        "@mui/material",
-        "@mui/x-date-pickers",
-        "@emotion/react",
-        "@emotion/styled",
-        "rrule",
-        "zustand",
-        "zustand/vanilla",
-        "yup",
-        "luxon",
-        "lodash/isNil",
-      ],
+      // eslint-disable-next-line max-len
+      external: (id) => /^(react|react-dom|@mui\/material|@mui\/x-date-pickers|@emotion\/react|@emotion\/styled|rrule|zustand|yup|luxon|lodash)(\/?|$)/.test(id),
       output: {
         globals: {
           react: "React",
