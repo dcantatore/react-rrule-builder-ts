@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.1.1]
+
+### Added
+
+- Responsive layout — rows switch from horizontal to vertical when the container is too narrow, using a `useResponsiveRowLayout` hook with `ResizeObserver`.
+- `enableResponsiveLayout` props on `RRuleBuilder` to opt in and optionally specify a custom measurement container.
+- Storybook: `SmallEmbedded` story with a configurable `containerWidth` slider to test responsive behavior.
+- Storybook: general cleanup and reorganization.
+
+### Improved
+
+- Weekly day buttons fill available width using flex layout; Sat/Sun always wrap together as a pair.
+- `renderDayButton` extracted as a module-level function to avoid re-creation on every render.
+
+### Fixed
+
+- End story crash (`useBuilderStore must be used within a BuilderStoreProvider`) — added required providers as decorators.
+
 ## [0.1.0]
 
 ### Breaking Changes

@@ -16,7 +16,7 @@ You can view the demo and explore component functionality in the [storybook](htt
 
 ## Status
 
-**Beta**: This package is functional and actively used, but has not yet reached a stable 1.0 release. The API may change between minor versions. Bug reports and feedback are welcome.
+**Beta**: This package is functional and actively used, but has not yet reached a 1.0 release. The API may change between minor (0.X.X) versions and will be noted in changelog. Bug reports and feedback are welcome.
 
 ## Features
 
