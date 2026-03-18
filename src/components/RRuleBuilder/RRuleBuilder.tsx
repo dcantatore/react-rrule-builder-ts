@@ -35,7 +35,7 @@ interface RRuleBuilderProps<TDate extends DateTime<boolean>> {
   inputVariant?: TextFieldProps["variant"];
   lang?: Lang;
   timeZone?: PickersTimezone;
-  // TODO implement dense mode - make all things with less padding/margin
+  // TODO implement dense mode
   // dense?: boolean;
 }
 
@@ -57,8 +57,6 @@ const RRuleBuilderInner = <TDate extends DateTime<boolean>,>({
     endDatePickerLabel: "End Date",
   },
   timeZone = "UTC",
-  // TODO implement dense mode - make all things with less padding/margin
-  // dense = false,
 }: RRuleBuilderProps<TDate>) => {
   const {
     startDate,
