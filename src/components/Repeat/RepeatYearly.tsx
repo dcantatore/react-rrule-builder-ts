@@ -18,6 +18,13 @@ import IntervalTextInput from "./Inputs/IntervalTextInput";
 import SelectMonth from "./Inputs/SelectMonth";
 import useResponsiveRowLayout, { ResponsiveRowSpec, useContainerRef } from "./useResponsiveRowLayout";
 
+// Approximate rendered width (px) of the Radio + "On"/"On The" label at default MUI theme.
+// Recalibrate if theme font-size or spacing changes significantly.
+const TRIGGER_WIDTH_SMALL = 90;
+const TRIGGER_WIDTH_DEFAULT = 98;
+const OF_LABEL_GAP_WIDTH_SMALL = 32;
+const OF_LABEL_GAP_WIDTH_DEFAULT = 36;
+
 interface RepeatYearlyProps {
   value: AllRepeatDetails;
   onChange: (value: AllRepeatDetails) => void;
@@ -45,10 +52,8 @@ const RepeatYearly = (
 ) => {
   const [wrapperRef, measurementContainerRef] = useContainerRef(responsiveContainerRef);
   const rowSpecs = useMemo<ResponsiveRowSpec[]>(() => {
-    // Approximate rendered width (px) of the Radio + "On"/"On The" label at default MUI theme.
-    // Recalibrate if theme font-size or spacing changes significantly.
-    const triggerWidth = inputSize === "small" ? 90 : 98;
-    const ofLabelWithGapWidth = inputSize === "small" ? 32 : 36;
+    const triggerWidth = inputSize === "small" ? TRIGGER_WIDTH_SMALL : TRIGGER_WIDTH_DEFAULT;
+    const ofLabelWithGapWidth = inputSize === "small" ? OF_LABEL_GAP_WIDTH_SMALL : OF_LABEL_GAP_WIDTH_DEFAULT;
     return [
       {
         fixedWidth: triggerWidth,

@@ -14,7 +14,7 @@ import useBuilderStore from "../../store/builderStore";
 import { MonthBy, YearlyBy } from "./Repeat.types";
 
 interface RepeatSelectProps {
-  rruleFrequencyOptions? : Frequency[]
+  rruleFrequencyOptions?: Frequency[]
   onFrequencyChange: (frequency: Frequency) => void
   frequencySelected: Frequency
   enableYearlyInterval: boolean;
