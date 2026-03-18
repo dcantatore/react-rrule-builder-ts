@@ -16,10 +16,14 @@ export default {
       control: "select",
       options: ["standard", "outlined", "filled"],
     },
+    enableResponsiveLayout: {
+      control: "boolean",
+    },
   },
   args: {
     inputSize: "small",
     inputVariant: "outlined",
+    enableResponsiveLayout: true,
   },
 } as Meta<typeof RepeatWeekly>;
 
@@ -35,6 +39,7 @@ const Template: StoryFn<typeof RepeatWeekly> = (args) => {
       onChange={setRepeatDetails}
       inputVariant={inputVariant}
       inputSize={inputSize}
+      enableResponsiveLayout={args.enableResponsiveLayout}
     />
   );
 };

@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React from "react";
+import React, { ComponentProps } from "react";
 import { Meta, StoryFn } from "@storybook/react";
 import {
   Box, Typography, Divider, Paper,
@@ -111,7 +111,9 @@ Primary.args = {
   dateAdapter: AdapterLuxon,
 };
 
-const SmallTemplate: StoryFn<typeof RRuleBuilder & { containerWidth: number }> = ({
+type SmallEmbeddedProps = ComponentProps<typeof RRuleBuilder> & { containerWidth: number };
+
+const SmallTemplate: StoryFn<SmallEmbeddedProps> = ({
   containerWidth = 300,
   ...args
 }) => (
