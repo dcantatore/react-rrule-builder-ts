@@ -5,7 +5,7 @@
 ### Added
 
 - Responsive layout — rows switch from horizontal to vertical when the container is too narrow, using a `useResponsiveRowLayout` hook with `ResizeObserver`.
-- `enableResponsiveLayout` props on `RRuleBuilder` to opt in and optionally specify a custom measurement container.
+- `enableResponsiveLayout` prop on `RRuleBuilder` to opt in to responsive layout (default: `true`).
 - Storybook: [`SmallEmbedded` story](https://dcantatore.github.io/react-rrule-builder-ts/?path=/story/rrulebuilder--small-embedded) with a configurable `containerWidth` slider to test responsive behavior.
 - Storybook: general cleanup and reorganization.
 

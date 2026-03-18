@@ -25,7 +25,7 @@ You can view the demo and explore component functionality in the [storybook](htt
 - Rehydrate component state from an existing RRULE string.
 - Per-instance Zustand store via React Context — multiple `<RRuleBuilder>` instances work independently on the same page.
 - Includes form validation using Yup with range-checked schemas per frequency.
-- Responsive layout — monthly and yearly controls automatically switch from row to column when space is tight. Try resizing the [SmallEmbedded story](https://dcantatore.github.io/react-rrule-builder-ts/?path=/story/rrulebuilder--small-embedded) to see it in action.
+- Responsive layout — weekly, monthly, and yearly controls automatically adapt when space is tight. Try resizing the [SmallEmbedded story](https://dcantatore.github.io/react-rrule-builder-ts/?path=/story/rrulebuilder--small-embedded) to see it in action.
 - Integrates with MUI (Material-UI) components with customizable size and variant.
 - Exports all public types, enums, and the `BuilderStoreProvider` for external store access.
 - Accessible: ARIA labels on interactive elements, unique IDs via `useId()`.
@@ -117,7 +117,7 @@ const MyPage = () => (
   Shows the interval input for yearly frequency.
 
 - **`enableResponsiveLayout`** (`boolean`, default: `true`)
-  Enables automatic row-to-column layout switching for monthly/yearly controls based on container width.
+  Enables automatic responsive layout for weekly, monthly, and yearly controls based on container width.
 
 - **`showStartDate`** (`boolean`, default: `true`)
   Shows or hides the start date picker.
