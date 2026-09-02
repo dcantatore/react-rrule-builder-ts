@@ -15,6 +15,7 @@
 - devDependencies updated to the latest versions within their current major lines (MUI 6.5 / x-date-pickers 7.29, Storybook 8.6, Vitest 4.1, TypeScript 5.9, ESLint 8.57). Peer dependency ranges are unchanged.
 - `lodash` and `@types/lodash` are now declared as devDependencies instead of arriving transitively through Storybook.
 - Build: stories and tests are excluded from the emitted `.d.ts` files in `dist`.
+- CI: workflows run on Node 22 (`@testing-library/jest-dom` 6.10 requires Node >= 22; Node 20 is end-of-life).
 
 ## [0.1.2]
 
