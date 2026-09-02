@@ -5,7 +5,8 @@ import react from "@vitejs/plugin-react";
 import dts from "vite-plugin-dts";
 
 export default defineConfig({
-  plugins: [react(), dts()],
+  // stories and tests are type-checked by `yarn typecheck` but must not ship as .d.ts in dist
+  plugins: [react(), dts({ exclude: ["**/*.stories.tsx", "**/*.test.ts", "**/*.test.tsx"] })],
   // @ts-expect-error -- vitest injects the `test` property; its bundled vite types clash with the top-level vite package
   test: {
     globals: true,

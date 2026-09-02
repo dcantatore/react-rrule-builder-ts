@@ -43,8 +43,13 @@ export default {
     },
     dateFormat: {
       control: "select",
-      options: Object.values(DateFormat),
-      description: "Display format forwarded to both date pickers. Leave unset for the adapter default.",
+      options: ["default", ...Object.values(DateFormat)],
+      mapping: { default: undefined },
+      labels: {
+        default: "Adapter default",
+        ...Object.fromEntries(Object.entries(DateFormat).map(([key, value]) => [value, key])),
+      },
+      description: "Display format forwarded to both date pickers. \"Adapter default\" passes no format.",
     },
   },
 } as Meta<typeof RRuleBuilder>;

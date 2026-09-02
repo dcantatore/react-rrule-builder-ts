@@ -613,16 +613,41 @@ describe("RRuleBuilder", () => {
       });
     });
 
-    it("keeps the adapter default (month first) when dateFormat is omitted", async () => {
-      renderBuilder({ datePickerInitialDate: initialDate });
+    it("keeps the adapter default (month first) in both pickers when dateFormat is omitted", async () => {
+      renderBuilder({
+        rruleString: "DTSTART:20240917T120000Z\nRRULE:FREQ=WEEKLY;UNTIL=20241225T120000Z",
+      });
+      await vi.waitFor(() => {
+        expect(screen.getByLabelText(/start date/i)).toHaveValue("09/17/2024");
+        expect(screen.getByLabelText(/end date/i)).toHaveValue("12/25/2024");
+      });
+    });
+
+    it("keeps the adapter default placeholder in an empty end date picker when dateFormat is omitted", async () => {
+      renderBuilder();
+      const user = userEvent.setup();
+
+      await user.click(screen.getByText("never"));
+      await user.click(screen.getByText("on"));
+
+      await vi.waitFor(() => {
+        expect(screen.getByLabelText(/end date/i)).toHaveAttribute("placeholder", "MM/DD/YYYY");
+      });
+    });
+
+    it("treats an empty dateFormat as unset", async () => {
+      renderBuilder({ datePickerInitialDate: initialDate, dateFormat: "" });
       await vi.waitFor(() => {
         expect(screen.getByLabelText(/start date/i)).toHaveValue("09/17/2024");
       });
     });
 
     it("exposes dateFormat as an optional string on the exported props type", () => {
+      // Only enforced by `yarn typecheck` (tsc); expectTypeOf is a no-op at runtime.
       expectTypeOf<RRuleBuilderProps<DateTime>["dateFormat"]>().toEqualTypeOf<string | undefined>();
-      expectTypeOf(DateFormat.DD_MM_YYYY).toMatchTypeOf<RRuleBuilderProps<DateTime>["dateFormat"]>();
+      // The type parameter defaults to DateTime, so the bare form works for consumers too
+      expectTypeOf<RRuleBuilderProps["dateFormat"]>().toEqualTypeOf<string | undefined>();
+      expectTypeOf(DateFormat.DD_MM_YYYY).toExtend<RRuleBuilderProps["dateFormat"]>();
     });
   });
 });

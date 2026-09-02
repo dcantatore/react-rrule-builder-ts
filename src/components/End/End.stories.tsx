@@ -22,7 +22,12 @@ export default {
   argTypes: {
     dateFormat: {
       control: "select",
-      options: Object.values(DateFormat),
+      options: ["default", ...Object.values(DateFormat)],
+      mapping: { default: undefined },
+      labels: {
+        default: "Adapter default",
+        ...Object.fromEntries(Object.entries(DateFormat).map(([key, value]) => [value, key])),
+      },
     },
   },
 } as Meta<typeof End>;

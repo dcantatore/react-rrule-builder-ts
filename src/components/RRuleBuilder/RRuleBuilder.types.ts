@@ -6,10 +6,14 @@
  * directly: `dateFormat` is typed as a plain `string`, so this object is a convenience, not a
  * restriction.
  *
+ * Tokens are case-sensitive: setting-style strings such as `"DD/MM/YYYY"` are not valid formats.
+ * If your setting names match these keys, index the object instead: `DateFormat["DD_MM_YYYY"]`.
+ *
  * This is a `const` object rather than a TypeScript `enum` on purpose. Its members are ordinary
- * string literal types, so they stay interchangeable with a consumer's own enum or constant that
- * holds the same string. A string `enum` would be nominally typed and would reject structurally
- * equal values.
+ * string literal types, so values from a consumer's own enum or constant that hold the same string
+ * are accepted wherever `dateFormat` or the `DateFormat` type is expected. A string `enum` here
+ * would be nominally typed and would reject those values. (The reverse, assigning a `DateFormat`
+ * member to a variable typed as the consumer's own enum, is rejected by TypeScript for any enum.)
  */
 export const DateFormat = {
   /** Month first, e.g. 09/17/2024 */

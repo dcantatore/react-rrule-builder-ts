@@ -19,6 +19,9 @@ jobs:
 
       - run: yarn install --frozen-lockfile
 
+      - name: Type check
+        run: yarn typecheck
+
       - name: Run tests with coverage
         run: yarn test:coverage
 
