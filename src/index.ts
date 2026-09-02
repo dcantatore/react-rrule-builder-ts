@@ -1,4 +1,5 @@
 export { default as RRuleBuilder } from "./components/RRuleBuilder/RRuleBuilder";
+export type { RRuleBuilderProps } from "./components/RRuleBuilder/RRuleBuilder";
 export { default as useBuilderStore } from "./store/builderStore";
 export { BuilderStoreProvider } from "./store/builderStore";
 
@@ -13,5 +14,6 @@ export {
   AllWeekDayOptions,
 } from "./components/Repeat/Repeat.types";
 export type { AllRepeatDetails } from "./components/Repeat/Repeat.types";
+export { DateFormat } from "./components/RRuleBuilder/RRuleBuilder.types";
 export { EndType } from "./components/End/End.types";
 export type { EndDetails } from "./components/End/End.types";

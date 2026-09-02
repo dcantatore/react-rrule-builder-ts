@@ -45,7 +45,7 @@ npm install react-rrule-builder-ts
 ## Usage
 
 ```tsx
-import RRuleBuilder from 'react-rrule-builder-ts';
+import { RRuleBuilder } from 'react-rrule-builder-ts';
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import { DateTime } from "luxon";
 
@@ -65,6 +65,21 @@ const MyComponent = () => {
   );
 };
 ```
+
+### Date Format
+
+Both date pickers default to the adapter's localized format. To follow an app-level setting (for example an org-wide `DD/MM/YYYY`), pass `dateFormat`:
+
+```tsx
+import { RRuleBuilder, DateFormat } from 'react-rrule-builder-ts';
+import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
+
+<RRuleBuilder dateAdapter={AdapterLuxon} dateFormat={DateFormat.DD_MM_YYYY} />
+```
+
+`DateFormat` is a plain `as const` object, not a TypeScript `enum`, so its members are ordinary string literals (`"MM/dd/yyyy"`, `"dd/MM/yyyy"`, `"yyyy/MM/dd"`). Values from your own string enum or const object that hold the same strings are accepted anywhere `dateFormat` or the `DateFormat` type is expected, and `dateFormat` itself is typed as `string`, so any adapter-compatible format works. (As with any TypeScript enum, the reverse does not hold: `DateFormat.DD_MM_YYYY` is not assignable to a variable typed as *your* enum, because enums are nominal.) If the name collides with one of yours, alias it on import: `import { DateFormat as RRuleDateFormat } from 'react-rrule-builder-ts'`.
+
+The tokens are case-sensitive Luxon/date-fns syntax (`dd`, `MM`, `yyyy`). A setting-style string such as `"DD/MM/YYYY"` is not a valid format and renders garbled text, so map settings to the constants instead. If your setting names match the constant keys, indexing works directly: `dateFormat={DateFormat[orgDateFormat]}` for an `orgDateFormat` of `"DD_MM_YYYY"`. An empty string is treated as unset.
 
 ### External Store Access
 
@@ -137,6 +152,9 @@ const MyPage = () => (
 - **`timeZone`** (`PickersTimezone`, default: `"UTC"`)
   Timezone for date pickers and RRULE generation. See MUI's date picker timezone documentation for details.
 
+- **`dateFormat`** (`string`, optional)
+  Display format for the start and end date pickers, forwarded as the `format` prop of both MUI `DatePicker`s (e.g. `"dd/MM/yyyy"`). Use the exported `DateFormat` constants or any format string your date adapter understands. Tokens are case-sensitive Luxon/date-fns syntax (`dd`, `MM`, `yyyy`); a setting-style string such as `"DD/MM/YYYY"` is not a valid format and renders garbled text. When omitted or empty, the pickers use the adapter's default localized format.
+
 ## Store and Actions
 
 The component uses a per-instance Zustand store via React Context. Access the store with `useBuilderStore()` inside a `BuilderStoreProvider` or `RRuleBuilder`.
@@ -183,7 +201,9 @@ import {
   OnThe,          // 1, 2, 3, 4, -1
   AllWeekDayOptions,
   EndType,        // NEVER, AFTER, ON
+  DateFormat,     // MM_DD_YYYY, DD_MM_YYYY, YYYY_MM_DD (const object, also usable as a type)
   // Types
+  type RRuleBuilderProps,   // generic over the Luxon DateTime type, defaults to DateTime
   type AllRepeatDetails,
   type EndDetails,
 } from 'react-rrule-builder-ts';

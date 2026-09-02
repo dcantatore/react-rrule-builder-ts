@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.1.3]
+
+### Added
+
+- `dateFormat` prop on `RRuleBuilder`, forwarded as the `format` prop of both the start and end `DatePicker`s (e.g. `"dd/MM/yyyy"`). Omitting it (or passing an empty string) keeps the adapter's default format, so existing usage is unchanged.
+- `DateFormat` const object (`MM_DD_YYYY`, `DD_MM_YYYY`, `YYYY_MM_DD`) with a matching `DateFormat` type, exported for use with `dateFormat`.
+- `RRuleBuilderProps` type is now exported; its `TDate` parameter defaults to Luxon's `DateTime`.
+- `yarn typecheck` script (`tsc --noEmit`) and a matching CI step, so type-level test assertions are enforced.
+- Storybook: `WithDateFormat` story and a `dateFormat` control on the `RRuleBuilder` and `End` stories.
+
+### Changed
+
+- devDependencies updated to the latest versions within their current major lines (MUI 6.5 / x-date-pickers 7.29, Storybook 8.6, Vitest 4.1, TypeScript 5.9, ESLint 8.57). Peer dependency ranges are unchanged.
+- `lodash` and `@types/lodash` are now declared as devDependencies instead of arriving transitively through Storybook.
+- Build: stories and tests are excluded from the emitted `.d.ts` files in `dist`.
+- CI: `codecov.yml` added with informational project/patch status checks and change-only PR comments.
+- CI: workflows run on Node 22, read from a new `.nvmrc` (`@testing-library/jest-dom` 6.10 requires Node >= 22; Node 20 is end-of-life).
+
+## [0.1.2]
+
+### Fixed
+
+- Build: subpath imports of peer dependencies (e.g. `@mui/material/Stack`, `@mui/x-date-pickers/DatePicker`, `lodash/isNil`) are now externalized. The previous `external` list only matched bare package names, so those modules were bundled into `dist` and duplicated the consumer's copies.
+
 ## [0.1.1]
 
 ### Added

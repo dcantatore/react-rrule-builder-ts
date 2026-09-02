@@ -1,0 +1,19 @@
+# Codecov settings: https://docs.codecov.com/docs/codecov-yaml
+coverage:
+  status:
+    # Overall coverage vs. the base branch. Informational: reports a check but never blocks a merge.
+    project:
+      default:
+        target: auto
+        threshold: 1%
+        informational: true
+    # Coverage of the lines changed in the PR.
+    patch:
+      default:
+        target: 80%
+        informational: true
+
+comment:
+  layout: "condensed_header, diff, files"
+  # Only comment when coverage actually changed (keeps doc-only PRs quiet)
+  require_changes: true

@@ -1,10 +1,14 @@
-import { describe, it, expect, vi } from "vitest";
+import {
+  describe, it, expect, expectTypeOf, vi,
+} from "vitest";
 import React from "react";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import { Frequency } from "rrule";
-import RRuleBuilder from "./RRuleBuilder";
+import { DateTime } from "luxon";
+import RRuleBuilder, { RRuleBuilderProps } from "./RRuleBuilder";
+import { DateFormat } from "./RRuleBuilder.types";
 import { BuilderStoreProvider } from "../../store/builderStore";
 
 // Suppress MUI "useLayoutEffect" warnings in test environment
@@ -558,6 +562,92 @@ describe("RRuleBuilder", () => {
       renderBuilder({ enableOpenOnClickDatePicker: false });
       // Should still render the start date picker
       expect(screen.getByLabelText(/start date/i)).toBeTruthy();
+    });
+  });
+
+  describe("dateFormat prop", () => {
+    // Noon UTC so the calendar date is the same regardless of the host timezone
+    const initialDate = DateTime.fromISO("2024-09-17T12:00:00Z", { zone: "utc" });
+
+    it("renders the start date day-first when dateFormat is dd/MM/yyyy", async () => {
+      renderBuilder({ datePickerInitialDate: initialDate, dateFormat: "dd/MM/yyyy" });
+      await vi.waitFor(() => {
+        expect(screen.getByLabelText(/start date/i)).toHaveValue("17/09/2024");
+      });
+    });
+
+    it("renders the end date day-first when dateFormat is dd/MM/yyyy", async () => {
+      renderBuilder({
+        rruleString: "DTSTART:20240917T120000Z\nRRULE:FREQ=WEEKLY;UNTIL=20241225T120000Z",
+        dateFormat: "dd/MM/yyyy",
+      });
+      await vi.waitFor(() => {
+        expect(screen.getByLabelText(/start date/i)).toHaveValue("17/09/2024");
+        expect(screen.getByLabelText(/end date/i)).toHaveValue("25/12/2024");
+      });
+    });
+
+    it("uses the dateFormat for the placeholder of an empty end date picker", async () => {
+      renderBuilder({ dateFormat: "dd/MM/yyyy" });
+      const user = userEvent.setup();
+
+      await user.click(screen.getByText("never"));
+      await user.click(screen.getByText("on"));
+
+      await vi.waitFor(() => {
+        expect(screen.getByLabelText(/end date/i)).toHaveAttribute("placeholder", "DD/MM/YYYY");
+      });
+    });
+
+    it("accepts the exported DateFormat constants", async () => {
+      // Rendered directly (not via the untyped helper) so the prop is type-checked
+      render(
+        <RRuleBuilder
+          dateAdapter={AdapterLuxon}
+          datePickerInitialDate={initialDate}
+          dateFormat={DateFormat.YYYY_MM_DD}
+        />,
+      );
+      await vi.waitFor(() => {
+        expect(screen.getByLabelText(/start date/i)).toHaveValue("2024/09/17");
+      });
+    });
+
+    it("keeps the adapter default (month first) in both pickers when dateFormat is omitted", async () => {
+      renderBuilder({
+        rruleString: "DTSTART:20240917T120000Z\nRRULE:FREQ=WEEKLY;UNTIL=20241225T120000Z",
+      });
+      await vi.waitFor(() => {
+        expect(screen.getByLabelText(/start date/i)).toHaveValue("09/17/2024");
+        expect(screen.getByLabelText(/end date/i)).toHaveValue("12/25/2024");
+      });
+    });
+
+    it("keeps the adapter default placeholder in an empty end date picker when dateFormat is omitted", async () => {
+      renderBuilder();
+      const user = userEvent.setup();
+
+      await user.click(screen.getByText("never"));
+      await user.click(screen.getByText("on"));
+
+      await vi.waitFor(() => {
+        expect(screen.getByLabelText(/end date/i)).toHaveAttribute("placeholder", "MM/DD/YYYY");
+      });
+    });
+
+    it("treats an empty dateFormat as unset", async () => {
+      renderBuilder({ datePickerInitialDate: initialDate, dateFormat: "" });
+      await vi.waitFor(() => {
+        expect(screen.getByLabelText(/start date/i)).toHaveValue("09/17/2024");
+      });
+    });
+
+    it("exposes dateFormat as an optional string on the exported props type", () => {
+      // Only enforced by `yarn typecheck` (tsc); expectTypeOf is a no-op at runtime.
+      expectTypeOf<RRuleBuilderProps<DateTime>["dateFormat"]>().toEqualTypeOf<string | undefined>();
+      // The type parameter defaults to DateTime, so the bare form works for consumers too
+      expectTypeOf<RRuleBuilderProps["dateFormat"]>().toEqualTypeOf<string | undefined>();
+      expectTypeOf(DateFormat.DD_MM_YYYY).toExtend<RRuleBuilderProps["dateFormat"]>();
     });
   });
 });

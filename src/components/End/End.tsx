@@ -16,7 +16,8 @@ interface EndProps {
   inputSize: TextFieldProps["size"];
   inputVariant: TextFieldProps["variant"];
   enableOpenOnClickDatePicker: boolean;
-  timeZone: PickersTimezone
+  timeZone: PickersTimezone;
+  dateFormat?: string;
 }
 
 const End = ({
@@ -25,6 +26,7 @@ const End = ({
   inputVariant,
   enableOpenOnClickDatePicker,
   timeZone,
+  dateFormat,
 }: EndProps) => {
   const {
     endDetails, setEndDetails, minEndDate,
@@ -69,6 +71,7 @@ const End = ({
            label={datePickerEndLabel}
            value={endDetails.endDate}
            timezone={timeZone}
+           format={dateFormat || undefined}
             // earliest possible end date is the start date plus one day
            minDate={minEndDate ?? undefined}
            open={enableOpenOnClickDatePicker ? datePickerOpen : undefined}
