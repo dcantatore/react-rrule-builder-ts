@@ -12,6 +12,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+    # checkout first so .nvmrc exists for setup-node (the Bitovi action checks out again itself)
+    - uses: actions/checkout@v4
+
     - uses: actions/setup-node@v4
       with:
         node-version-file: .nvmrc
