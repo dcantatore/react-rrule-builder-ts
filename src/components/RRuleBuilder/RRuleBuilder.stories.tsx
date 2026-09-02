@@ -7,6 +7,7 @@ import {
 import Button from "@mui/material/Button";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import RRuleBuilder from "./RRuleBuilder";
+import { DateFormat } from "./RRuleBuilder.types";
 import { useBuilderStore, BuilderStoreProvider } from "../../index";
 
 export default {
@@ -39,6 +40,11 @@ export default {
     inputVariant: {
       control: "select",
       options: ["standard", "outlined", "filled"],
+    },
+    dateFormat: {
+      control: "select",
+      options: Object.values(DateFormat),
+      description: "Display format forwarded to both date pickers. Leave unset for the adapter default.",
     },
   },
 } as Meta<typeof RRuleBuilder>;
@@ -167,6 +173,14 @@ const WithRRuleStringTemplate: StoryFn<typeof RRuleBuilder> = (args) => (
     </Paper>
   </Box>
 );
+
+export const WithDateFormat = Template.bind({});
+WithDateFormat.args = {
+  ...Primary.args,
+  dateFormat: DateFormat.DD_MM_YYYY,
+  // DTSTART and UNTIL populate both pickers so the day-first format is visible in each
+  rruleString: "DTSTART:20240917T120000Z\nRRULE:FREQ=WEEKLY;UNTIL=20241225T120000Z",
+};
 
 export const WithRRuleString = WithRRuleStringTemplate.bind({});
 WithRRuleString.args = {

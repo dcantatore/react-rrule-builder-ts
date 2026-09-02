@@ -66,6 +66,19 @@ const MyComponent = () => {
 };
 ```
 
+### Date Format
+
+Both date pickers default to the adapter's localized format. To follow an app-level setting (for example an org-wide `DD/MM/YYYY`), pass `dateFormat`:
+
+```tsx
+import { RRuleBuilder, DateFormat } from 'react-rrule-builder-ts';
+import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
+
+<RRuleBuilder dateAdapter={AdapterLuxon} dateFormat={DateFormat.DD_MM_YYYY} />
+```
+
+`DateFormat` is a plain `as const` object, not a TypeScript `enum`, so its members are ordinary string literals (`"MM/dd/yyyy"`, `"dd/MM/yyyy"`, `"yyyy/MM/dd"`). They are interchangeable with your own enums or constants that hold the same strings, and `dateFormat` is typed as `string`, so any adapter-compatible format works. If the name collides with one of yours, alias it on import: `import { DateFormat as RRuleDateFormat } from 'react-rrule-builder-ts'`.
+
 ### External Store Access
 
 If you need to access the builder's state from sibling components (e.g. to read `validationErrors` or call `validateForm`), wrap both components in a `BuilderStoreProvider`:
@@ -137,6 +150,9 @@ const MyPage = () => (
 - **`timeZone`** (`PickersTimezone`, default: `"UTC"`)
   Timezone for date pickers and RRULE generation. See MUI's date picker timezone documentation for details.
 
+- **`dateFormat`** (`string`, optional)
+  Display format for the start and end date pickers, forwarded as the `format` prop of both MUI `DatePicker`s (e.g. `"dd/MM/yyyy"`). Use the exported `DateFormat` constants or any format string your date adapter understands. When omitted, the pickers use the adapter's default localized format.
+
 ## Store and Actions
 
 The component uses a per-instance Zustand store via React Context. Access the store with `useBuilderStore()` inside a `BuilderStoreProvider` or `RRuleBuilder`.
@@ -183,7 +199,9 @@ import {
   OnThe,          // 1, 2, 3, 4, -1
   AllWeekDayOptions,
   EndType,        // NEVER, AFTER, ON
+  DateFormat,     // MM_DD_YYYY, DD_MM_YYYY, YYYY_MM_DD (const object, also usable as a type)
   // Types
+  type RRuleBuilderProps,
   type AllRepeatDetails,
   type EndDetails,
 } from 'react-rrule-builder-ts';

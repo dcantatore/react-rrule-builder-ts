@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.2]
+
+### Added
+
+- `dateFormat` prop on `RRuleBuilder`, forwarded as the `format` prop of both the start and end `DatePicker`s (e.g. `"dd/MM/yyyy"`). Omitting it keeps the adapter's default format, so existing usage is unchanged.
+- `DateFormat` const object (`MM_DD_YYYY`, `DD_MM_YYYY`, `YYYY_MM_DD`) with a matching `DateFormat` type, exported for use with `dateFormat`.
+- `RRuleBuilderProps` type is now exported.
+- Storybook: `WithDateFormat` story and a `dateFormat` control on the `RRuleBuilder` and `End` stories.
+
 ## [0.1.1]
 
 ### Added

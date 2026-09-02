@@ -3,6 +3,7 @@ import { Meta, StoryFn } from "@storybook/react";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import { BuilderStoreProvider } from "../../store/builderStore";
+import { DateFormat } from "../RRuleBuilder/RRuleBuilder.types";
 import End from "./End";
 
 export default {
@@ -17,6 +18,12 @@ export default {
   )],
   args: {
     enableOpenOnClickDatePicker: true,
+  },
+  argTypes: {
+    dateFormat: {
+      control: "select",
+      options: Object.values(DateFormat),
+    },
   },
 } as Meta<typeof End>;
 

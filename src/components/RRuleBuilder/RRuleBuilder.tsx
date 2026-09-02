@@ -21,7 +21,7 @@ type MuiPickersAdapterConstructor<TDate extends DateTime<boolean>> = new (
   ...args: any[]
 ) => MuiPickersAdapter<TDate>;
 
-interface RRuleBuilderProps<TDate extends DateTime<boolean>> {
+export interface RRuleBuilderProps<TDate extends DateTime<boolean>> {
   dateAdapter: MuiPickersAdapterConstructor<TDate>;
   datePickerInitialDate?: TDate;
   onChange?: (rruleString: string) => void;
@@ -35,6 +35,12 @@ interface RRuleBuilderProps<TDate extends DateTime<boolean>> {
   inputVariant?: TextFieldProps["variant"];
   lang?: Lang;
   timeZone?: PickersTimezone;
+  /**
+   * Display format for the start and end date pickers, forwarded as the `format` prop of both
+   * MUI `DatePicker`s (e.g. `"dd/MM/yyyy"`; see the exported `DateFormat` constants).
+   * When omitted, the pickers use the date adapter's default localized format.
+   */
+  dateFormat?: string;
   // TODO implement dense mode
   // dense?: boolean;
 }
@@ -57,6 +63,7 @@ const RRuleBuilderInner = <TDate extends DateTime<boolean>,>({
     endDatePickerLabel: "End Date",
   },
   timeZone = "UTC",
+  dateFormat,
 }: RRuleBuilderProps<TDate>) => {
   const {
     startDate,
@@ -112,6 +119,7 @@ const RRuleBuilderInner = <TDate extends DateTime<boolean>,>({
             label={lang?.startDatePickerLabel}
             value={startDate}
             timezone={timeZone}
+            format={dateFormat}
             onChange={(newDate) => setStartDate(newDate)}
             open={enableOpenOnClickDatePicker ? datePickerOpen : undefined}
             onOpen={enableOpenOnClickDatePicker ? () => setDatePickerOpen(true) : undefined}
@@ -140,6 +148,7 @@ const RRuleBuilderInner = <TDate extends DateTime<boolean>,>({
           inputVariant={fieldDefaultVariant}
           enableOpenOnClickDatePicker={enableOpenOnClickDatePicker}
           timeZone={timeZone}
+          dateFormat={dateFormat}
         />
       </LocalizationProvider>
     </Stack>
