@@ -17,7 +17,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "lint": "eslint . --ext .ts,.tsx",
-    "release": "yarn version --patch && git push origin main --tags && gh release create v$(node -p \"require('./package.json').version\") --title \"v$(node -p \"require('./package.json').version\")\" --generate-notes"
+    "release": "yarn version --patch && git push origin main --tags && V=$(node -p \"require('./package.json').version\") && awk -v v=\"$V\" '$0 ~ \"^## \\\\[\" v \"\\\\]\" {p=1; next} /^## \\[/ {p=0} p' CHANGELOG.md > /tmp/release-notes.md && [ -s /tmp/release-notes.md ] && gh release create v$V --title v$V --notes-file /tmp/release-notes.md --generate-notes"
   },
   "repository": {
     "type": "git",
